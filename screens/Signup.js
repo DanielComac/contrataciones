@@ -35,7 +35,7 @@ const Signup = ({ navigation }) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
 
-    // Dimensiones para fijar el boton de ayuda
+    // Dimensiones para fijar flecha de regreso
     const {width, height} = Dimensions.get('window');
 
     //======================================================================

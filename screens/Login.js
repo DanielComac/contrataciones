@@ -5,15 +5,36 @@ import COLORS from '../temas/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
+import {Dimensions} from 'react-native';
+
 
 const Login = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+
+    // Dimensiones para fijar flecha de regreso
+    const {width, height} = Dimensions.get('window');
+
+    //======================================================================
+
+    const goBack = () => {
+        navigation.goBack();
+    };
+   
     
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+            {/* flecha hacia atras */}
+            <View style={{
+                    position: 'relative', left: width * 0.05, top: height * 0.01
+                }}>
+                    <TouchableOpacity onPress={goBack} >
+                        <Ionicons name="arrow-back" size={30} color={COLORS.primary}/>
+                    </TouchableOpacity>
+            </View>
+
             <View style={{ flex: 1, marginHorizontal: 22 }}>
-                <View style={{ marginVertical: 22 }}>
+                <View style={{ marginTop: "0%" }}>
                     <Text style={{
                         fontSize: 22,
                         fontWeight: 'bold',
