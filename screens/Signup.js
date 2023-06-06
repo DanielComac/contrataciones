@@ -5,8 +5,8 @@ import COLORS from '../temas/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
-import { Picker } from '@react-native-picker/picker';
-import * as ImagePicker from 'expo-image-picker';
+import {Dimensions} from 'react-native';
+
 
 //FIREBASE imports
 import { 
@@ -35,7 +35,14 @@ const Signup = ({ navigation }) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
 
+    // Dimensiones para fijar el boton de ayuda
+    const {width, height} = Dimensions.get('window');
 
+    //======================================================================
+
+    const goBack = () => {
+        navigation.goBack();
+    };
    
 
     const handleCreateAccount = async () => {
@@ -51,8 +58,17 @@ const Signup = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <ScrollView>
+                {/* flecha hacia atras */}
+                <View style={{
+                    position: 'relative', left: width * 0.05, top: height * 0.01
+                }}>
+                    <TouchableOpacity onPress={goBack} >
+                        <Ionicons name="arrow-back" size={30} color={COLORS.primary}/>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={{ flex: 1, marginHorizontal: 22 }}>
-                    <View style={{ marginVertical: 22 }}>
+                    <View style={{ marginTop: "0%" }}>
                         <Text style={{
                             fontSize: 22,
                             fontWeight: 'bold',

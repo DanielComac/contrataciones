@@ -28,6 +28,10 @@ const Welcome2 = ({ navigation }) => {
 
     //======================================================================
 
+    const goBack = () => {
+        navigation.goBack();
+    };
+
     return (
         <LinearGradient
             style={{
@@ -35,6 +39,7 @@ const Welcome2 = ({ navigation }) => {
             }}
             colors={[COLORS.secondary, COLORS.primary]}
         >
+            
              {/* Imágenes */}
 
             <View style={{ flex: 1 }}>
@@ -109,7 +114,16 @@ const Welcome2 = ({ navigation }) => {
                 </View>
 
             {/* ========================================================================== */}
-            
+
+            {/* flecha hacia atras */}
+            <View style={{
+                position: 'absolute', left: width * 0.03, top: height * 0.05
+            }}>
+                <TouchableOpacity onPress={goBack} >
+                    <Ionicons name="arrow-back" size={30} color="white" />
+                </TouchableOpacity>
+            </View>
+
             {/* Botón de ayuda */}
 
                 <View style={{

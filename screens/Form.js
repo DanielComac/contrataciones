@@ -7,6 +7,8 @@ import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
+import {Dimensions} from 'react-native';
+
 
 
 const Signup = ({ navigation }) => {
@@ -60,15 +62,34 @@ const Signup = ({ navigation }) => {
         return options;
       };
 
+    // Dimensiones para fijar el boton de ayuda
+    const {width, height} = Dimensions.get('window');
+
+    //======================================================================
+
+    const goBack = () => {
+        navigation.goBack();
+    };
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <ScrollView>
+
+            {/* flecha hacia atras */}
+            <View style={{
+                position: 'relative', left: width * 0.05, top: height * 0.01
+            }}>
+                <TouchableOpacity onPress={goBack} >
+                    <Ionicons name="arrow-back" size={30} color={COLORS.primary}/>
+                </TouchableOpacity>
+            </View>
+
+            
             <View style={{ flex: 1, marginHorizontal: 22 }}>
-                <View style={{ marginVertical: 22 }}>
+                <View style={{ marginTop: "5%" }}>
                     <Text style={{
                         fontSize: 22,
                         fontWeight: 'bold',
-                        marginVertical: 12,
                         color: COLORS.black
                     }}>
                         Información Personal
@@ -313,6 +334,38 @@ const Signup = ({ navigation }) => {
 
 {/* ==================================================================================== */}
 
+
+                {/* Input de Colonia */}
+
+                <View style={{ marginBottom: 12 }}>
+                    <Text style={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        marginVertical: 8
+                    }}>Colonia*</Text>
+
+                    <View style={{
+                        width: "100%",
+                        height: 48,
+                        borderColor: COLORS.black,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        paddingLeft: 22
+                    }}>
+                        <TextInput
+                            placeholder='Ej. "Zona Centro"'
+                            placeholderTextColor={COLORS.black}
+                            style={{
+                                width: "100%"
+                            }}
+                        />
+                    </View>
+                </View>
+
+{/* ====================================================================================== */}
+
                 {/* Input de Código Postal */}
 
                 <View style={{ marginBottom: 12 }}>
@@ -376,38 +429,6 @@ const Signup = ({ navigation }) => {
                 </View>
 
 {/* ====================================================================================== */}
-
-                {/* Input de Colonia */}
-
-                <View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Colonia*</Text>
-
-                    <View style={{
-                        width: "100%",
-                        height: 48,
-                        borderColor: COLORS.black,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingLeft: 22
-                    }}>
-                        <TextInput
-                            placeholder='Ej. "Zona Centro"'
-                            placeholderTextColor={COLORS.black}
-                            style={{
-                                width: "100%"
-                            }}
-                        />
-                    </View>
-                </View>
-
-{/* ====================================================================================== */}
-
 
                 {/* Input de Educación */}
                 <View style={{ marginBottom: 12 }}>
@@ -563,6 +584,7 @@ const Signup = ({ navigation }) => {
                         fontWeight: 400,
                         marginVertical: 4,
                         fontWeight: 'bold',
+                        marginBottom: "6%"
                     }}>Esta es la fotografía que se mostrará en tu tarjeta de perfil y la que verán las empresas</Text>
 
                     <View style={{marginBottom: 12}}>
@@ -590,6 +612,7 @@ const Signup = ({ navigation }) => {
                         fontWeight: 400,
                         marginVertical: 4,
                         fontWeight: 'bold',
+                        marginBottom: "6%"
                     }}>Esta fotografía se mostrará en tu perfil al dar clic en tu tarjeta de perfil</Text>
 
                     <View style={{marginBottom: 12}}>
