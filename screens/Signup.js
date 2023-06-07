@@ -8,10 +8,14 @@ import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 
 
+
+
 //FIREBASE imports
 import { 
     createUserWithEmailAndPassword
  } from 'firebase/auth';
+
+ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import { auth } from '../firebase-config';
 
@@ -51,6 +55,16 @@ const Signup = ({ navigation }) => {
           console.log('Se creó la cuenta', user);
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
+        }
+      };
+
+      const signInWithGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+
+        try {
+          const credentials = await signInWithPopup(auth, provider);
+        } catch (error) {
+          console.log(error);
         }
       };
 
@@ -329,7 +343,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => console.log("Pressed")}
+                        onPress={signInWithGoogle() }
                         style={{
                             flex: 1,
                             alignItems: 'center',
