@@ -1,14 +1,11 @@
 import { View, Text, Image, Pressable, TextInput, TouchableOpacity, ScrollView, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from '../temas/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
-
-
-
 
 //FIREBASE imports
 import { 
@@ -22,6 +19,7 @@ import { auth } from '../firebase-config';
 
 
 const Signup = ({ navigation }) => {
+
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
@@ -32,6 +30,10 @@ const Signup = ({ navigation }) => {
      const showUsuarioModal = () => {
          setUsuarioModalVisible(true);
        };
+
+
+    //Constante para verificar si la cuenta esta creada
+    const [isSignIn, setIsSignIn]=useState(false);
 
 
     //Funciones de creación de cuenta con FIREBASE
@@ -47,12 +49,12 @@ const Signup = ({ navigation }) => {
     const goBack = () => {
         navigation.goBack();
     };
-   
 
     const handleCreateAccount = async () => {
         try {
           const user = await createUserWithEmailAndPassword(auth, email, password);
-          console.log('Se creó la cuenta', user);
+          setIsSignIn(true);
+          console.log('Se creó la cuenta con:', user);
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
         }
@@ -60,13 +62,20 @@ const Signup = ({ navigation }) => {
 
       const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
-
         try {
           const credentials = await signInWithPopup(auth, provider);
+            setIsSignIn(true);
+            console.log('Se creó la cuenta con:', credentials);
         } catch (error) {
           console.log(error);
         }
       };
+
+      useEffect( () =>{
+        if (isSignIn) {
+            navigation.navigate('Form')
+        }
+      })
 
 
     return (
@@ -343,7 +352,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={signInWithGoogle() }
+                        onPress={signInWithGoogle}
                         style={{
                             flex: 1,
                             alignItems: 'center',
