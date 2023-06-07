@@ -48,6 +48,7 @@ const Signup = ({ navigation }) => {
 
     const goBack = () => {
         navigation.goBack();
+        setIsSignIn(false);
     };
 
     const handleCreateAccount = async () => {
