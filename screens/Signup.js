@@ -25,13 +25,25 @@ const Signup = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
+    // Variable de estado para el mensaje de error de la contraseña
+    const [passwordError, setPasswordError] = useState('');
+
+    const [termsError, setTermsError] = useState('');
+
+
      // Ventanas Modales de ayuda y botones de registro
      const [modalVisible, setModalVisible] = useState(false);
      const [usuarioModalVisible, setUsuarioModalVisible] = useState(false);
  
      const showUsuarioModal = () => {
-         setUsuarioModalVisible(true);
-       };
+        if (isPasswordValid(password)) {
+            setUsuarioModalVisible(true);
+        } else if (!isChecked) {
+            setTermsError('Debes aceptar los términos y condiciones.');
+        } else {
+            setPasswordError('La contraseña no cumple con los requisitos mínimos. Necesita tener al menos 8 caracteres y 1 número');
+        }
+    };
 
 
     //Funciones de creación de cuenta con FIREBASE
@@ -51,12 +63,16 @@ const Signup = ({ navigation }) => {
 
     const handleCreateAccount = async () => {
         try {
-          const user = await createUserWithEmailAndPassword(auth, email, password);
-          console.log('Se creó la cuenta', user);
+            if (isPasswordValid(password)) {
+                const user = await createUserWithEmailAndPassword(auth, email, password);
+                console.log('Se creó la cuenta', user);
+            } else {
+                setPasswordError('La contraseña no cumple con los requisitos mínimos.');
+            }
         } catch (error) {
-          console.log('No se pudo crear la cuenta',error);
+            console.log('No se pudo crear la cuenta', error);
         }
-      };
+    };
 
       const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
@@ -68,6 +84,18 @@ const Signup = ({ navigation }) => {
         }
       };
 
+      const isPasswordValid = (password) => {
+        // Define las reglas de validación aquí
+        const minLength = 8; // Longitud mínima de la contraseña
+      
+        // Reglas de validación: contraseña de al menos 8 caracteres y al menos un número
+        const regex = /^(?=.*\d).{8,}$/;
+      
+        return regex.test(password) && password.length >= minLength;
+      };
+
+     
+      
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -174,6 +202,11 @@ const Signup = ({ navigation }) => {
 
                             </TouchableOpacity>
                         </View>
+
+                        {/* Mostrar mensaje de error de la contraseña */}
+                        {passwordError !== '' && (
+                            <Text style={{ color: 'red', fontSize: 12 }}>{passwordError}</Text>
+                        )}
                     </View>
 
                     {/* ====================================================================================== */}
@@ -181,25 +214,28 @@ const Signup = ({ navigation }) => {
                     {/*  */}
 
                     <View style={{
-                        flexDirection: 'row',
-                        marginVertical: 6
-                    }}>
+                            flexDirection: 'row',
+                            marginVertical: 6
+                        }}>
                         <Checkbox
                             style={{ marginRight: 8 }}
                             value={isChecked}
                             onValueChange={setIsChecked}
                             color={isChecked ? COLORS.primary : undefined}
                         />
-
                         <Text>Aceptar Términos y Condiciones</Text>
                     </View>
+                    
+                    {/* Mostrar mensaje de error de términos y condiciones */}
+                    {termsError !== '' && (
+                        <Text style={{ color: 'red', fontSize: 12 }}>{termsError}</Text>
+                    )}
 
                     <Button
                         title="Registrarse"
                         filled
                         onPress={showUsuarioModal}
-                            
-                        
+                        disabled={!isPasswordValid(password)} // Agrega esta línea
                         style={{
                             marginTop: 18,
                             marginBottom: 4,
@@ -343,7 +379,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={signInWithGoogle() }
+                        onPress={signInWithGoogle}
                         style={{
                             flex: 1,
                             alignItems: 'center',
