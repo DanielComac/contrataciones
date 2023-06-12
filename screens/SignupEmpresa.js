@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
-import FilePickerManager from 'react-native-file-picker';
+// import FilePickerManager from 'react-native-file-picker';
 
 
 // //FIREBASE imports
