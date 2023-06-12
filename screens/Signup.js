@@ -13,6 +13,7 @@ import {
  } from 'firebase/auth';
 
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+//  import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { auth } from '../firebase-config';
 
@@ -48,8 +49,15 @@ const Signup = ({ navigation }) => {
 
     const goBack = () => {
         navigation.goBack();
-        setIsSignIn(false);
     };
+
+    // //configuracion del Google Sign-In
+    // useEffect(() => {
+    //     GoogleSignin.configure({
+    //       webClientId: '1055089828372-g2lkdegv58mqdktsjhhke8o8st0v3cm9.apps.googleusercontent.com',
+    //     });
+    //   }, []);
+   
 
     const handleCreateAccount = async () => {
         try {
@@ -62,6 +70,16 @@ const Signup = ({ navigation }) => {
       };
 
       const signInWithGoogle = async () => {
+        // try{
+        //     await GoogleSignin.hasPlayServices();
+        //     const {idToken} = await GoogleSignin.signIn();
+        //     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+        //     await auth().signInWithCredential(googleCredential);
+        //     setIsSignIn(true);
+        // }   catch (error) {
+        //     console.log(error);
+        // }
+        
         const provider = new GoogleAuthProvider();
         try {
           const credentials = await signInWithPopup(auth, provider);
@@ -76,7 +94,7 @@ const Signup = ({ navigation }) => {
         if (isSignIn) {
             navigation.navigate('Form')
         }
-      })
+      }, [isSignIn]);
 
 
     return (
