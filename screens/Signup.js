@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
-
+import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
 
 
 
@@ -27,6 +27,8 @@ const Signup = ({ navigation }) => {
 
     // Variable de estado para el mensaje de error de la contraseña
     const [passwordError, setPasswordError] = useState('');
+    const [emailError, setEmailError] = useState('');
+
 
     const [termsError, setTermsError] = useState('');
 
@@ -35,16 +37,40 @@ const Signup = ({ navigation }) => {
      const [modalVisible, setModalVisible] = useState(false);
      const [usuarioModalVisible, setUsuarioModalVisible] = useState(false);
  
-     const showUsuarioModal = () => {
-        if (isPasswordValid(password)) {
+     const checkExistingEmail = async () => {
+        const auth = getAuth();
+    
+        try {
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+          if (methods && methods.length > 0) {
+            setEmailError('El correo electrónico ya está registrado. Por favor, ingresa otro.');
+          } else {
             setUsuarioModalVisible(true);
-        } else if (!isChecked) {
-            setTermsError('Debes aceptar los términos y condiciones.');
-        } else {
-            setPasswordError('La contraseña no cumple con los requisitos mínimos. Necesita tener al menos 8 caracteres y 1 número');
+          }
+        } catch (error) {
+          console.error('Error al verificar el correo electrónico:', error);
         }
-    };
+      };
 
+      const showUsuarioModal = () => {
+        if (!isEmailValid(email)) {
+          setEmailError('Ingresa un correo electrónico válido.');
+          return; // Detener la ejecución si el correo electrónico no es válido
+        }
+    
+        if (!isPasswordValid(password)) {
+          setPasswordError('La contraseña no cumple con los requisitos mínimos. Necesita tener al menos 8 caracteres y 1 número');
+          return; // Detener la ejecución si la contraseña no cumple los requisitos
+        }
+    
+        if (!isChecked) {
+          setTermsError('Debes aceptar los términos y condiciones.');
+          return; // Detener la ejecución si el checkbox no está marcado
+        }
+    
+        // Verificar si el correo electrónico ya está registrado
+        checkExistingEmail();
+      };
 
     //Funciones de creación de cuenta con FIREBASE
 
@@ -63,16 +89,25 @@ const Signup = ({ navigation }) => {
 
     const handleCreateAccount = async () => {
         try {
-            if (isPasswordValid(password)) {
-                const user = await createUserWithEmailAndPassword(auth, email, password);
-                console.log('Se creó la cuenta', user);
-            } else {
-                setPasswordError('La contraseña no cumple con los requisitos mínimos.');
-            }
+          const auth = getAuth();
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+          if (methods.length > 0) {
+            // El correo electrónico ya está registrado, muestra un mensaje de error o realiza la acción correspondiente
+            console.log('El correo electrónico ya está registrado');
+            return;
+          }
+      
+          // Continuar con la creación de la cuenta si el correo electrónico no está registrado
+          if (isPasswordValid(password)) {
+            const user = await createUserWithEmailAndPassword(auth, email, password);
+            console.log('Se creó la cuenta', user);
+          } else {
+            setPasswordError('La contraseña no cumple con los requisitos mínimos.');
+          }
         } catch (error) {
-            console.log('No se pudo crear la cuenta', error);
+          console.log('No se pudo crear la cuenta', error);
         }
-    };
+      };
 
       const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
@@ -82,6 +117,12 @@ const Signup = ({ navigation }) => {
         } catch (error) {
           console.log(error);
         }
+      };
+
+      const isEmailValid = (email) => {
+        // Expresión regular para verificar el formato del correo electrónico
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
       };
 
       const isPasswordValid = (password) => {
@@ -150,6 +191,11 @@ const Signup = ({ navigation }) => {
                                 }}
                             />
                         </View>
+                        {emailError !== '' && <Text style={{ color: 'red' }}>{emailError}</Text>}
+                        {/* Mostrar mensaje de error del correo electrónico */}
+                            {email !== '' && !isEmailValid(email) && (
+                                <Text style={{ color: 'red', fontSize: 12 }}>Ingresa un correo electrónico válido.</Text>
+                            )}
                     </View>
                     {/* ==================================================================================== */}
 
@@ -231,16 +277,16 @@ const Signup = ({ navigation }) => {
                         <Text style={{ color: 'red', fontSize: 12 }}>{termsError}</Text>
                     )}
 
-                    <Button
+                        <Button
                         title="Registrarse"
                         filled
                         onPress={showUsuarioModal}
-                        disabled={!isPasswordValid(password)} // Agrega esta línea
+                        disabled={!isPasswordValid(password) || !isEmailValid(email)} // Actualiza la condición
                         style={{
                             marginTop: 18,
                             marginBottom: 4,
                         }}
-                    />
+                        />
                     {/* ====================================================================================== */}
                     {/* Ventana modal de botón de registrar como usuario */}
                     <Modal
@@ -289,8 +335,8 @@ const Signup = ({ navigation }) => {
                                         marginTop: 10,
                                     }}
                                     onPress={() => {
-                                        setUsuarioModalVisible(false);
                                         handleCreateAccount();
+                                        setUsuarioModalVisible(false);
                                         navigation.navigate('Form');
                                     }}
                                 >
@@ -310,7 +356,9 @@ const Signup = ({ navigation }) => {
                                         marginTop: 10,
                                     }}
                                     onPress={() => {
+                                        
                                         setUsuarioModalVisible(false);
+                                        
                                     }}
                                 >
                                     <Text style={{
