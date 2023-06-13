@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, TextInput, TouchableOpacity, ScrollView, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from '../temas/colors';
 import { Ionicons } from "@expo/vector-icons";
@@ -7,21 +7,20 @@ import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 
-
-
-
 //FIREBASE imports
 import { 
     createUserWithEmailAndPassword
  } from 'firebase/auth';
 
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+//  import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { auth } from '../firebase-config';
 
 
 
 const Signup = ({ navigation }) => {
+
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
@@ -32,6 +31,10 @@ const Signup = ({ navigation }) => {
      const showUsuarioModal = () => {
          setUsuarioModalVisible(true);
        };
+
+
+    //Constante para verificar si la cuenta esta creada
+    const [isSignIn, setIsSignIn]=useState(false);
 
 
     //Funciones de creación de cuenta con FIREBASE
@@ -47,26 +50,51 @@ const Signup = ({ navigation }) => {
     const goBack = () => {
         navigation.goBack();
     };
+
+    // //configuracion del Google Sign-In
+    // useEffect(() => {
+    //     GoogleSignin.configure({
+    //       webClientId: '1055089828372-g2lkdegv58mqdktsjhhke8o8st0v3cm9.apps.googleusercontent.com',
+    //     });
+    //   }, []);
    
 
     const handleCreateAccount = async () => {
         try {
           const user = await createUserWithEmailAndPassword(auth, email, password);
-          console.log('Se creó la cuenta', user);
+          setIsSignIn(true);
+          console.log('Se creó la cuenta con:', user);
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
         }
       };
 
       const signInWithGoogle = async () => {
+        // try{
+        //     await GoogleSignin.hasPlayServices();
+        //     const {idToken} = await GoogleSignin.signIn();
+        //     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+        //     await auth().signInWithCredential(googleCredential);
+        //     setIsSignIn(true);
+        // }   catch (error) {
+        //     console.log(error);
+        // }
+        
         const provider = new GoogleAuthProvider();
-
         try {
           const credentials = await signInWithPopup(auth, provider);
+            setIsSignIn(true);
+            console.log('Se creó la cuenta con:', credentials);
         } catch (error) {
           console.log(error);
         }
       };
+
+      useEffect( () =>{
+        if (isSignIn) {
+            navigation.navigate('Form')
+        }
+      }, [isSignIn]);
 
 
     return (
@@ -343,7 +371,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={signInWithGoogle() }
+                        onPress={signInWithGoogle}
                         style={{
                             flex: 1,
                             alignItems: 'center',
