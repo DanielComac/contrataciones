@@ -7,6 +7,7 @@ import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { FacebookAuthProvider } from 'firebase/auth';
 
 
 
@@ -16,6 +17,7 @@ import {
  } from 'firebase/auth';
 
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+ const provider = new FacebookAuthProvider();
 
 import { auth } from '../firebase-config';
 
@@ -111,9 +113,23 @@ const Signup = ({ navigation }) => {
 
       const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
-
+    
         try {
           const credentials = await signInWithPopup(auth, provider);
+          // Redirigir a la ventana "Form.js"
+          navigation.navigate('Form');
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      const signInWithFacebook = async () => {
+        const provider = new FacebookAuthProvider();
+    
+        try {
+          const credentials = await signInWithPopup(auth, provider);
+          // Redirigir a la ventana "Form.js"
+          navigation.navigate('Form');
         } catch (error) {
           console.log(error);
         }
@@ -400,7 +416,7 @@ const Signup = ({ navigation }) => {
                     justifyContent: 'center'
                 }}>
                     <TouchableOpacity
-                        onPress={() => console.log("Pressed")}
+                        onPress={signInWithFacebook}
                         style={{
                             flex: 1,
                             alignItems: 'center',
