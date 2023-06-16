@@ -2,13 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, ScrollView } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from '@react-navigation/native';
+
 
 
 import COLORS from '../temas/colors';
 import Button from '../componentes/Button';
 
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = () => {
+  const navigation = useNavigation();
+
+
+  const handleEmpresaPress = (empresa) => {
+    // Navegar a la pantalla de perfil de la empresa y pasar la información de la empresa seleccionada
+    navigation.navigate('PerfilEmpresa', { empresa });
+  };
+
+  const empresaData = {
+    foto: require('../assets/empresa1.jpeg'),
+    nombre: 'Empresa 1',
+    descripcion: 'Descripción de la Empresa',
+    contacto: [
+      { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
+      { etiqueta: 'Correo electrónico', valor: 'empresa1@example.com', tipo: 'email' },
+      { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
+    ],
+  };
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -36,29 +57,40 @@ const HomeScreen = ({navigation}) => {
         </View>
         
         {/* Tarjetas de presentación de las empresas */}
+        
         <View style={styles.contenedorCarta}>
-          {/* Tarjeta de presentación de la empresa 1 */}
-          <View style={styles.cartaEmpresa}>
-            {/* Imagen de la empresa */}
-            <Image
-              source={require('../assets/empresa1.jpeg')}
-              style={styles.imagenEmpresa}
-            />
-            {/* Nombre de la empresa */}
-            <Text style={styles.nombreEmpresa}>Empresa 1</Text>
-            {/* Descripción de la empresa */}
-            <Text style={styles.descripcionEmpresa}>Descripción de la Empresa 1</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('PerfilEmpresa', { empresa: empresaData })
+            }
+          >
+            {/* Tarjeta de presentación de la empresa 1 */}
+            <View style={styles.cartaEmpresa}>
+              {/* Imagen de la empresa */}
+              <Image
+                source={require('../assets/empresa1.jpeg')}
+                style={styles.imagenEmpresa}
+              />
+              {/* Nombre de la empresa */}
+              <Text style={styles.nombreEmpresa}>Empresa 1</Text>
+              {/* Descripción de la empresa */}
+              <Text style={styles.descripcionEmpresa}>Descripción de la Empresa 1</Text>
+            </View>
+          </TouchableOpacity>
 
-          {/* Tarjeta de presentación de la empresa 2 */}
-          <View style={styles.cartaEmpresa}>
-            <Image
-              source={require('../assets/empresa1.jpeg')}
-              style={styles.imagenEmpresa}
-            />
-            <Text style={styles.nombreEmpresa}>Empresa 2</Text>
-            <Text style={styles.descripcionEmpresa}>Descripción de la Empresa 2</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => handleEmpresaPress(empresaData)} // Pasa la información de la empresa seleccionada aquí
+          >
+            {/* Tarjeta de presentación de la empresa 2 */}
+            <View style={styles.cartaEmpresa}>
+              <Image
+                source={require('../assets/empresa1.jpeg')}
+                style={styles.imagenEmpresa}
+              />
+              <Text style={styles.nombreEmpresa}>Empresa 2</Text>
+              <Text style={styles.descripcionEmpresa}>Descripción de la Empresa 2</Text>
+            </View>
+            </TouchableOpacity>
         </View>
       </LinearGradient>
       </ScrollView>

@@ -7,7 +7,7 @@ import Form from "./Form"
 import Notificaciones from "./Notificaciones"
 import Home from "./HomeScreen";
 import Perfil from "./Perfil";
-
+import PerfilEmpresaScreen from "./PerfilEmpresaScreen";
 
 export {
     Login,
@@ -19,4 +19,5 @@ export {
     Notificaciones,
     Home,
     Perfil,
+    PerfilEmpresaScreen
 }

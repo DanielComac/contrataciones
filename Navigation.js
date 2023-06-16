@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, Notificaciones, Home, Perfil, } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, Notificaciones, Home, Perfil, PerfilEmpresaScreen } from "./screens";
 import React from "react";
 import COLORS from "./temas/colors";
 // import Home from "../screens/HomeScreen";
@@ -54,7 +54,6 @@ function BottomTab() {
             <Ionicons name="person" size={24} color={COLORS.primary} />),
         }}
       />
-
 
     </Tab.Navigator>
   )
@@ -114,6 +113,15 @@ function initialStack() {
         component={BottomTab}
         options={{
           headerShown: false
+        }}
+      />
+
+      <Stack.Screen
+        name="PerfilEmpresa"
+        component={PerfilEmpresaScreen}
+        options={{
+          headerShown: true,
+          title: 'Perfil de Empresa'
         }}
       />
 
