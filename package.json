@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
-    "@react-native-picker/picker": "^2.4.10",
+    "@react-native-picker/picker": "2.4.8",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "expo": "~48.0.15",
@@ -21,7 +21,7 @@
     "firebase": "^9.22.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.7",
+    "react-native": "0.71.8",
     "react-native-document-picker": "^9.0.1",
     "react-native-file-picker": "^0.0.21",
     "react-native-image-crop-picker": "^0.40.0",

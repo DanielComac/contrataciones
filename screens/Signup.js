@@ -7,9 +7,6 @@ import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 
-
-
-
 //FIREBASE imports
 import { 
     createUserWithEmailAndPassword
@@ -343,7 +340,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={signInWithGoogle() }
+                        onPress={ () => console.log("Funcionando")}
                         style={{
                             flex: 1,
                             alignItems: 'center',
