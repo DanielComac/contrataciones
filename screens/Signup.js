@@ -13,7 +13,6 @@ import {
  } from 'firebase/auth';
 
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
- const provider = new FacebookAuthProvider();
 
 import { auth } from '../firebase-config';
 
