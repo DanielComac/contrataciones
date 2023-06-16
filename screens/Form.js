@@ -649,7 +649,7 @@ const Signup = ({ navigation }) => {
 
                 <Button
                     title="Agregar información al perfil"
-                    onPress={() => navigation.navigate("InicioUsuario")}
+                    onPress={() => navigation.navigate("Home")}
                     filled
                     style={{
                         marginTop: 18,
