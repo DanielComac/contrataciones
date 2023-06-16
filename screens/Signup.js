@@ -92,12 +92,7 @@ const Signup = ({ navigation }) => {
         navigation.goBack();
     };
 
-    // //configuracion del Google Sign-In
-    // useEffect(() => {
-    //     GoogleSignin.configure({
-    //       webClientId: '1055089828372-g2lkdegv58mqdktsjhhke8o8st0v3cm9.apps.googleusercontent.com',
-    //     });
-    //   }, []);
+
    
 
     const handleCreateAccount = async () => {
