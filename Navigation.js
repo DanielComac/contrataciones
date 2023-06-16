@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, Notificaciones, Home, Perfil, } from "./screens";
 import React from "react";
+import COLORS from "./temas/colors";
 // import Home from "../screens/HomeScreen";
 // import Notificaciones from "../screens/Notificaciones";
 
@@ -27,7 +28,7 @@ function BottomTab() {
           headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({ }) => (
-            <Entypo name="home" size={24} color="black" />
+            <Ionicons name="home" size={24} color={COLORS.primary} />
           ),
         }}
       />
@@ -38,7 +39,7 @@ function BottomTab() {
           headerShown: false,
           tabBarLabel: 'Notificaciones',
           tabBarIcon: ({ }) => (
-            <Ionicons name="notifications" size={24} color="black" />
+            <Ionicons name="notifications" size={24} color={COLORS.primary} />
           ),
         }}
       />
@@ -50,7 +51,7 @@ function BottomTab() {
           headerShown: false,
           tabBarLabel: 'Perfil',
           tabBarIcon: ({ }) => (
-            <Ionicons name="person" size={24} color="black" />),
+            <Ionicons name="person" size={24} color={COLORS.primary} />),
         }}
       />
 
