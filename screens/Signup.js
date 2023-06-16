@@ -6,8 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
-import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
-import { FacebookAuthProvider } from 'firebase/auth';
 
 //FIREBASE imports
 import { 
@@ -459,7 +457,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={signInWithGoogle}
+                        onPress={ () => console.log("Funcionando")}
                         style={{
                             flex: 1,
                             alignItems: 'center',

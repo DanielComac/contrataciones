@@ -8,6 +8,8 @@ import Button from '../componentes/Button';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 import {Dimensions} from 'react-native';
+import {firestore} from '../firebase-config';
+import {collection, addDoc} from 'firebase/firestore';
 
 
 
@@ -21,6 +23,21 @@ const Signup = ({ navigation }) => {
     const [selectedIngles, setSelectedIngles] = useState('');
     const [selectedDisponibilidad, setSelectedDisponibilidad] = useState('');
     const [selectedCiudad, setSelectedCiudad] = useState('');
+    const [datos, setDatos] = useState({
+        numeroCelular: '',
+        nombre: '',
+        apellidoMaterno: '',
+        apellidoPaterno: '',
+        edad: '',
+        ciudad: '',
+        colonia: '',
+        codigoPostal: '',
+        trabajoAplicar:'',
+        educación: '',
+        experiencia: '',
+        nivelIngles: '',
+        disponibilidadHorario: ''
+    });
 
     // Función para input de subir imagenes
     const [selectedImage, setSelectedImage] = useState(null);
@@ -70,6 +87,12 @@ const Signup = ({ navigation }) => {
     const goBack = () => {
         navigation.goBack();
     };
+
+
+    const enviarDatos = async () => {
+        await addDoc(collection(firestore, 'informaciónUsuario'), datos);
+        navigation.navigate("InicioUsuario")
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -127,10 +150,11 @@ const Signup = ({ navigation }) => {
                                 borderLeftColor: COLORS.grey,
                                 height: "100%"
                             }}
-                            editable= {false}
+                            editable= {false} 
                         />
                         <TextInput
                             placeholder='Ingresa tu número de teléfono'
+                            onChangeText={(valor) => setDatos({...datos, numeroCelular: valor})}
                             placeholderTextColor={COLORS.black}
                             keyboardType='numeric'
                             style={{
@@ -169,6 +193,7 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            onChangeText={(valor) => setDatos({...datos, nombre: valor})} 
                         />
                     </View>
                 </View>
@@ -200,6 +225,7 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            onChangeText={(valor) => setDatos({...datos, apellidoPaterno: valor})}
                         />
                     </View>
                 </View>
@@ -231,6 +257,7 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            onChangeText={(valor) => setDatos({...datos, apellidoMaterno: valor})}
                         />
                     </View>
                 </View>
@@ -260,6 +287,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedGenero}
                         onValueChange={(itemValue, itemIndex) => setSelectedGenero(itemValue)}
+                        onChangeText={(dato) => setSelectedGenero({...selectedGenero, Genero: dato})}
                         style={{ width: "100%" }}
                         >
                         <Picker.Item label="Masculino" value="masculino" />
@@ -293,6 +321,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedEdad}
                         onValueChange={(itemValue, itemIndex) => setSelectedEdad(itemValue)}
+                        onChangeText={(valor) => setDatos({...datos, edad: valor})}
                         style={{width: "100%"}}
                         >
                         {renderOptions()}
@@ -325,6 +354,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedCiudad}
                         onValueChange={(itemValue, itemIndex) => setSelectedCiudad(itemValue)}
+                        onChangeText={(valor) => setDatos({...datos, ciudad: valor})}
                         style={{ width: "100%" }}
                         >
                         <Picker.Item label="Victoria de Durango" value="durango" />
@@ -360,6 +390,7 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            onChangeText={(valor) => setDatos({...datos, colonia: valor})}
                         />
                     </View>
                 </View>
@@ -393,6 +424,7 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "100%",
                             }}
+                            onChangeText={(valor) => setDatos({...datos, codigoPostal: valor})}
                         />
                     </View>
                 </View>
@@ -424,6 +456,8 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+
+                            onChangeText={(valor) => setDatos({...datos, trabajoaplicar: valor})}
                         />
                     </View>
                 </View>
@@ -453,6 +487,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedEducacion}
                         onValueChange={(itemValue, itemIndex) => setSelectedEducacion(itemValue)}
+                        onChangeText={(valor) => setDatos({...datos, educacion: valor})}
                         style={{ width: "100%" }}
                         >
                         <Picker.Item label='Primaria o secundaria' value="primariasecundaria" />
@@ -490,6 +525,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedExperiencia}
                         onValueChange={(itemValue, itemIndex) => setSelectedExperiencia(itemValue)}
+                        onChangeText={(valor) => setDatos({...datos, experiencia: valor})}
                         style={{ width: "100%" }}
                         >
                         <Picker.Item label='Sin experiencia' value="sinexperiencia" />
@@ -525,6 +561,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedIngles}
                         onValueChange={(itemValue, itemIndex) => setSelectedIngles(itemValue)}
+                        onChangeText={(valor) => setDatos({...datos, nivelIngles: valor})}
                         style={{ width: "100%" }}
                         >
                         <Picker.Item label="No hablo ingles" value="noingles" />
@@ -562,6 +599,7 @@ const Signup = ({ navigation }) => {
                         <Picker
                         selectedValue={selectedDisponibilidad}
                         onValueChange={(itemValue, itemIndex) => setSelectedDisponibilidad(itemValue)}
+                        onChangeText={(valor) => setDatos({...datos, disponibilidadHorario: valor})}
                         style={{ width: "100%" }}
                         >
                         <Picker.Item label="Tiempo Completo" value="tiempocompleto" />
@@ -655,6 +693,7 @@ const Signup = ({ navigation }) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    
                 />
 
 {/* ====================================================================================== */}
