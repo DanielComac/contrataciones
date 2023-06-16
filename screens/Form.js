@@ -687,6 +687,7 @@ const Signup = ({ navigation }) => {
 
                 <Button
                     title="Agregar información al perfil"
+                    onPress={() => navigation.navigate("InicioUsuario")}
                     filled
                     style={{
                         marginTop: 18,

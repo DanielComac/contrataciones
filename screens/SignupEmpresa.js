@@ -6,7 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
+<<<<<<< HEAD
 // import FilePickerManager from 'react-native-file-picker';
+=======
+>>>>>>> 200a10f865684ca30198a49cae74ba8a4f46d7e2
 
 
 // //FIREBASE imports
@@ -39,7 +42,7 @@ const SignupEmpresa = ({ navigation }) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
 
-    //    Funcion para seleccionar archivos pdf
+
    
 
     const handleCreateAccount = async () => {
