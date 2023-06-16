@@ -1,74 +1,65 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const HomeScreen = () => {
-  const handleSearchJobs = () => {
-    // Lógica para redirigir a la pantalla de búsqueda de empleo
-    console.log('Redirigir a la pantalla de búsqueda de empleo');
-  };
 
-  const handleSavedJobs = () => {
-    // Lógica para redirigir a la pantalla de empleos guardados
-    console.log('Redirigir a la pantalla de empleos guardados');
-  };
+import COLORS from '../temas/colors';
+import Button from '../componentes/Button';
 
-  const handleProfile = () => {
-    // Lógica para redirigir a la pantalla de perfil de usuario
-    console.log('Redirigir a la pantalla de perfil de usuario');
-  };
+
+const HomeScreen = ({navigation}) => {
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>¡Bienvenido a la app de búsqueda de trabajo!</Text>
-      {/* <Image style={styles.image} source={require('../assets/jos_search_image.png')} /> */}
-      <TouchableOpacity style={styles.button} onPress={handleSearchJobs}>
-        <Text style={styles.buttonText}>Empleos Disponibles </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleSavedJobs}>
-        <Text style={styles.buttonText}>Empleos guardados</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleProfile}>
-        <Text style={styles.buttonText}>Perfil</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <LinearGradient
+          style={{
+          flex: 1
+        }}
+          colors={[COLORS.white, COLORS.white]}
+      >
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: "0.5%",
+          marginTop: "18%",
+          borderRadius: 8,
+          borderWidth: 1,
+          borderColor: COLORS.black,
+          marginLeft: "1.8%",
+          marginRight: "1.8%",
+        }}>
+          <TextInput
+            style={{
+              flex: 1,
+              height: 40,
+              backgroundColor: COLORS.lightGray,
+              borderRadius: 8,
+              paddingHorizontal: 12,
+              marginRight: 8,
+              color: COLORS.black,
+            }}
+            placeholder="Buscar empleo"
+            placeholderTextColor={COLORS.gray}
+            // Agrega cualquier otra propiedad que necesites para el campo de búsqueda
+          />
+          <TouchableOpacity
+            style={{
+              backgroundColor: COLORS.primary,
+              borderRadius: 8,
+              paddingVertical: 8,
+              paddingHorizontal: 12,
+            }}
+          >
+            <Text style={{
+              color: COLORS.white,
+              fontWeight: 'bold',
+            }}>Buscar</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#4caf50',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#fff',
-  },
-  image: {
-    width: 200,
-    height: 200,
-    marginBottom: 40,
-    borderRadius: 100,
-  },
-  button: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    marginBottom: 20,
-    elevation: 3,
-  },
-  buttonText: {
-    color: '#4caf50',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
 
 export default HomeScreen;

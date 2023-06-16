@@ -115,7 +115,7 @@ const Welcome = ({ navigation }) => {
                     </View>
                     <Button
                         title="Unirme Ahora"
-                        onPress={() => navigation.navigate("Welcome2")}
+                        onPress={() => navigation.navigate("Home")}
                         style={{
                             marginTop: "10%",
                             width: "100%"
