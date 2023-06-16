@@ -91,7 +91,7 @@ const Signup = ({ navigation }) => {
 
     const enviarDatos = async () => {
         await addDoc(collection(firestore, 'informaciónUsuario'), datos);
-        console.log("Datos enviados");
+        navigation.navigate("InicioUsuario")
     }
 
     return (
@@ -693,7 +693,7 @@ const Signup = ({ navigation }) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={enviarDatos}
+                    
                 />
 
 {/* ====================================================================================== */}
