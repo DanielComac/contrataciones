@@ -32,10 +32,6 @@ const SignupEmpresa = ({ navigation }) => {
          setUsuarioModalVisible(true);
        };
 
-    //Función de input de texto
-       const [textInputValue, setTextInputValue] = useState('');
-       const [textInputValueDescricpion, setTextInputValueDescripcion] = useState('');
-
 
     //Funciones de creación de cuenta con FIREBASE
 
@@ -139,7 +135,7 @@ const SignupEmpresa = ({ navigation }) => {
                             fontSize: 16,
                             fontWeight: 400,
                             marginVertical: 8
-                        }}>Correo Electrónico (para iniciar sesión)*</Text>
+                        }}>Correo Electrónico*</Text>
 
                         <View style={{
                             width: "100%",
@@ -287,7 +283,6 @@ const SignupEmpresa = ({ navigation }) => {
                           keyboardType="numeric"
                           style={{
                             width: "80%",
-                            marginHorizontal: "1%"
                           }}
                           value={number}
                           onChangeText={(text) => {
@@ -297,7 +292,7 @@ const SignupEmpresa = ({ navigation }) => {
                           }}
                         />
                         <TouchableOpacity onPress={() => removePhoneNumberField(index)}>
-                          <Text style={{ fontSize: 16, color: COLORS.primary, position: 'relative' }}>Eliminar</Text>
+                          <Text style={{ fontSize: 16, color: COLORS.primary }}>Eliminar</Text>
                         </TouchableOpacity>
                       </View>
                     ))}
@@ -309,99 +304,7 @@ const SignupEmpresa = ({ navigation }) => {
 
 {/* ==================================================================================== */}
 
-                    {/* Input Correo electrónico de contacto */}
 
-                    <View style={{ marginBottom: 12 }}>
-                        <Text style={{
-                            fontSize: 16,
-                            fontWeight: 400,
-                            marginVertical: 8
-                        }}>Correo Electrónico de contacto*</Text>
-
-                        <View style={{
-                            width: "100%",
-                            height: 48,
-                            borderColor: COLORS.black,
-                            borderWidth: 1,
-                            borderRadius: 8,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            paddingLeft: 22
-                        }}>
-                            <TextInput
-                                placeholder='Ingresa el correo electrónico de contacto'
-                                placeholderTextColor={COLORS.black}
-                                keyboardType='email-address'
-                                onChangeText={(text) => setEmail(text)}
-                                style={{
-                                    width: "100%"
-                                }}
-                            />
-                        </View>
-                    </View>
-{/* ==================================================================================== */}
-
-                <View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Sitio web de la empresa (si lo tiene)</Text>
-
-                    <View style={{
-                        width: "100%",
-                        height: 48,
-                        borderColor: COLORS.black,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingLeft: 22
-                    }}>
-                        <TextInput
-                            placeholder='Ingresa el sitio web de tu empresa'
-                            placeholderTextColor={COLORS.black}
-                            onChangeText={setTextInputValue} // Actualiza el estado con el valor ingresado por el usuario
-                            value={textInputValue} // Establece el valor del input como el estado actual
-                            style={{
-                                width: "100%"
-                            }}
-                        />
-                    </View>
-                </View>
-
-{/* -------------------------------------------------------------------------------------- */}
-
-<View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Descripción breve de la empresa</Text>
-
-                    <View style={{
-                        width: "100%",
-                        height: 48,
-                        borderColor: COLORS.black,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingLeft: 22
-                    }}>
-                        <TextInput
-                            placeholder='Escriba una descripcion breve de la empresa'
-                            placeholderTextColor={COLORS.black}
-                            onChangeText={setTextInputValueDescripcion}
-                            value={textInputValueDescricpion}
-                            style={{
-                                width: "100%"
-                            }}
-                        />
-                    </View>
-                </View>
-
-{/* -------------------------------------------------------------------------------------- */}
 
 
 
@@ -434,8 +337,7 @@ const SignupEmpresa = ({ navigation }) => {
                         }}
                     />
 {/* ====================================================================================== */}
-
-                    {/* Ventana modal de botón de registrar como empresa */}
+                    {/* Ventana modal de botón de registrar como usuario */}
                     <Modal
                         visible={usuarioModalVisible}
                         animationType="fade"
@@ -458,19 +360,20 @@ const SignupEmpresa = ({ navigation }) => {
                                     fontSize: 15,
                                     marginBottom: 10,
                                     textAlign: 'justify',
-                                }}>El documento que proporcionaste será enviado a nuestro equipo de revisión. El objetivo de este proceso es garantizar la legitimidad y cumplimiento de las regulaciones legales por parte de las empresas registradas en nuestra plataforma.
+                                }}>Al registrate estas aceptando que vamos a recopilar cierta información personal. Estos datos incluyen tu nombre, edad, ubicación aproximada, fotografías, entre otra. Queremos que estés consciente de que cualquier empresa registrada en nuestra plataforma podrá ver esta información al buscar candidatos.
                                 </Text>
                                 <Text style={{
                                     fontSize: 15,
                                     marginBottom: 10,
                                     textAlign: 'justify',
-                                }}>Una vez que tu documento haya sido revisado, recibirás un correo electrónico de confirmación con los resultados de la revisión. Si tu documento es aceptado, podrás iniciar sesión en la aplicación utilizando el correo electrónico proporcionado durante el registro.
+                                }}>Nos tomamos muy en serio tu privacidad y seguridad. Todos los datos que proporciones serán tratados de acuerdo con nuestras políticas de privacidad y protección de datos.
                                 </Text>
                                 <Text style={{
                                     fontSize: 15,
                                     marginBottom: 10,
-                                    textAlign: 'justify',
-                                }}>En caso de que tu documento sea rechazado, te informaremos sobre los motivos específicos de la decisión.
+                                    textAlign: 'center',
+                                    fontWeight: 'bold'
+                                }}>*En el siguiente formulario se te pedirá que subas dos fotografías tuyas. Una de cuerpo completo y otra del pecho hacia arriba por lo que te aconsejamos las tengas listas*
                                 </Text>
                                 <TouchableOpacity
                                     style={{

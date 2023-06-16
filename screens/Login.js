@@ -5,9 +5,7 @@ import COLORS from '../temas/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
-import {Dimensions} from 'react-native'
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-
+import {Dimensions} from 'react-native';
 
 
 const Login = ({ navigation }) => {
