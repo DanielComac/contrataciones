@@ -6,11 +6,17 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native'
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+
 
 
 const Login = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
 
     // Dimensiones para fijar flecha de regreso
     const {width, height} = Dimensions.get('window');
@@ -21,7 +27,42 @@ const Login = ({ navigation }) => {
         navigation.goBack();
     };
    
+    const handleLogin = () => {
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // El inicio de sesión fue exitoso
+            console.log('Inicio de sesión exitoso', userCredential.user);
     
+            // Redirigir al usuario a la siguiente ventana
+            navigation.navigate('InicioUsuario');
+          })
+          .catch((error) => {
+            // Ocurrió un error durante el inicio de sesión
+            console.error('Error de inicio de sesión:', error);
+            setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+          });
+      };
+    
+
+      const handleGoogleLogin = async () => {
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+    
+        try {
+          const result = await signInWithPopup(auth, provider);
+    
+          // El inicio de sesión con Google fue exitoso
+          console.log('Inicio de sesión con Google exitoso', result.user);
+    
+          // Redirigir al usuario a la siguiente ventana
+          navigation.navigate('InicioUsuario');
+        } catch (error) {
+          // Ocurrió un error durante el inicio de sesión con Google
+          console.error('Error de inicio de sesión con Google:', error);
+        }
+      };
+      
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             {/* flecha hacia atras */}
@@ -64,11 +105,13 @@ const Login = ({ navigation }) => {
                         paddingLeft: 22
                     }}>
                         <TextInput
+                            value={email}
+                            onChangeText={setEmail}
                             placeholder='Ingresa tu correo electrónico'
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
                             style={{
-                                width: "100%"
+                              width: "100%"
                             }}
                         />
                     </View>
@@ -92,11 +135,13 @@ const Login = ({ navigation }) => {
                         paddingLeft: 22
                     }}>
                         <TextInput
+                            value={password}
+                            onChangeText={setPassword}
                             placeholder='Ingresa tu contraseña'
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
                             style={{
-                                width: "100%"
+                              width: "100%"
                             }}
                         />
 
@@ -137,10 +182,15 @@ const Login = ({ navigation }) => {
                     title="Ingresar"
                     filled
                     style={{
-                        marginTop: 18,
-                        marginBottom: 4,
+                    marginTop: 18,
+                    marginBottom: 4,
                     }}
+                    onPress={handleLogin}
                 />
+
+                {error ? (
+                    <Text style={{ color: 'red', marginTop: 10 }}>{error}</Text>
+                ) : null}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
                     <View
@@ -194,29 +244,28 @@ const Login = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => console.log("Pressed")}
+                        onPress={handleGoogleLogin}
                         style={{
-                            flex: 1,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexDirection: 'row',
-                            height: 52,
-                            borderWidth: 1,
-                            borderColor: COLORS.grey,
-                            marginRight: 4,
-                            borderRadius: 10
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        height: 52,
+                        borderWidth: 1,
+                        borderColor: COLORS.grey,
+                        marginRight: 4,
+                        borderRadius: 10,
                         }}
                     >
                         <Image
-                            source={require("../assets/google.png")}
-                            style={{
-                                height: 36,
-                                width: 36,
-                                marginRight: 8
-                            }}
-                            resizeMode='contain'
+                        source={require("../assets/google.png")}
+                        style={{
+                            height: 36,
+                            width: 36,
+                            marginRight: 8
+                        }}
+                        resizeMode='contain'
                         />
-
                         <Text>Google</Text>
                     </TouchableOpacity>
                 </View>

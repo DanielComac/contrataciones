@@ -6,6 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
+import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { FacebookAuthProvider } from 'firebase/auth';
 
 //FIREBASE imports
 import { 
@@ -13,7 +15,7 @@ import {
  } from 'firebase/auth';
 
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-//  import { GoogleSignin } from '@react-native-google-signin/google-signin';
+ const provider = new FacebookAuthProvider();
 
 import { auth } from '../firebase-config';
 
@@ -24,14 +26,53 @@ const Signup = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
+    // Variable de estado para el mensaje de error de la contraseña
+    const [passwordError, setPasswordError] = useState('');
+    const [emailError, setEmailError] = useState('');
+
+
+    const [termsError, setTermsError] = useState('');
+
+
      // Ventanas Modales de ayuda y botones de registro
      const [modalVisible, setModalVisible] = useState(false);
      const [usuarioModalVisible, setUsuarioModalVisible] = useState(false);
  
-     const showUsuarioModal = () => {
-         setUsuarioModalVisible(true);
-       };
+     const checkExistingEmail = async () => {
+        const auth = getAuth();
+    
+        try {
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+          if (methods && methods.length > 0) {
+            setEmailError('El correo electrónico ya está registrado. Por favor, ingresa otro.');
+          } else {
+            setUsuarioModalVisible(true);
+          }
+        } catch (error) {
+          console.error('Error al verificar el correo electrónico:', error);
+        }
+      };
 
+      
+      const showUsuarioModal = () => {
+        if (!isEmailValid(email)) {
+          setEmailError('Ingresa un correo electrónico válido.');
+          return; // Detener la ejecución si el correo electrónico no es válido
+        }
+    
+        if (!isPasswordValid(password)) {
+          setPasswordError('La contraseña no cumple con los requisitos mínimos. Necesita tener al menos 8 caracteres y 1 número');
+          return; // Detener la ejecución si la contraseña no cumple los requisitos
+        }
+    
+        if (!isChecked) {
+          setTermsError('Debes aceptar los términos y condiciones.');
+          return; // Detener la ejecución si el checkbox no está marcado
+        }
+    
+        // Verificar si el correo electrónico ya está registrado
+        checkExistingEmail();
+      };
 
     //Constante para verificar si la cuenta esta creada
     const [isSignIn, setIsSignIn]=useState(false);
@@ -61,11 +102,23 @@ const Signup = ({ navigation }) => {
 
     const handleCreateAccount = async () => {
         try {
-          const user = await createUserWithEmailAndPassword(auth, email, password);
-          setIsSignIn(true);
-          console.log('Se creó la cuenta con:', user);
+          const auth = getAuth();
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+          if (methods.length > 0) {
+            // El correo electrónico ya está registrado, muestra un mensaje de error o realiza la acción correspondiente
+            console.log('El correo electrónico ya está registrado');
+            return;
+          }
+      
+          // Continuar con la creación de la cuenta si el correo electrónico no está registrado
+          if (isPasswordValid(password)) {
+            const user = await createUserWithEmailAndPassword(auth, email, password);
+            console.log('Se creó la cuenta', user);
+          } else {
+            setPasswordError('La contraseña no cumple con los requisitos mínimos.');
+          }
         } catch (error) {
-          console.log('No se pudo crear la cuenta',error);
+          console.log('No se pudo crear la cuenta', error);
         }
       };
 
@@ -81,21 +134,46 @@ const Signup = ({ navigation }) => {
         // }
         
         const provider = new GoogleAuthProvider();
+    
         try {
           const credentials = await signInWithPopup(auth, provider);
-            setIsSignIn(true);
-            console.log('Se creó la cuenta con:', credentials);
+          // Redirigir a la ventana "Form.js"
+          navigation.navigate('Form');
         } catch (error) {
           console.log(error);
         }
       };
 
-      useEffect( () =>{
-        if (isSignIn) {
-            navigation.navigate('Form')
+      const signInWithFacebook = async () => {
+        const provider = new FacebookAuthProvider();
+    
+        try {
+          const credentials = await signInWithPopup(auth, provider);
+          // Redirigir a la ventana "Form.js"
+          navigation.navigate('Form');
+        } catch (error) {
+          console.log(error);
         }
-      }, [isSignIn]);
+      };
 
+      const isEmailValid = (email) => {
+        // Expresión regular para verificar el formato del correo electrónico
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+
+      const isPasswordValid = (password) => {
+        // Define las reglas de validación aquí
+        const minLength = 8; // Longitud mínima de la contraseña
+      
+        // Reglas de validación: contraseña de al menos 8 caracteres y al menos un número
+        const regex = /^(?=.*\d).{8,}$/;
+      
+        return regex.test(password) && password.length >= minLength;
+      };
+
+     
+      
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -150,6 +228,11 @@ const Signup = ({ navigation }) => {
                                 }}
                             />
                         </View>
+                        {emailError !== '' && <Text style={{ color: 'red' }}>{emailError}</Text>}
+                        {/* Mostrar mensaje de error del correo electrónico */}
+                            {email !== '' && !isEmailValid(email) && (
+                                <Text style={{ color: 'red', fontSize: 12 }}>Ingresa un correo electrónico válido.</Text>
+                            )}
                     </View>
                     {/* ==================================================================================== */}
 
@@ -202,6 +285,11 @@ const Signup = ({ navigation }) => {
 
                             </TouchableOpacity>
                         </View>
+
+                        {/* Mostrar mensaje de error de la contraseña */}
+                        {passwordError !== '' && (
+                            <Text style={{ color: 'red', fontSize: 12 }}>{passwordError}</Text>
+                        )}
                     </View>
 
                     {/* ====================================================================================== */}
@@ -209,30 +297,33 @@ const Signup = ({ navigation }) => {
                     {/*  */}
 
                     <View style={{
-                        flexDirection: 'row',
-                        marginVertical: 6
-                    }}>
+                            flexDirection: 'row',
+                            marginVertical: 6
+                        }}>
                         <Checkbox
                             style={{ marginRight: 8 }}
                             value={isChecked}
                             onValueChange={setIsChecked}
                             color={isChecked ? COLORS.primary : undefined}
                         />
-
                         <Text>Aceptar Términos y Condiciones</Text>
                     </View>
+                    
+                    {/* Mostrar mensaje de error de términos y condiciones */}
+                    {termsError !== '' && (
+                        <Text style={{ color: 'red', fontSize: 12 }}>{termsError}</Text>
+                    )}
 
-                    <Button
+                        <Button
                         title="Registrarse"
                         filled
                         onPress={showUsuarioModal}
-                            
-                        
+                        disabled={!isPasswordValid(password) || !isEmailValid(email)} // Actualiza la condición
                         style={{
                             marginTop: 18,
                             marginBottom: 4,
                         }}
-                    />
+                        />
                     {/* ====================================================================================== */}
                     {/* Ventana modal de botón de registrar como usuario */}
                     <Modal
@@ -281,8 +372,8 @@ const Signup = ({ navigation }) => {
                                         marginTop: 10,
                                     }}
                                     onPress={() => {
-                                        setUsuarioModalVisible(false);
                                         handleCreateAccount();
+                                        setUsuarioModalVisible(false);
                                         navigation.navigate('Form');
                                     }}
                                 >
@@ -302,7 +393,9 @@ const Signup = ({ navigation }) => {
                                         marginTop: 10,
                                     }}
                                     onPress={() => {
+                                        
                                         setUsuarioModalVisible(false);
+                                        
                                     }}
                                 >
                                     <Text style={{
@@ -344,7 +437,7 @@ const Signup = ({ navigation }) => {
                     justifyContent: 'center'
                 }}>
                     <TouchableOpacity
-                        onPress={() => console.log("Pressed")}
+                        onPress={signInWithFacebook}
                         style={{
                             flex: 1,
                             alignItems: 'center',
