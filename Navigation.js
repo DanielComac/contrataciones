@@ -121,7 +121,7 @@ function initialStack() {
         component={PerfilEmpresaScreen}
         options={{
           headerShown: true,
-          title: 'Perfil de Empresa'
+          title: 'Perfil de la Empresa'
         }}
       />
 

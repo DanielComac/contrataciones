@@ -25,7 +25,7 @@ const HomeScreen = () => {
     descripcion: 'Descripción de la Empresa',
     contacto: [
       { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
-      { etiqueta: 'Correo electrónico', valor: 'empresa1@example.com', tipo: 'email' },
+      { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
       { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
     ],
   };
