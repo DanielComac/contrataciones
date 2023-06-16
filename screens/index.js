@@ -15,5 +15,8 @@ export {
     Welcome2,
     Signup,
     SignupEmpresa,
-    Form
+    Form,
+    Notificaciones,
+    Home,
+    Perfil,
 }
