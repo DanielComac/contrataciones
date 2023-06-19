@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, 
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -20,9 +21,9 @@ const HomeScreen = () => {
   };
 
   const empresaData = {
-    foto: require('../assets/empresa1.jpeg'),
+    foto: require('../assets/empresa1.png'),
     nombre: 'Empresa 1',
-    descripcion: 'Descripción de la Empresa',
+    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     contacto: [
       { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
       { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
@@ -42,18 +43,17 @@ const HomeScreen = () => {
       >
         <Text style={styles.titulo}>Inicio</Text>
         
-        <View style={styles.barraBusqueda}>
-          <TextInput
-            style={styles.inputBuscar}
-            placeholder="Buscar empresa"
-            placeholderTextColor={COLORS.gray}
-          />
-          <TouchableOpacity
-            style={styles.botonBuscar}
-            // onPress={BuscarEmpresa}
-          >
-            <Text style={styles.textoBotonBuscar}>Buscar</Text>
-          </TouchableOpacity>
+        <View style={styles.searchContainer}>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder='Buscar Empresas'
+              />
+            </View>
+
+            <TouchableOpacity style={styles.searchBtn}>
+              <Ionicons name="search-outline" size={24} color={COLORS.white} />
+            </TouchableOpacity>
         </View>
         
         {/* Tarjetas de presentación de las empresas */}
@@ -68,7 +68,7 @@ const HomeScreen = () => {
             <View style={styles.cartaEmpresa}>
               {/* Imagen de la empresa */}
               <Image
-                source={require('../assets/empresa1.jpeg')}
+                source={require('../assets/empresa1.png')}
                 style={styles.imagenEmpresa}
               />
               {/* Nombre de la empresa */}
@@ -84,7 +84,7 @@ const HomeScreen = () => {
             {/* Tarjeta de presentación de la empresa 2 */}
             <View style={styles.cartaEmpresa}>
               <Image
-                source={require('../assets/empresa1.jpeg')}
+                source={require('../assets/empresa1.png')}
                 style={styles.imagenEmpresa}
               />
               <Text style={styles.nombreEmpresa}>Empresa 2</Text>
@@ -105,35 +105,37 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginLeft: 16,
   },
-  barraBusqueda: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: "1%",
-    marginTop: "5%",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: COLORS.black,
-    marginLeft: "2.5%",
-    marginRight: "2.5%",
+  searchContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 10,
+    height: 50,
   },
-  inputBuscar: {
+  searchWrapper: {
     flex: 1,
-    height: 40,
-    backgroundColor: COLORS.lightGray,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginRight: 8,
-    color: COLORS.black,
+    backgroundColor: COLORS.grey2,
+    marginRight: "0%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 16,
+    height: "100%",
+    marginLeft: "2.5%"
   },
-  botonBuscar: {
+  searchInput: {
+    width: "100%",
+    height: "100%",
+    paddingHorizontal: 10,
+  },
+  searchBtn: {
+    width: 48,
+    height: 48,
     backgroundColor: COLORS.primary,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  textoBotonBuscar: {
-    color: COLORS.white,
-    fontWeight: 'bold',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: "1%",
+    marginRight: "2%"
   },
   contenedorCarta: {
     marginTop: 16,
