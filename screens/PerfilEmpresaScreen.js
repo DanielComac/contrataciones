@@ -47,7 +47,7 @@ const PerfilEmpresaScreen = ({ route }) => {
   empresa.ubicacion = ubicacionManual;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   tabBoton: {
     flex: 1,
-    backgroundColor: COLORS.grey2,
+    backgroundColor: COLORS.white,
     paddingVertical: 10,
     borderRadius: 20,
     marginHorizontal: 5,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   infoContainer: {
-    backgroundColor: COLORS.grey2,
+    backgroundColor: COLORS.white,
     padding: 10,
     borderRadius: 20,
     marginBottom: 10,

@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "2.5%",
   },
   cartaEmpresa: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.back,
     borderRadius: 8,
     marginBottom: 16,
     shadowColor: COLORS.black,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   descripcionEmpresa: {
-    color: COLORS.gray,
+    color: COLORS.black,
   },
 });
 
