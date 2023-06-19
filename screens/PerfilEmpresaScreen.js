@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   contactoText: {
     marginLeft: 5,
     fontSize: 16,
-    color: COLORS.primary,
+    color: COLORS.secondary,
   },
   mapContainer: {
     width: '100%',

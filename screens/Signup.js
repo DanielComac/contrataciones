@@ -6,6 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
+import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
+
 
 //FIREBASE imports
 import { 
@@ -37,7 +39,7 @@ const Signup = ({ navigation }) => {
  
      const checkExistingEmail = async () => {
         const auth = getAuth();
-    
+      
         try {
           const methods = await fetchSignInMethodsForEmail(auth, email);
           if (methods && methods.length > 0) {
