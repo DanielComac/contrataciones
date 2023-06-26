@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
-import FormScreen from './Form'; // Importa la pantalla de formulario
+import Form from './Form'; // Importa la pantalla de formulario
 
 
 import COLORS from '../temas/colors';
@@ -54,7 +54,7 @@ const HomeScreen = () => {
   if (mostrarFormulario) {
     return (
       <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-        <FormScreen />
+        <Form />
       </Animated.View>
     );
   }
