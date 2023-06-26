@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, Notificaciones, Home, Perfil, PerfilEmpresaScreen } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen } from "./screens";
 import React from "react";
 import COLORS from "./temas/colors";
 // import Home from "../screens/HomeScreen";
@@ -34,7 +34,7 @@ function BottomTab() {
       />
       <Tab.Screen
         name="Notificaciones"
-        component={Notificaciones}
+        component={NotificationScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Notificaciones',

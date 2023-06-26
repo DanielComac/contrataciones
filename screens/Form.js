@@ -10,10 +10,15 @@ import * as ImagePicker from 'expo-image-picker';
 import {Dimensions} from 'react-native';
 import {firestore} from '../firebase-config';
 import {collection, addDoc} from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-const Signup = ({ navigation }) => {
+
+const Form = () => {
+
+    const navigation = useNavigation();
+
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [selectedGenero, setSelectedGenero] = useState('');
@@ -38,6 +43,7 @@ const Signup = ({ navigation }) => {
         nivelIngles: '',
         disponibilidadHorario: ''
     });
+
 
     // Función para input de subir imagenes
     const [selectedImage, setSelectedImage] = useState(null);
@@ -99,14 +105,27 @@ const Signup = ({ navigation }) => {
             <ScrollView>
 
             {/* flecha hacia atras */}
-            <View style={{
+            {/* <View style={{
                 position: 'relative', left: width * 0.05, top: height * 0.01
             }}>
                 <TouchableOpacity onPress={goBack} >
                     <Ionicons name="arrow-back" size={30} color={COLORS.primary}/>
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
+            <View style={{ marginTop: 10 }}>
+            <Text
+                style={{
+                fontSize: 16,
+                color: COLORS.primary,
+                textDecorationLine: "underline",
+                alignSelf: "center",
+                }}
+                onPress={() => navigation.goBack()}
+            >
+                Hacer esto más tarde
+            </Text>
+            </View>
             
             <View style={{ flex: 1, marginHorizontal: 22 }}>
                 <View style={{ marginTop: "5%" }}>
@@ -115,7 +134,7 @@ const Signup = ({ navigation }) => {
                         fontWeight: 'bold',
                         color: COLORS.black
                     }}>
-                        Información Personal
+                        Completa tu perfil
                     </Text>
                 </View>
 
@@ -717,4 +736,4 @@ const Signup = ({ navigation }) => {
     )
 }
 
-export default Signup
+export default Form

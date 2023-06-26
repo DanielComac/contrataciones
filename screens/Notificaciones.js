@@ -1,138 +1,114 @@
-//test
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
-
-const NotificationCounter = ({ count }) => {
-  return (
-    <View style={styles.counterContainer}>
-      <Text style={styles.counterText}>{count}</Text>
-    </View>
-  );
-};
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, SafeAreaView, FlatList } from 'react-native';
+import COLORS from '../temas/colors';
 
 const NotificationScreen = () => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [selectedCompany, setSelectedCompany] = useState({
-    name: null,
-    // logo: require('./assets/persona2.jpg'), // Ruta de la imagen del logo por defecto
-  });
-  const [notificationCount, setNotificationCount] = useState(4);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
+    // Obtener las notificaciones
+    const fetchNotifications = async () => {
+      // Aquí va la llamada a API o acceder a los datos de notificaciones
+      const data = [
+        {
+          id: 1,
+          empresa: 'Empresa 1',
+          imagen: require('../assets/empresa1.png'),
+          mensaje: 'La empresa quiere contactarte',
+        },
+        {
+          id: 2,
+          empresa: 'Empresa 2',
+          imagen: require('../assets/empresa1.jpg'),
+          mensaje: 'La empresa quiere contactarte',
+        },
+      ];
+
+      setNotifications(data);
+    };
+
+    fetchNotifications();
   }, []);
 
-  const handleNotificationPress = (company) => {
-    setSelectedCompany({
-      name: company.name,
-      // logo: require('./assets/persona1.jpg'), // Ruta de la imagen del logo de la empresa A
-    });
-  };
+  const numNotifications = notifications.length;
 
-  const handleMoreInfoPress = () => {
-    if (selectedCompany.name) {
-      console.log(`Mostrar más información de la empresa: ${selectedCompany.name}`);
-    }
-  };
+  const renderItem = ({ item }) => (
+    <View style={styles.notificationItem}>
+      <Image source={item.imagen} style={styles.empresaImagen} />
+      <View style={styles.empresaInfo}>
+        <Text style={styles.empresaNombre}>{item.empresa}</Text>
+        <Text style={styles.mensaje}>{item.mensaje}</Text>
+      </View>
+    </View>
+  );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Notificaciones</Text>
-      <NotificationCounter count={notificationCount} />
-      <Animated.View style={[styles.notification, { opacity: fadeAnim }]}>
-        <Text style={styles.notificationText}>Bienvenido aqui se mostrará cuando empresa esté interesada</Text>
-      </Animated.View>
-      <Animated.View style={[styles.notification, { opacity: fadeAnim, delay: 200 }]}>
-        <Text style={styles.notificationText}>Tu solicitud ha sido aceptada</Text>
-      </Animated.View>
-      <Animated.View style={[styles.notification, { opacity: fadeAnim, delay: 400 }]}>
-        <Text style={styles.notificationText}>Se ha actualizado tu perfil</Text>
-      </Animated.View>
-      <Animated.View style={[styles.notification, { opacity: fadeAnim, delay: 600 }]}>
-        <Text style={styles.notificationText}>Esta empresa le interesó tu perfil:</Text>
-        <TouchableOpacity onPress={() => handleNotificationPress({ name: 'Empresa A', position: 'Desarrollador Web', location: 'Ciudad X' })}>
-          <View style={styles.companyContainer}>
-            <Image source={selectedCompany.logo} style={styles.logo} />
-            <Text style={styles.notificationText}>Empresa A</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Notificaciones</Text>
+        {numNotifications > 0 && (
+          <View style={styles.notificacionesNuevasContainer}>
+            <Text style={styles.notificacionesNuevasTexto}>
+              Tienes {numNotifications} notificaciones nuevas
+            </Text>
           </View>
-        </TouchableOpacity>
-        {selectedCompany.name === 'Empresa A' && (
-          <TouchableOpacity onPress={handleMoreInfoPress}>
-            <Text style={styles.moreInfoText}>Saber más</Text>
-          </TouchableOpacity>
         )}
-      </Animated.View>
-      <Animated.View style={[styles.notification, { opacity: fadeAnim, delay: 800 }]}>
-        <Text style={styles.notificationText}>Esta empresa le interesó tu perfil:</Text>
-        <TouchableOpacity onPress={() => handleNotificationPress({ name: 'Empresa B', position: 'Diseñador Gráfico', location: 'Ciudad Y' })}>
-          <View style={styles.companyContainer}>
-            <Image source={selectedCompany.logo} style={styles.logo} />
-            <Text style={styles.notificationText}>Empresa B</Text>
-          </View>
-        </TouchableOpacity>
-        {selectedCompany.name === 'Empresa B' && (
-          <TouchableOpacity onPress={handleMoreInfoPress}>
-            <Text style={styles.moreInfoText}>Saber más</Text>
-          </TouchableOpacity>
-        )}
-      </Animated.View>
-    </View>
+      </View>
+      <FlatList
+        data={notifications}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.notificacionesLista}
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f8e6',
-    padding: 20,
-  },
-  title: {
+  
+  headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginTop: 16,
+    marginLeft: 16,
   },
-  notification: {
-    backgroundColor: '#d4edda',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+  notificacionesNuevasContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
-  notificationText: {
-    color: '#155724',
-    fontSize: 16,
+  notificacionesNuevasTexto: {
+    fontSize: 14,
+    color: '#666666',
   },
-  moreInfoText: {
-    color: '#155724',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 5,
+  notificacionesLista: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
-  companyContainer: {
+  notificationItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 16,
   },
-  logo: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
+  empresaImagen: {
+    width: 40,
+    height: 40,
+    borderRadius: 15,
+    marginRight: 12,
   },
-  counterContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: 'red',
-    borderRadius: 50,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+  empresaInfo: {
+    flex: 1,
   },
-  counterText: {
-    color: 'white',
-    fontSize: 12,
+  empresaNombre: {
+    fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  mensaje: {
+    fontSize: 14,
+    color: '#666666',
   },
 });
 

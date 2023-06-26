@@ -6,6 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 
 
 const Login = ({ navigation }) => {
@@ -33,7 +35,7 @@ const Login = ({ navigation }) => {
             console.log('Inicio de sesión exitoso', userCredential.user);
     
             // Redirigir al usuario a la siguiente ventana
-            navigation.navigate('InicioUsuario');
+            navigation.navigate('Home');
           })
           .catch((error) => {
             // Ocurrió un error durante el inicio de sesión

@@ -342,7 +342,7 @@ const Signup = ({ navigation }) => {
                                     fontSize: 15,
                                     marginBottom: 10,
                                     textAlign: 'justify',
-                                }}>Al registrate estas aceptando que vamos a recopilar cierta información personal. Estos datos incluyen tu nombre, edad, ubicación aproximada, fotografías, entre otra. Queremos que estés consciente de que cualquier empresa registrada en nuestra plataforma podrá ver esta información al buscar candidatos.
+                                }}>Al registrate estas aceptando que después vamos a recopilar cierta información personal. Estos datos incluyen tu nombre, edad, ubicación aproximada, fotografías, entre otra. Queremos que estés consciente de que cualquier empresa registrada en nuestra plataforma podrá ver esta información al buscar candidatos.
                                 </Text>
                                 <Text style={{
                                     fontSize: 15,
@@ -350,13 +350,13 @@ const Signup = ({ navigation }) => {
                                     textAlign: 'justify',
                                 }}>Nos tomamos muy en serio tu privacidad y seguridad. Todos los datos que proporciones serán tratados de acuerdo con nuestras políticas de privacidad y protección de datos.
                                 </Text>
-                                <Text style={{
+                                {/* <Text style={{
                                     fontSize: 15,
                                     marginBottom: 10,
                                     textAlign: 'center',
                                     fontWeight: 'bold'
                                 }}>*En el siguiente formulario se te pedirá que subas dos fotografías tuyas. Una de cuerpo completo y otra del pecho hacia arriba por lo que te aconsejamos las tengas listas*
-                                </Text>
+                                </Text> */}
                                 <TouchableOpacity
                                     style={{
                                         backgroundColor: COLORS.primary,
@@ -368,7 +368,7 @@ const Signup = ({ navigation }) => {
                                     onPress={() => {
                                         handleCreateAccount();
                                         setUsuarioModalVisible(false);
-                                        navigation.navigate('Form');
+                                        navigation.navigate('Home');
                                     }}
                                 >
                                     <Text style={{

@@ -4,11 +4,10 @@ import Signup from "./Signup";
 import Welcome2 from "./Welcome2";
 import SignupEmpresa from "./SignupEmpresa";
 import Form from "./Form"
-import Notificaciones from "./Notificaciones"
 import Home from "./HomeScreen";
 import Perfil from "./Perfil";
 import PerfilEmpresaScreen from "./PerfilEmpresaScreen";
-
+import NotificationScreen from "./Notificaciones";
 export {
     Login,
     Welcome,
@@ -16,8 +15,8 @@ export {
     Signup,
     SignupEmpresa,
     Form,
-    Notificaciones,
+    NotificationScreen,
     Home,
     Perfil,
-    PerfilEmpresaScreen
+    PerfilEmpresaScreen,
 }
