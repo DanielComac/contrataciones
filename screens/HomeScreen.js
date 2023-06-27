@@ -59,20 +59,20 @@ const HomeScreen = () => {
     );
   }
 
-  const handleEmpresaPress = (empresa) => {
-    navigation.navigate('PerfilEmpresa', { empresa });
-  };
+  // const handleEmpresaPress = (empresa) => {
+  //   navigation.navigate('PerfilEmpresa', { empresa });
+  // };
 
-  const empresaData = {
-    foto: require('../assets/empresa1.jpg'),
-    nombre: 'Empresa 1',
-    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    contacto: [
-      { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
-      { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
-      { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
-    ],
-  };
+  // const empresaData = {
+  //   foto: require('../assets/empresa1.jpg'),
+  //   nombre: 'Empresa 1',
+  //   descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  //   contacto: [
+  //     { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
+  //     { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
+  //     { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
+  //   ],
+  // };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>

@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import COLORS from '../temas/colors';
+import { useNavigation } from '@react-navigation/native';
+
 
 const NotificationScreen = () => {
   const [notifications, setNotifications] = useState([]);
+
+  const handleEmpresaPress = (empresa) => {
+    navigation.navigate('PerfilEmpresa', { empresa });
+  };
+
+  const empresaData = {
+    foto: require('../assets/empresa1.jpg'),
+    nombre: 'Empresa 1',
+    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    contacto: [
+      { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
+      { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
+      { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
+    ],
+  };
+
 
   useEffect(() => {
     // Obtener las notificaciones
@@ -33,14 +51,21 @@ const NotificationScreen = () => {
   const numNotifications = notifications.length;
 
   const renderItem = ({ item }) => (
-    <View style={styles.notificationItem}>
-      <Image source={item.imagen} style={styles.empresaImagen} />
-      <View style={styles.empresaInfo}>
-        <Text style={styles.empresaNombre}>{item.empresa}</Text>
-        <Text style={styles.mensaje}>{item.mensaje}</Text>
+    <TouchableOpacity
+      onPress={() => handleEmpresaPress(empresaData)}
+      style={styles.notificationItem}
+    >
+      <View style={styles.notificationItem}>
+        <Image source={item.imagen} style={styles.empresaImagen} />
+        <View style={styles.empresaInfo}>
+          <Text style={styles.empresaNombre}>{item.empresa}</Text>
+          <Text style={styles.mensaje}>{item.mensaje}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
+
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
@@ -54,13 +79,13 @@ const NotificationScreen = () => {
           </View>
         )}
       </View>
-      <FlatList
-        data={notifications}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.notificacionesLista}
-        showsVerticalScrollIndicator={false}
-      />
+        <FlatList
+          data={notifications}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.notificacionesLista}
+          showsVerticalScrollIndicator={false}
+        />
     </SafeAreaView>
   );
 };
