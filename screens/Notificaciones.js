@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, FlatList, TouchableOpacity, ScrollView, LinearGradient } from 'react-native';
 import COLORS from '../temas/colors';
 import { useNavigation } from '@react-navigation/native';
 
@@ -68,8 +68,11 @@ const NotificationScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
-      <View style={styles.headerContainer}>
+    <View style={{ flex: 1, backgroundColor: COLORS.back }}>
+        {/* <LinearGradient
+          style={{ flex: 1 }}
+          colors={[COLORS.back, COLORS.back]}
+        > */}
         <Text style={styles.headerTitle}>Notificaciones</Text>
         {numNotifications > 0 && (
           <View style={styles.notificacionesNuevasContainer}>
@@ -78,7 +81,6 @@ const NotificationScreen = () => {
             </Text>
           </View>
         )}
-      </View>
         <FlatList
           data={notifications}
           renderItem={renderItem}
@@ -86,7 +88,8 @@ const NotificationScreen = () => {
           contentContainerStyle={styles.notificacionesLista}
           showsVerticalScrollIndicator={false}
         />
-    </SafeAreaView>
+        {/* </LinearGradient> */}
+    </View>
   );
 };
 

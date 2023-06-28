@@ -75,7 +75,6 @@ const HomeScreen = () => {
   // };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
       <ScrollView>
         <LinearGradient
           style={{ flex: 1 }}
@@ -197,7 +196,6 @@ const HomeScreen = () => {
           </ScrollView>
         </LinearGradient>
       </ScrollView>
-    </SafeAreaView>
   );
 };
 

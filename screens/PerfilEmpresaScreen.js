@@ -77,7 +77,7 @@ const PerfilEmpresaScreen = ({ route }) => {
               <View style={styles.infoContainer}>
                 <Text style={styles.descripcionEmpresa}>{empresa.descripcion}</Text>
               </View>
-              <Text style={styles.ubicacionText}>Ubicación:</Text>
+              <Text style={styles.ubicacionText}>Ubicación de la empresa:</Text>
 
               <View style={styles.mapContainer}>
                 
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 10,
     alignItems: 'center',
+    width: "100%"
   },
   descripcionEmpresa: {
     fontSize: 16,
