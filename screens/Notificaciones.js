@@ -11,7 +11,7 @@ const NotificationScreen = () => {
     // Disminuir el conteo de notificaciones nuevas
     setNumNotifications(numNotifications - 1);
 
-    // Quitar el punto verde de la notificación correspondiente
+    // Quitar el punto de la notificación correspondiente
     const updatedNotifications = notifications.map(item => {
       if (item.id === id) {
         return {
