@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   notificacionesNuevasContainer: {
-    backgroundColor: COLORS.white,
+    backgroundColor: '#E1E1E1',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
