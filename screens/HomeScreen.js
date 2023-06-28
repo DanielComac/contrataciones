@@ -14,7 +14,7 @@ import Button from '../componentes/Button';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [saludo, setSaludo] = useState('');
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [mostrarFormulario, setMostrarFormulario] = useState(null);
   const [animacion] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -54,7 +54,8 @@ const HomeScreen = () => {
   if (mostrarFormulario) {
     return (
       <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-        <Form />
+        {/* <Form /> */}
+        {navigation.navigate('Form')}
       </Animated.View>
     );
   }

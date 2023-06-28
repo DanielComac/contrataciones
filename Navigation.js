@@ -4,8 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen } from "./screens";
 import React from "react";
 import COLORS from "./temas/colors";
-// import Home from "../screens/HomeScreen";
-// import Notificaciones from "../screens/Notificaciones";
+
 
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -60,8 +59,9 @@ function BottomTab() {
 
 }
 
-function initialStack() {
+export function InitialStack() {
   return (
+    <NavigationContainer>
     <Stack.Navigator
       initialRouteName='Welcome'
     >
@@ -93,13 +93,7 @@ function initialStack() {
           headerShown: false
         }}
       />
-      <Stack.Screen
-        name="Form"
-        component={Form}
-        options={{
-          headerShown: false
-        }}
-      />
+
       <Stack.Screen
         name="SignupEmpresa"
         component={SignupEmpresa}
@@ -107,6 +101,17 @@ function initialStack() {
           headerShown: false
         }}
       />
+
+    </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export const SignedInStack = () => {
+  return (
+    <NavigationContainer>
+    <Stack.Navigator
+    initialRouteName='Home'>
 
       <Stack.Screen
         name="Home"
@@ -117,6 +122,14 @@ function initialStack() {
       />
 
       <Stack.Screen
+        name="Form"
+        component={Form}
+        options={{
+          headerShown: false
+        }}
+      />
+     
+      <Stack.Screen
         name="PerfilEmpresa"
         component={PerfilEmpresaScreen}
         options={{
@@ -124,15 +137,8 @@ function initialStack() {
           title: 'Perfil de la Empresa'
         }}
       />
-
     </Stack.Navigator>
-  );
-}
-
-export function Navigation() {
-  return (
-    <NavigationContainer>
-      {initialStack()}
     </NavigationContainer>
-  );
+
+  )
 }

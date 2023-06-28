@@ -35,7 +35,6 @@ const Login = ({ navigation }) => {
             console.log('Inicio de sesión exitoso', userCredential.user);
     
             // Redirigir al usuario a la siguiente ventana
-            navigation.navigate('Home');
           })
           .catch((error) => {
             // Ocurrió un error durante el inicio de sesión
