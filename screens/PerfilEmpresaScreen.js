@@ -114,15 +114,22 @@ const PerfilEmpresaScreen = ({ route }) => {
                 A continuación, te brindo más detalles sobre la oferta de empleo:
                 </Text>
                 <Text style={styles.descripcionPuesto}>
-                Nombre del puesto: [Nombre del Puesto]
-Descripción: [Breve descripción de las responsabilidades y funciones del puesto]
-Requisitos: [Menciona los requisitos clave que el candidato debe cumplir]
-Ubicación: [Ubicación del empleo]
-Tipo de contrato: [Indica si es contrato temporal, a tiempo completo, medio tiempo, etc.]
-Expectativas salariales: [Indica las expectativas salariales o menciona que se discutirán durante el proceso de entrevista]
+                - Nombre del puesto: [Nombre del Puesto]
                 </Text>
                 <Text style={styles.descripcionPuesto}>
-
+                - Descripción: [Breve descripción de las responsabilidades y funciones del puesto]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Requisitos: [Menciona los requisitos clave que el candidato debe cumplir]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Ubicación: [Ubicación del empleo]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Tipo de contrato: [Indica si es contrato temporal, a tiempo completo, medio tiempo, etc.]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Expectativas salariales: [Indica las expectativas salariales o menciona que se discutirán durante el proceso de entrevista]
                 </Text>
             </View>
           ) : (
@@ -268,9 +275,9 @@ const styles = StyleSheet.create({
   },
   descripcionPuesto: {
     fontSize: 16,
-    lineHeight: 24,
     color: COLORS.black,
-    marginTop: "4%"
+    marginTop: "4%",
+    textAlign: 'justify'
   },
 });
 
