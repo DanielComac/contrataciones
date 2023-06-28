@@ -3,29 +3,35 @@ import { View, Text, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../temas/colors';
+import { getAuth } from 'firebase/auth';
 
 const Ajustes = ({ navigation }) => {
-  const handleCerrarSesion = () => {
-    Alert.alert(
-      'Cerrar sesión',
-      '¿Deseas cerrar sesión?',
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Aceptar',
-          onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Welcome' }],
-            });
+
+  const auth = getAuth()
+
+  const handleCerrarSesion = async () => {
+
+    try {
+      Alert.alert(
+        'Cerrar sesión',
+        '¿Deseas cerrar sesión?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
           },
-        },
-      ],
-      { cancelable: false }
-    );
+          {
+            text: 'Aceptar',
+            onPress: async () => {
+              await auth.signOut()
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+
+    }
   };
 
   return (
