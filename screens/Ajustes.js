@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../temas/colors';
@@ -35,7 +35,8 @@ const Ajustes = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.back }}>
+      <Text style={styles.headerTitle}>Ajustes</Text>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 16 }}>
         <TouchableOpacity
           style={{
@@ -51,8 +52,18 @@ const Ajustes = ({ navigation }) => {
           <Text style={{ color: COLORS.black }}>Cerrar sesión</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: '13%',
+    marginLeft: 16,
+    marginBottom: '5%',
+  },
+})
 
 export default Ajustes;

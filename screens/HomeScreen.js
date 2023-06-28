@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 250,
     padding: 16,
+    
   },
   imagenEmpresa: {
     width: 65,
