@@ -37,7 +37,8 @@ const Ajustes = ({ navigation }) => {
             borderRadius: 7,
             paddingHorizontal: 22,
             paddingVertical: 10,
-            width: 300
+            width: 300,
+            alignItems: 'center'
           }}
           onPress={handleCerrarSesion}
         >
