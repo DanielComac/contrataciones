@@ -60,7 +60,7 @@ const PerfilEmpresaScreen = ({ route }) => {
               onPress={() => setSelectedTab('descripcion')}
             >
               <Text style={[styles.tabTextoBoton, selectedTab === 'descripcion' && styles.tabTextoBotonActivo]}>
-                Descripción
+                Descripción de la empresa
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

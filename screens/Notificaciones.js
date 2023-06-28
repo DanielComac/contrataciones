@@ -5,8 +5,24 @@ import { useNavigation } from '@react-navigation/native';
 
 const NotificationScreen = () => {
   const [notifications, setNotifications] = useState([]);
+  const [numNotifications, setNumNotifications] = useState(0);
 
-  const handleEmpresaPress = (empresa) => {
+  const handleEmpresaPress = (empresa, id) => {
+    // Disminuir el conteo de notificaciones nuevas
+    setNumNotifications(numNotifications - 1);
+
+    // Quitar el punto verde de la notificación correspondiente
+    const updatedNotifications = notifications.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          tieneNotificacion: false
+        };
+      }
+      return item;
+    });
+    setNotifications(updatedNotifications);
+
     navigation.navigate('PerfilEmpresa', { empresa });
   };
 
@@ -43,15 +59,14 @@ const NotificationScreen = () => {
       ];
 
       setNotifications(data);
+      setNumNotifications(data.length);
     };
 
     fetchNotifications();
   }, []);
 
-  const numNotifications = notifications.length;
-
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleEmpresaPress(empresaData)} style={styles.notificationItem}>
+    <TouchableOpacity onPress={() => handleEmpresaPress(empresaData, item.id)} style={styles.notificationItem}>
       <View style={styles.notificationItem}>
         <Image source={item.imagen} style={styles.empresaImagen} />
         <View style={styles.empresaInfo}>
