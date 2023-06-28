@@ -16,6 +16,8 @@ const HomeScreen = () => {
   const [saludo, setSaludo] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(null);
   const [animacion] = useState(new Animated.Value(0));
+  // const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  // const [animacion] = useState(new Animated.Value(0));
 
   useEffect(() => {
     // Obtiene la hora actual
@@ -31,52 +33,61 @@ const HomeScreen = () => {
     }
 
     // Mostrar el formulario después de 5 segundos
-    const timer = setTimeout(() => {
-      setMostrarFormulario(true);
-    }, 3000);
+    // const timer = setTimeout(() => {
+    //   setMostrarFormulario(true);
+    // }, 3000);
 
-    // Iniciar la animación
-    Animated.timing(animacion, {
-      toValue: 1,
-      duration: 900,
-      useNativeDriver: true,
-    }).start();
+    // // Iniciar la animación
+    // Animated.timing(animacion, {
+    //   toValue: 1,
+    //   duration: 900,
+    //   useNativeDriver: true,
+    // }).start();
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, []);
 
-  const translateY = animacion.interpolate({
-    inputRange: [0, 1],
-    outputRange: [500, 0],
-  });
+  // const translateY = animacion.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [500, 0],
+  // });
 
   // Renderizar el formulario si mostrarFormulario es verdadero
-  if (mostrarFormulario) {
-    return (
-      <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-        {/* <Form /> */}
-        {navigation.navigate('Form')}
-      </Animated.View>
-    );
-  }
 
-  const handleEmpresaPress = (empresa) => {
-    navigation.navigate('PerfilEmpresa', { empresa });
-  };
+//   if (mostrarFormulario) {
+//     return (
+//       <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+//         {/* <Form /> */}
+//         {navigation.navigate('Form')}
+//       </Animated.View>
+//     );
+//   }
+  
+  
+  // if (mostrarFormulario) {
+  //   return (
+  //     <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+  //       <Form />
+  //     </Animated.View>
+  //   );
+  // }
 
-  const empresaData = {
-    foto: require('../assets/empresa1.jpg'),
-    nombre: 'Empresa 1',
-    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    contacto: [
-      { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
-      { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
-      { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
-    ],
-  };
+  // const handleEmpresaPress = (empresa) => {
+  //   navigation.navigate('PerfilEmpresa', { empresa });
+  // };
+
+  // const empresaData = {
+  //   foto: require('../assets/empresa1.jpg'),
+  //   nombre: 'Empresa 1',
+  //   descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  //   contacto: [
+  //     { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
+  //     { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
+  //     { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
+  //   ],
+  // };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.back }}>
       <ScrollView>
         <LinearGradient
           style={{ flex: 1 }}
@@ -198,7 +209,6 @@ const HomeScreen = () => {
           </ScrollView>
         </LinearGradient>
       </ScrollView>
-    </SafeAreaView>
   );
 };
 
@@ -206,13 +216,13 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 16,
+    marginTop: "13%",
     marginLeft: 16,
   },
   saludo: {
     fontSize: 25,
     marginLeft: 16,
-    marginTop: "5%",
+    marginTop: "1%",
     color: COLORS.primary,
   },
   searchContainer: {

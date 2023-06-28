@@ -134,7 +134,7 @@ export const SignedInStack = () => {
         component={PerfilEmpresaScreen}
         options={{
           headerShown: true,
-          title: 'Perfil de la Empresa'
+          title: 'Información'
         }}
       />
     </Stack.Navigator>

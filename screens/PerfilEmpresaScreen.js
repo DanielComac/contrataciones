@@ -60,7 +60,15 @@ const PerfilEmpresaScreen = ({ route }) => {
               onPress={() => setSelectedTab('descripcion')}
             >
               <Text style={[styles.tabTextoBoton, selectedTab === 'descripcion' && styles.tabTextoBotonActivo]}>
-                Descripción
+                Descripción de la empresa
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tabBoton, selectedTab === 'descripcionPuesto' && styles.tabBotonActivo]}
+              onPress={() => setSelectedTab('descripcionPuesto')}
+            >
+              <Text style={[styles.tabTextoBoton, selectedTab === 'descripcionPuesto' && styles.tabTextoBotonActivo]}>
+                Descripción del puesto
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -71,13 +79,14 @@ const PerfilEmpresaScreen = ({ route }) => {
                 Información de Contacto
               </Text>
             </TouchableOpacity>
+            
           </View>
           {selectedTab === 'descripcion' ? (
             <>
               <View style={styles.infoContainer}>
                 <Text style={styles.descripcionEmpresa}>{empresa.descripcion}</Text>
               </View>
-              <Text style={styles.ubicacionText}>Ubicación:</Text>
+              <Text style={styles.ubicacionText}>Ubicación de la empresa:</Text>
 
               <View style={styles.mapContainer}>
                 
@@ -89,8 +98,43 @@ const PerfilEmpresaScreen = ({ route }) => {
                 </MapView>
               </View>
             </>
+          ) : selectedTab === 'descripcionPuesto' ? (
+            <View style={styles.infoContainer}>
+              <Text style={styles.descripcionPuesto}>
+                {/* {empresa.descripcionPuesto} */}
+                Estimado [Nombre del Candidato],
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                Espero que  te encuentres bien. Me complace informarte que, después de revisar tu perfil, hemos identificado que cumples con los requisitos necesarios para una oportunidad laboral en nuestra empresa.
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                Estamos interesados en conocerte mejor y explorar la posibilidad de que te unas a nuestro equipo. Tu experiencia y habilidades son altamente valoradas y creemos que podrías aportar mucho a nuestro proyecto.
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                A continuación, te brindo más detalles sobre la oferta de empleo:
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Nombre del puesto: [Nombre del Puesto]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Descripción: [Breve descripción de las responsabilidades y funciones del puesto]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Requisitos: [Menciona los requisitos clave que el candidato debe cumplir]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Ubicación: [Ubicación del empleo]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Tipo de contrato: [Indica si es contrato temporal, a tiempo completo, medio tiempo, etc.]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                - Expectativas salariales: [Indica las expectativas salariales o menciona que se discutirán durante el proceso de entrevista]
+                </Text>
+            </View>
           ) : (
             <View style={styles.infoContainer}>
+              <Text style={styles.redesSocialesTitulo}>Contacto:</Text>
               {empresa.contacto.map((contacto, index) => (
                 <TouchableOpacity
                   key={index}
@@ -101,6 +145,28 @@ const PerfilEmpresaScreen = ({ route }) => {
                   <Text style={styles.contactoText}>{contacto.valor}</Text>
                 </TouchableOpacity>
               ))}
+              
+              <View style={styles.redesSocialesContainer}>
+                <Text style={styles.redesSocialesTitulo}>Redes Sociales:</Text>
+                <TouchableOpacity onPress={() => Linking.openURL(empresa.facebook)}>
+                  <View style={styles.redSocialContainer}>
+                    <Ionicons name="logo-facebook" size={24} color={COLORS.primary} />
+                    <Text style={styles.redSocialText}>{empresa.nombre}</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL(empresa.whatsapp)}>
+                  <View style={styles.redSocialContainer}>
+                    <Ionicons name="logo-whatsapp" size={24} color={COLORS.primary} />
+                    <Text style={styles.redSocialText}>{empresa.nombre}</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL(empresa.instagram)}>
+                  <View style={styles.redSocialContainer}>
+                    <Ionicons name="logo-instagram" size={24} color={COLORS.primary} />
+                    <Text style={styles.redSocialText}>{empresa.nombre}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
@@ -156,8 +222,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 10,
     alignItems: 'center',
+    width: "100%"
   },
   descripcionEmpresa: {
+    fontSize: 16,
+  },
+  descripcionPuesto: {
     fontSize: 16,
   },
   contacto: {
@@ -183,6 +253,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  redesSocialesContainer: {
+    marginTop: "5%",
+    alignItems: 'center'
+  },
+  redesSocialesTitulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  redSocialContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  redSocialText: {
+    marginLeft: 5,
+    fontSize: 16,
+    color: COLORS.secondary,
+  },
+  descripcionPuesto: {
+    fontSize: 16,
+    color: COLORS.black,
+    marginTop: "4%",
+    textAlign: 'justify'
   },
 });
 
