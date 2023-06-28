@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: "13%",
+    marginTop: "8%",
     marginLeft: 16,
   },
   saludo: {

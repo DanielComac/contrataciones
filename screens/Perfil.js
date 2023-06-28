@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: '13%',
+    marginTop: '8%',
     marginLeft: 16,
     marginBottom: '5%',
   },
