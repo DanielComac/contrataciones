@@ -19,26 +19,28 @@ const HomeScreen = () => {
   // const [mostrarFormulario, setMostrarFormulario] = useState(false);
   // const [animacion] = useState(new Animated.Value(0));
 
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert("Espera!", "Estas seguro que quieres salir?", [
-        {
-          text: "No",
-          onPress: () => null,
-          style: "cancel"
-        },
-        { text: "SI", onPress: () => BackHandler.exitApp() }
-      ]);
-      return true;
-    };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+  // useEffect(() => {
+  //hadler para preguntar si quiere salir de la app(Bugeado)
+  //   const backAction = () => {
+  //     Alert.alert("Espera!", "Estas seguro que quieres salir?", [
+  //       {
+  //         text: "No",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       { text: "SI", onPress: () => BackHandler.exitApp() }
+  //     ]);
+  //     return true;
+  //   };
 
-    return () => backHandler.remove();
-  }, []);
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
 
   useEffect(() => {
     // Obtiene la hora actual
