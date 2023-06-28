@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, ScrollView, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, ScrollView, Animated, Alert, BackHandler } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +18,29 @@ const HomeScreen = () => {
   const [animacion] = useState(new Animated.Value(0));
   // const [mostrarFormulario, setMostrarFormulario] = useState(false);
   // const [animacion] = useState(new Animated.Value(0));
+
+
+  // useEffect(() => {
+  //hadler para preguntar si quiere salir de la app(Bugeado)
+  //   const backAction = () => {
+  //     Alert.alert("Espera!", "Estas seguro que quieres salir?", [
+  //       {
+  //         text: "No",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       { text: "SI", onPress: () => BackHandler.exitApp() }
+  //     ]);
+  //     return true;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
 
   useEffect(() => {
     // Obtiene la hora actual
