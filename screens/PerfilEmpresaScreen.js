@@ -64,6 +64,14 @@ const PerfilEmpresaScreen = ({ route }) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={[styles.tabBoton, selectedTab === 'descripcionPuesto' && styles.tabBotonActivo]}
+              onPress={() => setSelectedTab('descripcionPuesto')}
+            >
+              <Text style={[styles.tabTextoBoton, selectedTab === 'descripcionPuesto' && styles.tabTextoBotonActivo]}>
+                Descripción del puesto
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[styles.tabBoton, selectedTab === 'contacto' && styles.tabBotonActivo]}
               onPress={() => setSelectedTab('contacto')}
             >
@@ -71,6 +79,7 @@ const PerfilEmpresaScreen = ({ route }) => {
                 Información de Contacto
               </Text>
             </TouchableOpacity>
+            
           </View>
           {selectedTab === 'descripcion' ? (
             <>
@@ -89,8 +98,13 @@ const PerfilEmpresaScreen = ({ route }) => {
                 </MapView>
               </View>
             </>
+          ) : selectedTab === 'descripcionPuesto' ? (
+            <View style={styles.infoContainer}>
+              <Text style={styles.descripcionPuesto}>{empresa.descripcionPuesto}</Text>
+            </View>
           ) : (
             <View style={styles.infoContainer}>
+              <Text style={styles.redesSocialesTitulo}>Contacto:</Text>
               {empresa.contacto.map((contacto, index) => (
                 <TouchableOpacity
                   key={index}
@@ -101,6 +115,28 @@ const PerfilEmpresaScreen = ({ route }) => {
                   <Text style={styles.contactoText}>{contacto.valor}</Text>
                 </TouchableOpacity>
               ))}
+              
+              <View style={styles.redesSocialesContainer}>
+                <Text style={styles.redesSocialesTitulo}>Redes Sociales:</Text>
+                <TouchableOpacity onPress={() => Linking.openURL(empresa.facebook)}>
+                  <View style={styles.redSocialContainer}>
+                    <Ionicons name="logo-facebook" size={24} color={COLORS.primary} />
+                    <Text style={styles.redSocialText}>{empresa.nombre}</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL(empresa.whatsapp)}>
+                  <View style={styles.redSocialContainer}>
+                    <Ionicons name="logo-whatsapp" size={24} color={COLORS.primary} />
+                    <Text style={styles.redSocialText}>{empresa.nombre}</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL(empresa.instagram)}>
+                  <View style={styles.redSocialContainer}>
+                    <Ionicons name="logo-instagram" size={24} color={COLORS.primary} />
+                    <Text style={styles.redSocialText}>{empresa.nombre}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
@@ -161,6 +197,9 @@ const styles = StyleSheet.create({
   descripcionEmpresa: {
     fontSize: 16,
   },
+  descripcionPuesto: {
+    fontSize: 16,
+  },
   contacto: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -184,6 +223,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  redesSocialesContainer: {
+    marginTop: "5%",
+    alignItems: 'center'
+  },
+  redesSocialesTitulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  redSocialContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  redSocialText: {
+    marginLeft: 5,
+    fontSize: 16,
+    color: COLORS.secondary,
   },
 });
 
