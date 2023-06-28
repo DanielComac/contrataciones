@@ -14,6 +14,8 @@ import Button from '../componentes/Button';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [saludo, setSaludo] = useState('');
+  const [mostrarFormulario, setMostrarFormulario] = useState(null);
+  const [animacion] = useState(new Animated.Value(0));
   // const [mostrarFormulario, setMostrarFormulario] = useState(false);
   // const [animacion] = useState(new Animated.Value(0));
 
@@ -51,6 +53,17 @@ const HomeScreen = () => {
   // });
 
   // Renderizar el formulario si mostrarFormulario es verdadero
+
+//   if (mostrarFormulario) {
+//     return (
+//       <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+//         {/* <Form /> */}
+//         {navigation.navigate('Form')}
+//       </Animated.View>
+//     );
+//   }
+  
+  
   // if (mostrarFormulario) {
   //   return (
   //     <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>

@@ -121,7 +121,7 @@ const Form = () => {
                 textDecorationLine: "underline",
                 alignSelf: "center",
                 }}
-                onPress={() => navigation.goBack()}
+                onPress={()=> navigation.navigate('Home')}
             >
                 Hacer esto más tarde
             </Text>
@@ -706,7 +706,7 @@ const Form = () => {
 
                 <Button
                     title="Agregar información al perfil"
-                    onPress={() => navigation.navigate("Home")}
+                    onPress={() => navigation.navigate("Perfil")}
                     filled
                     style={{
                         marginTop: 18,

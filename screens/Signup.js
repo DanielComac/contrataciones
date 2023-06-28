@@ -16,7 +16,7 @@ import {
 
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
-import { auth } from '../firebase-config';
+import firebaseConfig, { auth, firestore } from '../firebase-config';
 
 
 
@@ -108,6 +108,7 @@ const Signup = ({ navigation }) => {
           if (isPasswordValid(password)) {
             const user = await createUserWithEmailAndPassword(auth, email, password);
             console.log('Se creó la cuenta', user);
+
           } else {
             setPasswordError('La contraseña no cumple con los requisitos mínimos.');
           }
@@ -368,7 +369,6 @@ const Signup = ({ navigation }) => {
                                     onPress={() => {
                                         handleCreateAccount();
                                         setUsuarioModalVisible(false);
-                                        navigation.navigate('Home');
                                     }}
                                 >
                                     <Text style={{
