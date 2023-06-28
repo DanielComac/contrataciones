@@ -8,6 +8,8 @@ import Home from "./HomeScreen";
 import Perfil from "./Perfil";
 import PerfilEmpresaScreen from "./PerfilEmpresaScreen";
 import NotificationScreen from "./Notificaciones";
+import Ajustes from "./Ajustes";
+
 export {
     Login,
     Welcome,
@@ -19,4 +21,5 @@ export {
     Home,
     Perfil,
     PerfilEmpresaScreen,
+    Ajustes
 }
