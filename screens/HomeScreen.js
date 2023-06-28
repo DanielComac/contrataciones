@@ -14,8 +14,8 @@ import Button from '../componentes/Button';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [saludo, setSaludo] = useState('');
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [animacion] = useState(new Animated.Value(0));
+  // const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  // const [animacion] = useState(new Animated.Value(0));
 
   useEffect(() => {
     // Obtiene la hora actual
@@ -31,33 +31,33 @@ const HomeScreen = () => {
     }
 
     // Mostrar el formulario después de 5 segundos
-    const timer = setTimeout(() => {
-      setMostrarFormulario(true);
-    }, 3000);
+    // const timer = setTimeout(() => {
+    //   setMostrarFormulario(true);
+    // }, 3000);
 
-    // Iniciar la animación
-    Animated.timing(animacion, {
-      toValue: 1,
-      duration: 900,
-      useNativeDriver: true,
-    }).start();
+    // // Iniciar la animación
+    // Animated.timing(animacion, {
+    //   toValue: 1,
+    //   duration: 900,
+    //   useNativeDriver: true,
+    // }).start();
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, []);
 
-  const translateY = animacion.interpolate({
-    inputRange: [0, 1],
-    outputRange: [500, 0],
-  });
+  // const translateY = animacion.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [500, 0],
+  // });
 
   // Renderizar el formulario si mostrarFormulario es verdadero
-  if (mostrarFormulario) {
-    return (
-      <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-        <Form />
-      </Animated.View>
-    );
-  }
+  // if (mostrarFormulario) {
+  //   return (
+  //     <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+  //       <Form />
+  //     </Animated.View>
+  //   );
+  // }
 
   // const handleEmpresaPress = (empresa) => {
   //   navigation.navigate('PerfilEmpresa', { empresa });
@@ -203,13 +203,13 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 16,
+    marginTop: "13%",
     marginLeft: 16,
   },
   saludo: {
     fontSize: 25,
     marginLeft: 16,
-    marginTop: "5%",
+    marginTop: "1%",
     color: COLORS.primary,
   },
   searchContainer: {
