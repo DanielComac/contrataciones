@@ -100,7 +100,30 @@ const PerfilEmpresaScreen = ({ route }) => {
             </>
           ) : selectedTab === 'descripcionPuesto' ? (
             <View style={styles.infoContainer}>
-              <Text style={styles.descripcionPuesto}>{empresa.descripcionPuesto}</Text>
+              <Text style={styles.descripcionPuesto}>
+                {/* {empresa.descripcionPuesto} */}
+                Estimado [Nombre del Candidato],
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                Espero que  te encuentres bien. Me complace informarte que, después de revisar tu perfil, hemos identificado que cumples con los requisitos necesarios para una oportunidad laboral en nuestra empresa.
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                Estamos interesados en conocerte mejor y explorar la posibilidad de que te unas a nuestro equipo. Tu experiencia y habilidades son altamente valoradas y creemos que podrías aportar mucho a nuestro proyecto.
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                A continuación, te brindo más detalles sobre la oferta de empleo:
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+                Nombre del puesto: [Nombre del Puesto]
+Descripción: [Breve descripción de las responsabilidades y funciones del puesto]
+Requisitos: [Menciona los requisitos clave que el candidato debe cumplir]
+Ubicación: [Ubicación del empleo]
+Tipo de contrato: [Indica si es contrato temporal, a tiempo completo, medio tiempo, etc.]
+Expectativas salariales: [Indica las expectativas salariales o menciona que se discutirán durante el proceso de entrevista]
+                </Text>
+                <Text style={styles.descripcionPuesto}>
+
+                </Text>
             </View>
           ) : (
             <View style={styles.infoContainer}>
@@ -242,6 +265,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 16,
     color: COLORS.secondary,
+  },
+  descripcionPuesto: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLORS.black,
+    marginTop: "4%"
   },
 });
 
