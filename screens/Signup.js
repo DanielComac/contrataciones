@@ -17,6 +17,7 @@ import {
  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import firebaseConfig, { auth, firestore } from '../firebase-config';
+import { setDoc, doc } from 'firebase/firestore';
 
 
 
@@ -108,6 +109,11 @@ const Signup = ({ navigation }) => {
           if (isPasswordValid(password)) {
             const user = await createUserWithEmailAndPassword(auth, email, password);
             console.log('Se creó la cuenta', user);
+
+            //crear un nuevo documento en la coleccion 'users'
+            await setDoc(doc(firestore, 'users', user.user.uid),{
+                email: email,
+            })
 
           } else {
             setPasswordError('La contraseña no cumple con los requisitos mínimos.');
