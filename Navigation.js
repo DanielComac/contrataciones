@@ -133,6 +133,13 @@ export const SignedInStack = () => {
           }}
         />
         <Stack.Screen
+          name="Perfil"
+          component={Perfil}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="PerfilEmpresa"
           component={PerfilEmpresaScreen}
           options={{

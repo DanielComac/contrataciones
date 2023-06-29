@@ -21,6 +21,7 @@ import { setDoc, doc } from 'firebase/firestore';
 
 
 
+
 const Signup = ({ navigation }) => {
 
     const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -82,6 +83,7 @@ const Signup = ({ navigation }) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
+    const [userId, setUserId] = React.useState('')
 
     // Dimensiones para fijar flecha de regreso
     const {width, height} = Dimensions.get('window');
@@ -114,6 +116,9 @@ const Signup = ({ navigation }) => {
             await setDoc(doc(firestore, 'users', user.user.uid),{
                 email: email,
             })
+
+            //actualizar el userId con la ID del usuario creado
+            setUserId(user.user.uid)
 
           } else {
             setPasswordError('La contraseña no cumple con los requisitos mínimos.');
@@ -525,6 +530,8 @@ const Signup = ({ navigation }) => {
                 </View>
             </ScrollView>
         </SafeAreaView>
+
+
     )
 }
 

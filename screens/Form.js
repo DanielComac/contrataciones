@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from '../temas/colors';
 import { Ionicons } from "@expo/vector-icons";
@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 import {Dimensions} from 'react-native';
 import {firestore} from '../firebase-config';
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc, setDoc, doc} from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 const Form = () => {
 
     const navigation = useNavigation();
+
 
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -96,9 +97,9 @@ const Form = () => {
 
 
     const enviarDatos = async () => {
-        await addDoc(collection(firestore, 'informaciónUsuario'), datos);
-        navigation.navigate("InicioUsuario")
-    }
+            await setDoc(doc(firestore, 'users',user), datos);
+            navigation.navigate("InicioUsuario")
+    } 
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
