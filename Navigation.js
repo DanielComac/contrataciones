@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 function BottomTab() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeScreen"
       screenOptions={{
         tabBarActiveTintColor: '#4caf50',
       }}>
