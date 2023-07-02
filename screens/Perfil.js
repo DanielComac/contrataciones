@@ -1,10 +1,33 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import COLORS from '../temas/colors';
+import { Picker } from '@react-native-picker/picker'
 
 const ProfileScreen = () => {
+  const [editMode, setEditMode] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('123456789');
+  const [gender, setGender] = useState('Masculino');
+  const [age, setAge] = useState('25 años');
+  const [residenceCity, setResidenceCity] = useState('Ciudad X');
+  const [neighborhood, setNeighborhood] = useState('Colonia Y');
+  const [postalCode, setPostalCode] = useState('12345');
+  const [desiredJobPosition, setDesiredJobPosition] = useState('Desarrollador Web');
+  const [education, setEducation] = useState('Licenciatura en Informática');
+  const [workExperience, setWorkExperience] = useState('5 años como Desarrollador Frontend');
+  const [englishLevel, setEnglishLevel] = useState('Avanzado');
+  const [availability, setAvailability] = useState('Tiempo completo');
+
+  const handleEditPersonalInfo = () => {
+    setEditMode(true);
+  };
+
+  const handleSavePersonalInfo = () => {
+    setEditMode(false);
+    // Agrega el código para guardar la información personal editada
+  };
+
   return (
     <ScrollView>
       <View style={{ flex: 1, backgroundColor: COLORS.back }}>
@@ -18,66 +41,156 @@ const ProfileScreen = () => {
               />
               <Text style={styles.name}>Nombre del Aplicante</Text>
             </View>
-              <Text style={styles.infoTitle}>Información personal:</Text>
+            <Text style={styles.infoTitle}>Información personal:</Text>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="call" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Número de teléfono: 123456789</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                />
+              ) : (
+                <Text style={styles.infoText}>Número de teléfono: {phoneNumber}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="male" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Género: Masculino</Text>
+              {editMode ? (
+                <Picker
+                  style={styles.infoTextInput}
+                  selectedValue={gender}
+                  onValueChange={itemValue => setGender(itemValue)}
+                >
+                  <Picker.Item label="Masculino" value="Masculino" />
+                  <Picker.Item label="Femenino" value="Femenino" />
+                  <Picker.Item label="Otro" value="Otro" />
+                </Picker>
+              ) : (
+                <Text style={styles.infoText}>Género: {gender}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="calendar" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Edad: 25 años</Text>
+              {editMode ? (
+                <TextInput style={styles.infoTextInput} value={age} onChangeText={setAge} />
+              ) : (
+                <Text style={styles.infoText}>Edad: {age}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="home" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Ciudad de residencia: Ciudad X</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={residenceCity}
+                  onChangeText={setResidenceCity}
+                />
+              ) : (
+                <Text style={styles.infoText}>Ciudad de residencia: {residenceCity}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="pin" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Colonia: Colonia Y</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={neighborhood}
+                  onChangeText={setNeighborhood}
+                />
+              ) : (
+                <Text style={styles.infoText}>Colonia: {neighborhood}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="location" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Código Postal: 12345</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={postalCode}
+                  onChangeText={setPostalCode}
+                />
+              ) : (
+                <Text style={styles.infoText}>Código Postal: {postalCode}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="briefcase" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Puesto de trabajo deseado: Desarrollador Web</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={desiredJobPosition}
+                  onChangeText={setDesiredJobPosition}
+                />
+              ) : (
+                <Text style={styles.infoText}>Puesto de trabajo deseado: {desiredJobPosition}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="school" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Estudios y formación académica: Licenciatura en Informática</Text>
+              {editMode ? (
+                <TextInput style={styles.infoTextInput} value={education} onChangeText={setEducation} />
+              ) : (
+                <Text style={styles.infoText}>Estudios y formación académica: {education}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="business" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Experiencia laboral: 5 años como Desarrollador Frontend</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={workExperience}
+                  onChangeText={setWorkExperience}
+                />
+              ) : (
+                <Text style={styles.infoText}>Experiencia laboral: {workExperience}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="language" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Nivel de inglés: Avanzado</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={englishLevel}
+                  onChangeText={setEnglishLevel}
+                />
+              ) : (
+                <Text style={styles.infoText}>Nivel de inglés: {englishLevel}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="time" size={16} style={styles.infoIcon} />
-              <Text style={styles.infoText}>Disponibilidad de horario: Tiempo completo</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput}
+                  value={availability}
+                  onChangeText={setAvailability}
+                />
+              ) : (
+                <Text style={styles.infoText}>Disponibilidad de horario: {availability}</Text>
+              )}
             </View>
             <View style={styles.infoDivider} />
-            <TouchableOpacity style={styles.editButton}>
-              <Text style={styles.editButtonText}>Editar información del perfil</Text>
-            </TouchableOpacity>
+            {editMode ? (
+              <TouchableOpacity style={styles.saveButton} onPress={handleSavePersonalInfo}>
+                <Text style={styles.saveButtonText}>Guardar</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.editButton} onPress={handleEditPersonalInfo}>
+                <Text style={styles.editButtonText}>Editar información del perfil</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -127,9 +240,9 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: "25%",
+    marginTop: '25%',
     textAlign: 'center',
-    color: COLORS.primary
+    color: COLORS.primary,
   },
   infoRow: {
     flexDirection: 'row',
@@ -142,25 +255,41 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 20,
     marginBottom: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   infoText: {
     fontSize: 16,
     marginBottom: 5,
+    width: '100%'
   },
   infoDivider: {
     borderBottomWidth: 1,
     borderBottomColor: '#C9C9C9',
     marginVertical: 5,
   },
+  infoTextInput: {
+    flex: 1,
+    fontSize: 16,
+  },
   editButton: {
     backgroundColor: COLORS.primary,
     borderRadius: 7,
     padding: 10,
     alignItems: 'center',
-    marginTop: "10%",
+    marginTop: '10%',
   },
   editButtonText: {
+    color: COLORS.white,
+    fontSize: 18,
+  },
+  saveButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 7,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: '10%',
+  },
+  saveButtonText: {
     color: COLORS.white,
     fontSize: 18,
   },
