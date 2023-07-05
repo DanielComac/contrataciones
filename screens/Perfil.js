@@ -8,24 +8,51 @@ import { Picker } from '@react-native-picker/picker'
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('123456789');
-  const [gender, setGender] = useState('Masculino');
-  const [age, setAge] = useState('25 años');
-  const [residenceCity, setResidenceCity] = useState('Ciudad X');
-  const [neighborhood, setNeighborhood] = useState('Colonia Y');
-  const [postalCode, setPostalCode] = useState('12345');
-  const [desiredJobPosition, setDesiredJobPosition] = useState('Desarrollador Web');
-  const [education, setEducation] = useState('Licenciatura en Informática');
-  const [workExperience, setWorkExperience] = useState('5 años como Desarrollador Frontend');
-  const [englishLevel, setEnglishLevel] = useState('Avanzado');
-  const [availability, setAvailability] = useState('Tiempo completo');
+  const [selectedGenero, setSelectedGenero] = useState('jopjp');
+  const [selectedCiudad, setSelectedCiudad] = useState('');
+  const [selectedColonia, setSelectedColonia] = useState('Colonia Y');
+  const [selectedCP, setSelectedCP] = useState('12345');
+  const [selectedEdad, setSelectedEdad] = useState('');
+  const [selectedTrabajo, setSelectedTrabajo] = useState('');
+  const [selectedEducacion, setSelectedEducacion] = useState('');
+  const [selectedExperiencia, setSelectedExperiencia] = useState('');
+  const [selectedIngles, setSelectedIngles] = useState('');
+  const [selectedDisponibilidad, setSelectedDisponibilidad] = useState('');
+  
 
+  const [datos, setDatos] = useState({
+        numeroCelular: '',
+        nombre: '',
+        apellidoMaterno: '',
+        apellidoPaterno: '',
+        edad: '',
+        ciudad: '',
+        colonia: '',
+        codigoPostal: '',
+        trabajoAplicar:'',
+        educación: '',
+        experiencia: '',
+        nivelIngles: '',
+        disponibilidadHorario: ''
+    });
+  
   const handleEditPersonalInfo = () => {
     setEditMode(true);
   };
 
   const handleSavePersonalInfo = () => {
     setEditMode(false);
+    setSelectedGenero(selectedGenero)
     // Agrega el código para guardar la información personal editada
+  };
+
+  // Ciclo para las opciones de seleccion de edad
+  const renderOptions = () => {
+    const options = [];
+    for (let i = 18; i <= 100; i++) {
+      options.push(<Picker.Item key={i} label={i.toString()} value={i.toString()} />);
+    }
+    return options;
   };
 
   return (
@@ -47,7 +74,7 @@ const ProfileScreen = () => {
               <Ionicons name="call" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
-                  style={styles.infoTextInput}
+                  style={styles.infoTextInput1}
                   value={phoneNumber}
                   onChangeText={setPhoneNumber}
                 />
@@ -55,132 +82,206 @@ const ProfileScreen = () => {
                 <Text style={styles.infoText}>Número de teléfono: {phoneNumber}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="male" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <Picker
                   style={styles.infoTextInput}
-                  selectedValue={gender}
-                  onValueChange={itemValue => setGender(itemValue)}
+                  selectedValue={selectedGenero}
+                  onValueChange={itemValue => setSelectedGenero(itemValue)}
                 >
-                  <Picker.Item label="Masculino" value="Masculino" />
-                  <Picker.Item label="Femenino" value="Femenino" />
-                  <Picker.Item label="Otro" value="Otro" />
+                  <Picker.Item label="Masculino" value="masculino" />
+                  <Picker.Item label="Femenino" value="femenino" />
+                  <Picker.Item label="Prefiero no decir" value="nodecir" />
+                  <Picker.Item label="Otro" value="otro" />
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Género: {gender}</Text>
+                <Text style={styles.infoText}>Género: {selectedGenero}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="calendar" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TextInput style={styles.infoTextInput} value={age} onChangeText={setAge} />
+                <Picker
+                style={styles.infoTextInput}
+                selectedValue={selectedEdad}
+                onValueChange={(itemValue, itemIndex) => setSelectedEdad(itemValue)}
+                onChangeText={(valor) => setDatos({...datos, edad: valor})}
+                >
+                {renderOptions()}
+                </Picker>
               ) : (
-                <Text style={styles.infoText}>Edad: {age}</Text>
+                <Text style={styles.infoText}>Edad: {selectedEdad}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="home" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TextInput
-                  style={styles.infoTextInput}
-                  value={residenceCity}
-                  onChangeText={setResidenceCity}
-                />
+                <Picker
+                style={styles.infoTextInput}
+                selectedValue={selectedCiudad}
+                onValueChange={(itemValue, itemIndex) => setSelectedCiudad(itemValue)}
+                onChangeText={(valor) => setDatos({...datos, ciudad: valor})}
+                >
+                <Picker.Item label="Victoria de Durango" value="durango" />
+                </Picker>
               ) : (
-                <Text style={styles.infoText}>Ciudad de residencia: {residenceCity}</Text>
+                <Text style={styles.infoText}>Ciudad de residencia: {selectedCiudad}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="pin" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
-                  style={styles.infoTextInput}
-                  value={neighborhood}
-                  onChangeText={setNeighborhood}
+                  style={styles.infoTextInput1}
+                  value={selectedColonia}
+                  onChangeText={setSelectedColonia}
                 />
               ) : (
-                <Text style={styles.infoText}>Colonia: {neighborhood}</Text>
+                <Text style={styles.infoText}>Colonia: {selectedColonia}</Text>
               )}
             </View>
+           
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="location" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
-                  style={styles.infoTextInput}
-                  value={postalCode}
-                  onChangeText={setPostalCode}
+                  style={styles.infoTextInput1}
+                  value={selectedCP}
+                  onChangeText={setSelectedCP}
                 />
               ) : (
-                <Text style={styles.infoText}>Código Postal: {postalCode}</Text>
+                <Text style={styles.infoText}>Código Postal: {selectedCP}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="briefcase" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
-                  style={styles.infoTextInput}
-                  value={desiredJobPosition}
-                  onChangeText={setDesiredJobPosition}
+                  style={styles.infoTextInput1}
+                  value={selectedTrabajo}
+                  onChangeText={setSelectedTrabajo}
                 />
               ) : (
-                <Text style={styles.infoText}>Puesto de trabajo deseado: {desiredJobPosition}</Text>
+                <Text style={styles.infoText}>Puesto de trabajo deseado: {selectedTrabajo}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="school" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TextInput style={styles.infoTextInput} value={education} onChangeText={setEducation} />
+                <Picker
+                style={styles.infoTextInput}
+                selectedValue={selectedEducacion}
+                onValueChange={(itemValue, itemIndex) => setSelectedEducacion(itemValue)}
+                onChangeText={(valor) => setDatos({...datos, educacion: valor})}
+                >
+                <Picker.Item label='Primaria o secundaria' value="primariasecundaria" />
+                <Picker.Item label="Bachillerato o equivalente" value="bachillerato" />
+                <Picker.Item label="Técnico o diplomado" value="tecnico" />
+                <Picker.Item label="Grado universitario" value="gradouniversitario" />
+                <Picker.Item label="Maestría o posgrado" value="maestria" />
+                <Picker.Item label="Doctorado o equivalente" value="doctorado" />
+                </Picker>
               ) : (
-                <Text style={styles.infoText}>Estudios y formación académica: {education}</Text>
+                <Text style={styles.infoText}>Estudios y formación académica: {selectedEducacion}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="business" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TextInput
-                  style={styles.infoTextInput}
-                  value={workExperience}
-                  onChangeText={setWorkExperience}
-                />
+                <Picker
+                style={styles.infoTextInput}
+                selectedValue={selectedExperiencia}
+                onValueChange={(itemValue, itemIndex) => setSelectedExperiencia(itemValue)}
+                onChangeText={(valor) => setDatos({...datos, experiencia: valor})}
+                >
+                <Picker.Item label='Sin experiencia' value="sinexperiencia" />
+                <Picker.Item label="1 a 2 años de experiencia" value="1año" />
+                <Picker.Item label="2 a 4 años de experiencia" value="2años" />
+                <Picker.Item label="Más de 4 años de experiencia" value="mas4años" />
+                </Picker>
               ) : (
-                <Text style={styles.infoText}>Experiencia laboral: {workExperience}</Text>
+                <Text style={styles.infoText}>Experiencia laboral: {selectedExperiencia}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="language" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TextInput
-                  style={styles.infoTextInput}
-                  value={englishLevel}
-                  onChangeText={setEnglishLevel}
-                />
+                <Picker
+                style={styles.infoTextInput}
+                selectedValue={selectedIngles}
+                onValueChange={(itemValue, itemIndex) => setSelectedIngles(itemValue)}
+                onChangeText={(valor) => setDatos({...datos, nivelIngles: valor})}
+                >
+                <Picker.Item label="No sé ingles" value="noingles" />
+                <Picker.Item label="Hablo lo básico" value="a1a2" />
+                <Picker.Item label="Lo hablo fluido" value="a1b1" />
+                <Picker.Item label="Entiendo lo básico" value="b1b2" />
+                <Picker.Item label="Entiendo todo (no lo hablo)" value="b2c1" />
+                <Picker.Item label="Inglés C1 - C2" value="c1c2" />
+                </Picker>
               ) : (
-                <Text style={styles.infoText}>Nivel de inglés: {englishLevel}</Text>
+                <Text style={styles.infoText}>Nivel de inglés: {selectedIngles}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="time" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TextInput
-                  style={styles.infoTextInput}
-                  value={availability}
-                  onChangeText={setAvailability}
-                />
+                <Picker
+                style={styles.infoTextInput}
+                selectedValue={selectedDisponibilidad}
+                onValueChange={(itemValue, itemIndex) => setSelectedDisponibilidad(itemValue)}
+                onChangeText={(valor) => setDatos({...datos, disponibilidadHorario: valor})}
+                >
+                <Picker.Item label="Tiempo Completo" value="tiempocompleto" />
+                <Picker.Item label="Medio tiempo" value="mediotiempo" />
+                </Picker>
               ) : (
-                <Text style={styles.infoText}>Disponibilidad de horario: {availability}</Text>
+                <Text style={styles.infoText}>Disponibilidad de horario: {selectedDisponibilidad}</Text>
               )}
             </View>
+
+{/* ---------------------------------------------------------------------------------------- */}
+
             <View style={styles.infoDivider} />
             {editMode ? (
               <TouchableOpacity style={styles.saveButton} onPress={handleSavePersonalInfo}>
@@ -260,12 +361,18 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     marginBottom: 5,
-    width: '100%'
+    width: '100%',
   },
   infoDivider: {
     borderBottomWidth: 1,
     borderBottomColor: '#C9C9C9',
     marginVertical: 5,
+  },
+  infoTextInput1: {
+    flex: 1,
+    fontSize: 16,
+    marginLeft: '5%',
+    paddingVertical: 10
   },
   infoTextInput: {
     flex: 1,

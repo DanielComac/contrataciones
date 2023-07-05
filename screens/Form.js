@@ -12,9 +12,6 @@ import {firestore} from '../firebase-config';
 import {collection, addDoc, setDoc, doc} from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 
-
-
-
 const Form = () => {
 
     const navigation = useNavigation();
