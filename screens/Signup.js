@@ -9,6 +9,7 @@ import {Dimensions} from 'react-native';
 import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
 
 
+
 //FIREBASE imports
 import { 
     createUserWithEmailAndPassword
@@ -23,6 +24,7 @@ import { setDoc, doc } from 'firebase/firestore';
 
 
 const Signup = ({ navigation }) => {
+
 
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -115,6 +117,7 @@ const Signup = ({ navigation }) => {
             //crear un nuevo documento en la coleccion 'users'
             await setDoc(doc(firestore, 'users', user.user.uid),{
                 email: email,
+                password: password
             })
 
             //actualizar el userId con la ID del usuario creado

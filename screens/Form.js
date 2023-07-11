@@ -94,7 +94,9 @@ const Form = () => {
 
 
     const enviarDatos = async () => {
-            await setDoc(doc(firestore, 'users',user), datos);
+            await setDoc(doc(firestore, 'formUsuario', user), {
+
+            });
             navigation.navigate("InicioUsuario")
     } 
 
