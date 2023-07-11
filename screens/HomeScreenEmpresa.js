@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, ScrollView, Animated, Alert, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, ScrollView, Animated, Alert, BackHandler, Modal } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,27 +15,34 @@ const HomeScreenEmpresa = () => {
   const [mostrarFormulario, setMostrarFormulario] = useState(null);
   const [animacion] = useState(new Animated.Value(0));
   const [saludo, setSaludo] = useState('');
-
-  const [infoEmpresa, setInfoEmpresa] = useState([])
+  const [mostrarFiltros, setMostrarFiltros] = useState(false);
+  const [filtrosSeleccionados, setFiltrosSeleccionados] = useState([]);
+  const [infoEmpresa, setInfoEmpresa] = useState([]);
 
   useEffect(() => {
     const collectionRef = collection(firestore, 'empresa');
-    const q = query(collectionRef)
+    const q = query(collectionRef);
 
-    const unsuscribe = onSnapshot(q, querySnapshop => {
+    const unsuscribe = onSnapshot(q, (querySnapshop) => {
       setInfoEmpresa(
-        querySnapshop.docs.map(doc => ({
+        querySnapshop.docs.map((doc) => ({
           id: doc.id,
           nombre: doc.data().nombre,
           descripcion: doc.data().descripcion,
           correoElectronico: doc.data().correoElectronico,
           sitioWeb: doc.data().sitioWeb,
-          telefono: doc.data().telefono 
+          telefono: doc.data().telefono,
+          disponibilidad: doc.data().disponibilidad,
+          genero: doc.data().genero,
+          edad: doc.data().edad,
+          estudios: doc.data().estudios,
+          experienciaLaboral: doc.data().experienciaLaboral,
         }))
-      )
-    })
+      );
+    });
+
     return unsuscribe;
-  },[])
+  }, []);
 
   useEffect(() => {
     // Obtiene la hora actual
@@ -49,8 +56,44 @@ const HomeScreenEmpresa = () => {
     } else {
       setSaludo('Buenas noches');
     }
-
   }, []);
+
+  const toggleFiltros = () => {
+    setMostrarFiltros(!mostrarFiltros);
+  };
+
+  const handleFiltroSeleccionado = (filtro) => {
+    const index = filtrosSeleccionados.indexOf(filtro);
+    if (index !== -1) {
+      // Si el filtro ya está seleccionado, lo removemos de la lista de filtros seleccionados
+      setFiltrosSeleccionados((prevFiltros) => [
+        ...prevFiltros.slice(0, index),
+        ...prevFiltros.slice(index + 1),
+      ]);
+    } else {
+      // Si el filtro no está seleccionado, lo agregamos a la lista de filtros seleccionados
+      setFiltrosSeleccionados((prevFiltros) => [...prevFiltros, filtro]);
+    }
+  };
+
+  const filtrarCandidatos = () => {
+    if (filtrosSeleccionados.length > 0) {
+      return infoEmpresa.filter((candidato) => {
+        // Verificamos si el candidato cumple con todos los filtros seleccionados
+        return filtrosSeleccionados.every((filtro) => {
+          if (filtro === 'Medio tiempo' || filtro === 'Tiempo completo') {
+            return candidato.disponibilidad === filtro;
+          } else if (filtro === 'Masculino' || filtro === 'Femenino') {
+            return candidato.genero === filtro;
+          }
+          return false;
+        });
+      });
+    }
+    return infoEmpresa;
+  };
+
+  const candidatosFiltrados = filtrarCandidatos();
 
   return (
     <ScrollView>
@@ -60,10 +103,7 @@ const HomeScreenEmpresa = () => {
 
         <View style={styles.searchContainer}>
           <View style={styles.searchWrapper}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder='Buscar Candidatos'
-            />
+            <TextInput style={styles.searchInput} placeholder="Buscar Candidatos" />
           </View>
 
           <TouchableOpacity style={styles.searchBtn}>
@@ -71,15 +111,98 @@ const HomeScreenEmpresa = () => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.filtrosContainer}>
+          <TouchableOpacity onPress={toggleFiltros} style={styles.filtrosBtn}>
+            <Text style={styles.filtrosText}>Búsqueda por filtros</Text>
+            <Ionicons
+              name={mostrarFiltros ? 'chevron-up-outline' : 'chevron-down-outline'}
+              size={24}
+              color={COLORS.primary}
+            />
+          </TouchableOpacity>
+
+          {mostrarFiltros && (
+            <View style={styles.filtrosLista}>
+              <Text style={styles.filtrosCategoria}>Disponibilidad</Text>
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Medio tiempo') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Medio tiempo')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Medio tiempo') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Medio tiempo
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Tiempo completo') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Tiempo completo')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Tiempo completo') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Tiempo completo
+                </Text>
+              </TouchableOpacity>
+
+              <Text style={styles.filtrosCategoria}>Género</Text>
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Masculino') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Masculino')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Masculino') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Masculino
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Femenino') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Femenino')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Femenino') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Femenino
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
         <Text style={styles.populares}>Candidatos</Text>
 
         <View style={styles.tarjetasContainer}>
-          {infoEmpresa.map((dato) => (
+          {candidatosFiltrados.map((dato) => (
             <View key={dato.id} style={styles.cartaEmpresa}>
               <Image
                 source={require('../assets/persona1.jpg')}
                 style={styles.imagenEmpresa}
-                resizeMode='cover'
+                resizeMode="cover"
               />
               <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
               <Text style={styles.descripcionEmpresa}>{dato.descripcion}</Text>
@@ -93,6 +216,9 @@ const HomeScreenEmpresa = () => {
     </ScrollView>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   titulo: {
@@ -182,6 +308,46 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignSelf: 'center'
   },
+  filtrosContainer: {
+    paddingHorizontal: 20,
+    marginTop: 10,
+  },
+  filtrosBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  filtrosText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
+  filtrosLista: {
+    backgroundColor: COLORS.white,
+    borderRadius: 15,
+    padding: 16,
+  },
+  filtroOption: {
+    paddingVertical: 8,
+    marginBottom: 8,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+  },
+  filtroOptionSelected: {
+    backgroundColor: COLORS.primary,
+  },
+  filtroText: {
+    fontSize: 16,
+    color: COLORS.black,
+  },
+  filtroTextSelected: {
+    color: COLORS.white,
+  },
+  filtrosCategoria: {
+    fontWeight: 'bold',
+    marginBottom: 10
+  }
 });
 
 export default HomeScreenEmpresa;
