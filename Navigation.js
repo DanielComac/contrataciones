@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes} from "./screens";
 import React from "react";
 import COLORS from "./temas/colors";
 
@@ -63,6 +63,7 @@ function BottomTab() {
           ),
         }}
       />
+
       
     </Tab.Navigator>
   )
@@ -108,6 +109,7 @@ export function InitialStack() {
             headerShown: false
           }}
         />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -147,6 +149,15 @@ export const SignedInStack = () => {
             title: 'Información'
           }}
         />
+        {/* <Stack.Screen
+          name="HomeScreenEmpresa"
+          component={HomeScreenEmpresa}
+          options={{
+            headerShown: true,
+            title: 'Información'
+          }}
+        /> */}
+        
       </Stack.Navigator>
     </NavigationContainer>
   )
