@@ -66,16 +66,23 @@ const HomeScreenEmpresa = () => {
   };
 
   const handleFiltroSeleccionado = (filtro) => {
-    const index = filtrosSeleccionados.indexOf(filtro);
-    if (index !== -1) {
-      // Si el filtro ya está seleccionado, lo removemos de la lista de filtros seleccionados
-      setFiltrosSeleccionados((prevFiltros) => [
-        ...prevFiltros.slice(0, index),
-        ...prevFiltros.slice(index + 1),
-      ]);
+    if (filtro === 'Restaurantería' && filtrosSeleccionados.includes('Restaurantería')) {
+      // Si "Restaurantería" ya está seleccionado, eliminamos los filtros de las subcategorías
+      setFiltrosSeleccionados((prevFiltros) =>
+        prevFiltros.filter((f) => !f.startsWith('Restaurantería'))
+      );
     } else {
-      // Si el filtro no está seleccionado, lo agregamos a la lista de filtros seleccionados
-      setFiltrosSeleccionados((prevFiltros) => [...prevFiltros, filtro]);
+      const index = filtrosSeleccionados.indexOf(filtro);
+      if (index !== -1) {
+        // Si el filtro ya está seleccionado, lo removemos de la lista de filtros seleccionados
+        setFiltrosSeleccionados((prevFiltros) => [
+          ...prevFiltros.slice(0, index),
+          ...prevFiltros.slice(index + 1),
+        ]);
+      } else {
+        // Si el filtro no está seleccionado, lo agregamos a la lista de filtros seleccionados
+        setFiltrosSeleccionados((prevFiltros) => [...prevFiltros, filtro]);
+      }
     }
   };
 
