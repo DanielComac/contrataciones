@@ -10,6 +10,7 @@ import { setDoc, doc, addDoc, collection  } from "firebase/firestore";
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [selectedNombre, setSelectedNombre] = useState('---------');
   const [selectedGenero, setSelectedGenero] = useState('');
   const [selectedCiudad, setSelectedCiudad] = useState('');
   const [selectedColonia, setSelectedColonia] = useState('');
@@ -24,13 +25,14 @@ const ProfileScreen = () => {
     const onSend = async () => {
       try{
         await addDoc(collection(firestore, 'formUsuario'),{
+          nombre: selectedNombre,
           numeroCelular: phoneNumber,
           genero: selectedGenero,
           edad: selectedEdad,
           ciudad: selectedCiudad,
           colonia: selectedColonia,
           codigoPostal: selectedCP,
-          trabajoDeseado: selectedTrabajo,
+          puestoTrabajo: selectedTrabajo,
           estudios: selectedEducacion,
           experiencia: selectedExperiencia,
           ingles: selectedIngles,
@@ -77,9 +79,22 @@ const ProfileScreen = () => {
                 source={require('../assets/persona1.jpg')}
                 style={styles.profilePicture}
               />
-              <Text style={styles.name}>Nombre del Aplicante</Text>
+              <Text style={styles.name}>{selectedNombre}</Text>
             </View>
             <Text style={styles.infoTitle}>Información personal:</Text>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+            <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  style={styles.infoTextInput1}
+                  value={selectedNombre}
+                  onChangeText={setSelectedNombre}
+                />
+              ) : (
+                <Text style={styles.infoText}>Nombre: {selectedNombre}</Text>
+              )}
+            </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="call" size={16} style={styles.infoIcon} />
