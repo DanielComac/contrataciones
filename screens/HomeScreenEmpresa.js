@@ -27,24 +27,23 @@ const HomeScreenEmpresa = () => {
   };
 
   useEffect(() => {
-    const collectionRef = collection(firestore, 'empresa');
+    const collectionRef = collection(firestore, 'formUsuario');
     const q = query(collectionRef);
 
     const unsuscribe = onSnapshot(q, (querySnapshop) => {
       setInfoEmpresa(
         querySnapshop.docs.map((doc) => ({
           id: doc.id,
-          nombre: doc.data().nombre,
-          descripcion: doc.data().descripcion,
-          correoElectronico: doc.data().correoElectronico,
-          telefono: doc.data().telefono,
-          disponibilidad: doc.data().disponibilidad,
+          numeroCelular: doc.data().numeroCelular,
           genero: doc.data().genero,
-          edad: doc.data().edad,
+          ciudad: doc.data().ciudad,
+          colonia: doc.data().colonia,
+          codigoPostal: doc.data().codigoPostal,
+          trabajoDeseado: doc.data().trabajoDeseado,
           estudios: doc.data().estudios,
-          experienciaLaboral: doc.data().experienciaLaboral,
-          categoria: doc.data().categoria,
-          puestoTrabajo: doc.data().puestoTrabajo,
+          experiencia: doc.data().experiencia,
+          ingles: doc.data().ingles,
+          disponibilidad: doc.data().disponibilidad,
         }))
       );
     });
@@ -410,9 +409,9 @@ const HomeScreenEmpresa = () => {
                   style={styles.imagenEmpresa}
                   resizeMode="cover"
                 />
-                <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+                <Text style={styles.nombreEmpresa}>{dato.numeroCelular}</Text>
                 <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-                <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+                <Text style={styles.descripcionPuesto}>{dato.trabajoDeseado}</Text>
               </View>
             // </TouchableOpacity>
 
