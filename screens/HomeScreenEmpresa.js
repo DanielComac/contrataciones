@@ -10,6 +10,7 @@ import { collection, query, onSnapshot } from 'firebase/firestore';
 import COLORS from '../temas/colors';
 import Button from '../componentes/Button';
 
+
 const HomeScreenEmpresa = () => {
   const navigation = useNavigation();
   const [mostrarFormulario, setMostrarFormulario] = useState(null);
@@ -18,6 +19,7 @@ const HomeScreenEmpresa = () => {
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [filtrosSeleccionados, setFiltrosSeleccionados] = useState([]);
   const [infoEmpresa, setInfoEmpresa] = useState([]);
+  const [valorBusqueda, setValorBusqueda] = useState('');
 
   useEffect(() => {
     const collectionRef = collection(firestore, 'empresa');
@@ -30,13 +32,14 @@ const HomeScreenEmpresa = () => {
           nombre: doc.data().nombre,
           descripcion: doc.data().descripcion,
           correoElectronico: doc.data().correoElectronico,
-          sitioWeb: doc.data().sitioWeb,
           telefono: doc.data().telefono,
           disponibilidad: doc.data().disponibilidad,
           genero: doc.data().genero,
           edad: doc.data().edad,
           estudios: doc.data().estudios,
           experienciaLaboral: doc.data().experienciaLaboral,
+          categoria: doc.data().categoria,
+          puestoTrabajo: doc.data().puestoTrabajo,
         }))
       );
     });
@@ -77,22 +80,37 @@ const HomeScreenEmpresa = () => {
   };
 
   const filtrarCandidatos = () => {
+    let candidatosFiltrados = infoEmpresa;
+
     if (filtrosSeleccionados.length > 0) {
-      return infoEmpresa.filter((candidato) => {
-        // Verificamos si el candidato cumple con todos los filtros seleccionados
+      candidatosFiltrados = candidatosFiltrados.filter((candidato) => {
         return filtrosSeleccionados.every((filtro) => {
           if (filtro === 'Medio tiempo' || filtro === 'Tiempo completo') {
             return candidato.disponibilidad === filtro;
           } else if (filtro === 'Masculino' || filtro === 'Femenino') {
             return candidato.genero === filtro;
+          } else if (filtro === 'Restaurantería') {
+            return candidato.categoria === filtro;
+          } else if (filtro === 'Chef o cocinero' || filtro === 'Sous chef' || filtro === 'Maitre' || filtro === 'Camarero o mesero' || filtro === 'Bartender' || filtro === 'Barista' || filtro === 'Recepcionista' || filtro === 'Auxiliar de cocina' || filtro === 'Personal de limpieza') {
+            return candidato.puestoTrabajo === filtro;
           }
           return false;
         });
       });
     }
-    return infoEmpresa;
+
+    if (valorBusqueda.trim() !== '') {
+      const busquedaMinuscula = valorBusqueda.toLowerCase();
+      candidatosFiltrados = candidatosFiltrados.filter((candidato) => {
+        const nombreMinuscula = candidato.nombre.toLowerCase();
+        return nombreMinuscula.includes(busquedaMinuscula);
+      });
+    }
+
+    return candidatosFiltrados;
   };
 
+  
   const candidatosFiltrados = filtrarCandidatos();
 
   return (
@@ -103,7 +121,12 @@ const HomeScreenEmpresa = () => {
 
         <View style={styles.searchContainer}>
           <View style={styles.searchWrapper}>
-            <TextInput style={styles.searchInput} placeholder="Buscar Candidatos" />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Buscar Candidatos"
+              value={valorBusqueda}
+              onChangeText={setValorBusqueda}
+            />
           </View>
 
           <TouchableOpacity style={styles.searchBtn}>
@@ -190,6 +213,172 @@ const HomeScreenEmpresa = () => {
                   Femenino
                 </Text>
               </TouchableOpacity>
+
+              <Text style={styles.filtrosCategoria}>Puesto de trabajo</Text>
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Restaurantería') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Restaurantería')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Restaurantería') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Restaurantería
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Restaurantería') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Chef o cocinero') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Chef o cocinero')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Chef o cocinero') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Chef o cocinero
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Sous chef') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Sous chef')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Sous chef') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Sous chef
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Maitre') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Maitre')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Maitre') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Maitre
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Camarero o mesero') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Camarero o mesero')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Camarero o mesero') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Camarero o mesero
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Bartender') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Bartender')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Bartender') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Bartender
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Barista') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Barista')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Barista') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Barista
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Recepcionista') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Recepcionista')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Recepcionista') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Recepcionista
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Auxiliar de cocina') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Auxiliar de cocina')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Auxiliar de cocina') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Auxiliar de cocina
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Personal de limpieza') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Personal de limpieza')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Personal de limpieza') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Personal de limpieza
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -205,10 +394,8 @@ const HomeScreenEmpresa = () => {
                 resizeMode="cover"
               />
               <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-              <Text style={styles.descripcionEmpresa}>{dato.descripcion}</Text>
-              <Text style={styles.descripcionEmpresa}>{dato.correoElectronico}</Text>
-              <Text style={styles.descripcionEmpresa}>{dato.telefono}</Text>
-              <Text style={styles.descripcionEmpresa}>{dato.sitioWeb}</Text>
+              <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+              <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
             </View>
           ))}
         </View>
@@ -254,10 +441,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignSelf: 'center'
   },
-  descripcionEmpresa: {
-    fontSize: 17,
+  descripcionTituloPuesto: {
+    fontSize: 13,
     color: COLORS.black,
     marginBottom: 8,
+    alignSelf: 'center'
+  },
+  descripcionPuesto: {
+    fontSize: 13,
+    color: COLORS.primary,
+    marginBottom: 8,
+    alignSelf: 'center'
   },
   container: {
     flex: 1,
