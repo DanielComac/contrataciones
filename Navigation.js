@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, HomeScreenEmpresa, Ajustes} from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa} from "./screens";
 import React from "react";
 import COLORS from "./temas/colors";
 import {firestore, auth} from "./firebase-config"
@@ -95,21 +95,24 @@ function BottomTab() {
           ),
         }}
       />
-
-      
-
-<Tab.Screen
-  name="Ajustes"
-  component={Ajustes}
-  options={({ route }) => ({
-    headerShown: false,
-    tabBarLabel: 'Ajustes',
-    tabBarIcon: ({ }) => (
-      <Entypo name="cog" size={24} color={COLORS.primary} />
-    ),
-    // Verificar si el usuario tiene privilegios de administrador
-  })}
-/>
+      <Tab.Screen
+          name="HomeScreenEmpresa"
+          component={HomeScreenEmpresa}
+          options={{
+            headerShown: false,
+          }}
+        />
+      <Tab.Screen
+        name="Ajustes"
+        component={Ajustes}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Ajustes',
+          tabBarIcon: ({ }) => (
+            <Entypo name="cog" size={24} color={COLORS.primary} />
+          ),
+        }}
+      />
 
       
     </Tab.Navigator>

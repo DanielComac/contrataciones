@@ -55,7 +55,7 @@ const Login = ({ navigation }) => {
           console.log('Inicio de sesión con Google exitoso', result.user);
     
           // Redirigir al usuario a la siguiente ventana
-          navigation.navigate('InicioUsuario');
+          navigation.navigate('HomeScreen');
         } catch (error) {
           // Ocurrió un error durante el inicio de sesión con Google
           console.error('Error de inicio de sesión con Google:', error);

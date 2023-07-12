@@ -9,6 +9,7 @@ import Perfil from "./Perfil";
 import PerfilEmpresaScreen from "./PerfilEmpresaScreen";
 import NotificationScreen from "./Notificaciones";
 import Ajustes from "./Ajustes";
+import HomeScreenEmpresa from "./HomeScreenEmpresa";
 
 export {
     Login,
@@ -21,5 +22,6 @@ export {
     Home,
     Perfil,
     PerfilEmpresaScreen,
-    Ajustes
+    Ajustes,
+    HomeScreenEmpresa
 }
