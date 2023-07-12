@@ -21,6 +21,11 @@ const HomeScreenEmpresa = () => {
   const [infoEmpresa, setInfoEmpresa] = useState([]);
   const [valorBusqueda, setValorBusqueda] = useState('');
 
+  const verPerfilCandidato = (candidato) => {
+    // Navega a la pantalla de perfil del candidato y pasa el objeto candidato como parámetro
+    navigation.navigate('PerfilCandidato', { candidato });
+  };
+
   useEffect(() => {
     const collectionRef = collection(firestore, 'empresa');
     const q = query(collectionRef);
@@ -394,16 +399,23 @@ const HomeScreenEmpresa = () => {
 
         <View style={styles.tarjetasContainer}>
           {candidatosFiltrados.map((dato) => (
-            <View key={dato.id} style={styles.cartaEmpresa}>
-              <Image
-                source={require('../assets/persona1.jpg')}
-                style={styles.imagenEmpresa}
-                resizeMode="cover"
-              />
-              <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-              <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-              <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-            </View>
+            // <TouchableOpacity
+            //   key={dato.id}
+            //   style={styles.cartaEmpresa}
+            //   onPress={() => verPerfilCandidato(dato)} // Llama a la función verPerfilCandidato al hacer clic en la tarjeta
+            // >
+              <View key={dato.id} style={styles.cartaEmpresa}>
+                <Image
+                  source={require('../assets/persona1.jpg')}
+                  style={styles.imagenEmpresa}
+                  resizeMode="cover"
+                />
+                <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+                <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+                <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+              </View>
+            // </TouchableOpacity>
+
           ))}
         </View>
       </LinearGradient>
