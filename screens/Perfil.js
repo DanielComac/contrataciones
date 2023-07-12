@@ -45,6 +45,7 @@ const ProfileScreen = () => {
       }
       
     }
+    
   
   const handleEditPersonalInfo = () => {
     setEditMode(true);
@@ -104,10 +105,11 @@ const ProfileScreen = () => {
                   selectedValue={selectedGenero}
                   onValueChange={itemValue => setSelectedGenero(itemValue)}
                 >
-                  <Picker.Item label="Masculino" value="masculino" />
-                  <Picker.Item label="Femenino" value="femenino" />
-                  <Picker.Item label="Prefiero no decir" value="nodecir" />
-                  <Picker.Item label="Otro" value="otro" />
+                  <Picker.Item label="--" value="--" />
+                  <Picker.Item label="Masculino" value="Masculino" />
+                  <Picker.Item label="Femenino" value="Femenino" />
+                  <Picker.Item label="Prefiero no decir" value="Prefiero no decir" />
+                  <Picker.Item label="Otro" value="Otro" />
                 </Picker>
               ) : (
                 <Text style={styles.infoText}>Género: {selectedGenero}</Text>
@@ -126,6 +128,7 @@ const ProfileScreen = () => {
                 onValueChange={(itemValue, itemIndex) => setSelectedEdad(itemValue)}
                 onChangeText={(valor) => setDatos({...datos, edad: valor})}
                 >
+                <Picker.Item label="--" value="--" />
                 {renderOptions()}
                 </Picker>
               ) : (
@@ -211,12 +214,13 @@ const ProfileScreen = () => {
                 onValueChange={(itemValue, itemIndex) => setSelectedEducacion(itemValue)}
                 onChangeText={(valor) => setDatos({...datos, educacion: valor})}
                 >
-                <Picker.Item label='Primaria o secundaria' value="primariasecundaria" />
-                <Picker.Item label="Bachillerato o equivalente" value="bachillerato" />
-                <Picker.Item label="Técnico o diplomado" value="tecnico" />
-                <Picker.Item label="Grado universitario" value="gradouniversitario" />
-                <Picker.Item label="Maestría o posgrado" value="maestria" />
-                <Picker.Item label="Doctorado o equivalente" value="doctorado" />
+                <Picker.Item label="--" value="--" />
+                <Picker.Item label='Primaria o secundaria' value="Primaria o secundaria" />
+                <Picker.Item label="Bachillerato o equivalente" value="Bachillerato o equivalente" />
+                <Picker.Item label="Técnico o diplomado" value="Técnico o diplomado" />
+                <Picker.Item label="Grado universitario" value="Grado universitario" />
+                <Picker.Item label="Maestría o posgrado" value="Maestría o posgrado" />
+                <Picker.Item label="Doctorado o equivalente" value="Doctorado o equivalente" />
                 </Picker>
               ) : (
                 <Text style={styles.infoText}>Estudios y formación académica: {selectedEducacion}</Text>
@@ -235,10 +239,11 @@ const ProfileScreen = () => {
                 onValueChange={(itemValue, itemIndex) => setSelectedExperiencia(itemValue)}
                 onChangeText={(valor) => setDatos({...datos, experiencia: valor})}
                 >
-                <Picker.Item label='Sin experiencia' value="sinexperiencia" />
-                <Picker.Item label="1 a 2 años de experiencia" value="1año" />
-                <Picker.Item label="2 a 4 años de experiencia" value="2años" />
-                <Picker.Item label="Más de 4 años de experiencia" value="mas4años" />
+                <Picker.Item label="--" value="--" />
+                <Picker.Item label='Sin experiencia' value="Sin experiencia" />
+                <Picker.Item label="1 a 2 años de experiencia" value="1 a 2 años de experiencia" />
+                <Picker.Item label="2 a 4 años de experiencia" value="2 a 4 años de experiencia" />
+                <Picker.Item label="Más de 4 años de experiencia" value="Más de 4 años de experiencia" />
                 </Picker>
               ) : (
                 <Text style={styles.infoText}>Experiencia laboral: {selectedExperiencia}</Text>
@@ -257,12 +262,13 @@ const ProfileScreen = () => {
                 onValueChange={(itemValue, itemIndex) => setSelectedIngles(itemValue)}
                 onChangeText={(valor) => setDatos({...datos, nivelIngles: valor})}
                 >
-                <Picker.Item label="No sé ingles" value="noingles" />
-                <Picker.Item label="Hablo lo básico" value="a1a2" />
-                <Picker.Item label="Lo hablo fluido" value="a1b1" />
-                <Picker.Item label="Entiendo lo básico" value="b1b2" />
-                <Picker.Item label="Entiendo todo (no lo hablo)" value="b2c1" />
-                <Picker.Item label="Inglés C1 - C2" value="c1c2" />
+                <Picker.Item label="--" value="--" />
+                <Picker.Item label="No sé ingles" value="No sé ingles" />
+                <Picker.Item label="Hablo lo básico" value="Hablo lo básico" />
+                <Picker.Item label="Lo hablo fluido" value="Lo hablo fluido" />
+                <Picker.Item label="Entiendo lo básico" value="Entiendo lo básico" />
+                <Picker.Item label="Entiendo todo (no lo hablo)" value="Entiendo todo (no lo hablo)" />
+                <Picker.Item label="Lo entiendo y lo hablo" value="Lo entiendo y lo hablo" />
                 </Picker>
               ) : (
                 <Text style={styles.infoText}>Nivel de inglés: {selectedIngles}</Text>
@@ -281,8 +287,9 @@ const ProfileScreen = () => {
                 onValueChange={(itemValue, itemIndex) => setSelectedDisponibilidad(itemValue)}
                 onChangeText={(valor) => setDatos({...datos, disponibilidadHorario: valor})}
                 >
-                <Picker.Item label="Tiempo Completo" value="tiempocompleto" />
-                <Picker.Item label="Medio tiempo" value="mediotiempo" />
+                <Picker.Item label="--" value="--" />
+                <Picker.Item label="Tiempo Completo" value="Tiempo Completo" />
+                <Picker.Item label="Medio tiempo" value="Medio tiempo" />
                 </Picker>
               ) : (
                 <Text style={styles.infoText}>Disponibilidad de horario: {selectedDisponibilidad}</Text>
