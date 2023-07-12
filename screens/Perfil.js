@@ -4,37 +4,47 @@ import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import COLORS from '../temas/colors';
 import { Picker } from '@react-native-picker/picker'
+import { firestore } from "../firebase-config";
+import { setDoc, doc, addDoc, collection  } from "firebase/firestore";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('123456789');
-  const [selectedGenero, setSelectedGenero] = useState('jopjp');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [selectedGenero, setSelectedGenero] = useState('');
   const [selectedCiudad, setSelectedCiudad] = useState('');
-  const [selectedColonia, setSelectedColonia] = useState('Colonia Y');
-  const [selectedCP, setSelectedCP] = useState('12345');
+  const [selectedColonia, setSelectedColonia] = useState('');
+  const [selectedCP, setSelectedCP] = useState('');
   const [selectedEdad, setSelectedEdad] = useState('');
   const [selectedTrabajo, setSelectedTrabajo] = useState('');
   const [selectedEducacion, setSelectedEducacion] = useState('');
   const [selectedExperiencia, setSelectedExperiencia] = useState('');
   const [selectedIngles, setSelectedIngles] = useState('');
   const [selectedDisponibilidad, setSelectedDisponibilidad] = useState('');
-  
 
-  const [datos, setDatos] = useState({
-        numeroCelular: '',
-        nombre: '',
-        apellidoMaterno: '',
-        apellidoPaterno: '',
-        edad: '',
-        ciudad: '',
-        colonia: '',
-        codigoPostal: '',
-        trabajoAplicar:'',
-        educación: '',
-        experiencia: '',
-        nivelIngles: '',
-        disponibilidadHorario: ''
-    });
+    const onSend = async () => {
+      try{
+        await addDoc(collection(firestore, 'formUsuario'),{
+          numeroCelular: phoneNumber,
+          genero: selectedGenero,
+          edad: selectedEdad,
+          ciudad: selectedCiudad,
+          colonia: selectedColonia,
+          codigoPostal: selectedCP,
+          trabajoDeseado: selectedTrabajo,
+          estudios: selectedEducacion,
+          experiencia: selectedExperiencia,
+          ingles: selectedIngles,
+          disponibilidad: selectedDisponibilidad
+        })
+  
+        setEditMode(false);
+
+      }catch (error) {
+        console.log('Error al enviar la información', error)
+
+      }
+      
+    }
   
   const handleEditPersonalInfo = () => {
     setEditMode(true);
@@ -133,9 +143,8 @@ const ProfileScreen = () => {
                 style={styles.infoTextInput}
                 selectedValue={selectedCiudad}
                 onValueChange={(itemValue, itemIndex) => setSelectedCiudad(itemValue)}
-                onChangeText={(valor) => setDatos({...datos, ciudad: valor})}
                 >
-                <Picker.Item label="Victoria de Durango" value="durango" />
+                <Picker.Item label="Victoria de Durango" />
                 </Picker>
               ) : (
                 <Text style={styles.infoText}>Ciudad de residencia: {selectedCiudad}</Text>
@@ -284,7 +293,7 @@ const ProfileScreen = () => {
 
             <View style={styles.infoDivider} />
             {editMode ? (
-              <TouchableOpacity style={styles.saveButton} onPress={handleSavePersonalInfo}>
+              <TouchableOpacity style={styles.saveButton} onPress={onSend}>
                 <Text style={styles.saveButtonText}>Guardar</Text>
               </TouchableOpacity>
             ) : (
