@@ -27,7 +27,7 @@ const HomeScreenEmpresa = () => {
   };
 
   useEffect(() => {
-    const collectionRef = collection(firestore, 'formUsuario');
+    const collectionRef = collection(firestore, 'users');
     const q = query(collectionRef);
 
     const unsuscribe = onSnapshot(q, (querySnapshop) => {

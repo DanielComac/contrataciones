@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import COLORS from '../temas/colors';
 import { Picker } from '@react-native-picker/picker'
 import { firestore } from "../firebase-config";
-import { setDoc, doc, addDoc, collection  } from "firebase/firestore";
+import { setDoc, doc, addDoc, collection, onSnapshot, query, updateDoc } from "firebase/firestore";
+import { auth } from '../firebase-config';
+import { userId } from './Login.js'
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedNombre, setSelectedNombre] = useState('---------');
+  const [selectedNombre, setSelectedNombre] = useState('');
   const [selectedGenero, setSelectedGenero] = useState('');
   const [selectedCiudad, setSelectedCiudad] = useState('');
   const [selectedColonia, setSelectedColonia] = useState('');
@@ -22,9 +24,51 @@ const ProfileScreen = () => {
   const [selectedIngles, setSelectedIngles] = useState('');
   const [selectedDisponibilidad, setSelectedDisponibilidad] = useState('');
 
-    const onSend = async () => {
+
+  const [infoUsuario, setInfoUsuario] = useState([]); // Inicializar como array vacío
+
+useEffect(() => {
+  const id = userId;
+  const collectionRef = collection(firestore, 'users');
+  const q = doc(collectionRef, id);
+
+  const unsubscribe = onSnapshot(q, (doc) => {
+    if (doc.exists()) {
+      // Convertir los datos en un array y luego establecer el estado
+      setInfoUsuario([
+        {
+          id: doc.id,
+          nombre: doc.data().nombre,
+          numeroCelular: doc.data().numeroCelular,
+          genero: doc.data().genero,
+          edad: doc.data().edad,
+          ciudad: doc.data().ciudad,
+          colonia: doc.data().colonia,
+          codigoPostal: doc.data().codigoPostal,
+          puestoTrabajo: doc.data().puestoTrabajo,
+          estudios: doc.data().estudios,
+          experiencia: doc.data().experiencia,
+          ingles: doc.data().ingles,
+          disponibilidad: doc.data().disponibilidad,
+          categoria: doc.data().categoria,
+        },
+      ]);
+    } else {
+      // El documento no existe
+      console.log('El documento no existe.');
+    }
+  });
+
+  return unsubscribe;
+}, []);
+
+  console.log(infoUsuario)
+
+    const onSend = () => {
       try{
-        await addDoc(collection(firestore, 'formUsuario'),{
+        let id = userId;
+        const refDoc = doc(firestore, 'users', id)
+        updateDoc(refDoc, {
           nombre: selectedNombre,
           numeroCelular: phoneNumber,
           genero: selectedGenero,
@@ -37,11 +81,12 @@ const ProfileScreen = () => {
           experiencia: selectedExperiencia,
           ingles: selectedIngles,
           disponibilidad: selectedDisponibilidad
+
         })
   
         setEditMode(false);
 
-      }catch (error) {
+      } catch (error) {
         console.log('Error al enviar la información', error)
 
       }
@@ -69,8 +114,10 @@ const ProfileScreen = () => {
   };
 
   return (
+    
     <ScrollView>
-      <View style={{ flex: 1, backgroundColor: COLORS.back }}>
+      {infoUsuario.map((dato) => (  
+        <View key={dato.id} style={{ flex: 1, backgroundColor: COLORS.back }}>
         <Text style={styles.headerTitle}>Mi perfil</Text>
         <View style={styles.container}>
           <View style={styles.infoContainer}>
@@ -79,7 +126,7 @@ const ProfileScreen = () => {
                 source={require('../assets/persona1.jpg')}
                 style={styles.profilePicture}
               />
-              <Text style={styles.name}>{selectedNombre}</Text>
+              <Text style={styles.name}>{dato.nombre}</Text>
             </View>
             <Text style={styles.infoTitle}>Información personal:</Text>
             <View style={styles.infoDivider} />
@@ -87,12 +134,13 @@ const ProfileScreen = () => {
             <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
+                  placeholder= "Escribe tu nombre"
                   style={styles.infoTextInput1}
                   value={selectedNombre}
                   onChangeText={setSelectedNombre}
                 />
               ) : (
-                <Text style={styles.infoText}>Nombre: {selectedNombre}</Text>
+                <Text style={styles.infoText}>Nombre: {dato.nombre} </Text>
               )}
             </View>
             <View style={styles.infoDivider} />
@@ -100,12 +148,13 @@ const ProfileScreen = () => {
               <Ionicons name="call" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
+                  placeholder= "Escribe tu numero de telefono"
                   style={styles.infoTextInput1}
                   value={phoneNumber}
                   onChangeText={setPhoneNumber}
                 />
               ) : (
-                <Text style={styles.infoText}>Número de teléfono: {phoneNumber}</Text>
+                <Text style={styles.infoText}>Número de teléfono: {dato.numeroCelular} </Text>
               )}
             </View>
 
@@ -120,6 +169,7 @@ const ProfileScreen = () => {
                   selectedValue={selectedGenero}
                   onValueChange={itemValue => setSelectedGenero(itemValue)}
                 >
+
                   <Picker.Item label="--" value="--" />
                   <Picker.Item label="Masculino" value="Masculino" />
                   <Picker.Item label="Femenino" value="Femenino" />
@@ -127,7 +177,7 @@ const ProfileScreen = () => {
                   <Picker.Item label="Otro" value="Otro" />
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Género: {selectedGenero}</Text>
+                <Text style={styles.infoText}>Género: {dato.genero}</Text>
               )}
             </View>
 
@@ -141,13 +191,12 @@ const ProfileScreen = () => {
                 style={styles.infoTextInput}
                 selectedValue={selectedEdad}
                 onValueChange={(itemValue, itemIndex) => setSelectedEdad(itemValue)}
-                onChangeText={(valor) => setDatos({...datos, edad: valor})}
                 >
                 <Picker.Item label="--" value="--" />
                 {renderOptions()}
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Edad: {selectedEdad}</Text>
+                <Text style={styles.infoText}>Edad: {dato.edad}</Text>
               )}
             </View>
 
@@ -162,10 +211,10 @@ const ProfileScreen = () => {
                 selectedValue={selectedCiudad}
                 onValueChange={(itemValue, itemIndex) => setSelectedCiudad(itemValue)}
                 >
-                <Picker.Item label="Victoria de Durango" />
+                <Picker.Item label="Victoria de Durango" value="Victoria de Durango"/>
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Ciudad de residencia: {selectedCiudad}</Text>
+                <Text style={styles.infoText}>Ciudad de residencia: {dato.ciudad} </Text>
               )}
             </View>
 
@@ -176,12 +225,13 @@ const ProfileScreen = () => {
               <Ionicons name="pin" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
+                  placeholder='Escribe tu colonia'
                   style={styles.infoTextInput1}
                   value={selectedColonia}
                   onChangeText={setSelectedColonia}
                 />
               ) : (
-                <Text style={styles.infoText}>Colonia: {selectedColonia}</Text>
+                <Text style={styles.infoText}>Colonia: {dato.colonia} </Text>
               )}
             </View>
            
@@ -192,12 +242,13 @@ const ProfileScreen = () => {
               <Ionicons name="location" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
+                  placeholder='Escribe tu Código Postal'
                   style={styles.infoTextInput1}
                   value={selectedCP}
                   onChangeText={setSelectedCP}
                 />
               ) : (
-                <Text style={styles.infoText}>Código Postal: {selectedCP}</Text>
+                <Text style={styles.infoText}>Código Postal: {dato.codigoPostal}</Text>
               )}
             </View>
 
@@ -208,12 +259,13 @@ const ProfileScreen = () => {
               <Ionicons name="briefcase" size={16} style={styles.infoIcon} />
               {editMode ? (
                 <TextInput
+                  placeholder='Escribe tu trabajo deseado'
                   style={styles.infoTextInput1}
                   value={selectedTrabajo}
                   onChangeText={setSelectedTrabajo}
                 />
               ) : (
-                <Text style={styles.infoText}>Puesto de trabajo deseado: {selectedTrabajo}</Text>
+                <Text style={styles.infoText}>Puesto de trabajo deseado: {dato.puestoTrabajo}</Text>
               )}
             </View>
 
@@ -227,7 +279,7 @@ const ProfileScreen = () => {
                 style={styles.infoTextInput}
                 selectedValue={selectedEducacion}
                 onValueChange={(itemValue, itemIndex) => setSelectedEducacion(itemValue)}
-                onChangeText={(valor) => setDatos({...datos, educacion: valor})}
+                
                 >
                 <Picker.Item label="--" value="--" />
                 <Picker.Item label='Primaria o secundaria' value="Primaria o secundaria" />
@@ -238,7 +290,7 @@ const ProfileScreen = () => {
                 <Picker.Item label="Doctorado o equivalente" value="Doctorado o equivalente" />
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Estudios y formación académica: {selectedEducacion}</Text>
+                <Text style={styles.infoText}>Estudios y formación académica: {dato.estudios}</Text>
               )}
             </View>
 
@@ -252,7 +304,7 @@ const ProfileScreen = () => {
                 style={styles.infoTextInput}
                 selectedValue={selectedExperiencia}
                 onValueChange={(itemValue, itemIndex) => setSelectedExperiencia(itemValue)}
-                onChangeText={(valor) => setDatos({...datos, experiencia: valor})}
+                
                 >
                 <Picker.Item label="--" value="--" />
                 <Picker.Item label='Sin experiencia' value="Sin experiencia" />
@@ -261,7 +313,7 @@ const ProfileScreen = () => {
                 <Picker.Item label="Más de 4 años de experiencia" value="Más de 4 años de experiencia" />
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Experiencia laboral: {selectedExperiencia}</Text>
+                <Text style={styles.infoText}>Experiencia laboral: {dato.experiencia}</Text>
               )}
             </View>
 
@@ -275,9 +327,12 @@ const ProfileScreen = () => {
                 style={styles.infoTextInput}
                 selectedValue={selectedIngles}
                 onValueChange={(itemValue, itemIndex) => setSelectedIngles(itemValue)}
-                onChangeText={(valor) => setDatos({...datos, nivelIngles: valor})}
+                
                 >
-                <Picker.Item label="--" value="--" />
+                {dato.ingles === "" ? 
+                <Picker.Item label={dato.ingles} value={dato.ingles} /> : 
+                <Picker.Item label="SELECCIONA TU NIVEL DE INGLES" value="" /> 
+                }
                 <Picker.Item label="No sé ingles" value="No sé ingles" />
                 <Picker.Item label="Hablo lo básico" value="Hablo lo básico" />
                 <Picker.Item label="Lo hablo fluido" value="Lo hablo fluido" />
@@ -286,7 +341,7 @@ const ProfileScreen = () => {
                 <Picker.Item label="Lo entiendo y lo hablo" value="Lo entiendo y lo hablo" />
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Nivel de inglés: {selectedIngles}</Text>
+                <Text style={styles.infoText}>Nivel de inglés: {dato.ingles} </Text>
               )}
             </View>
 
@@ -300,14 +355,14 @@ const ProfileScreen = () => {
                 style={styles.infoTextInput}
                 selectedValue={selectedDisponibilidad}
                 onValueChange={(itemValue, itemIndex) => setSelectedDisponibilidad(itemValue)}
-                onChangeText={(valor) => setDatos({...datos, disponibilidadHorario: valor})}
+                
                 >
                 <Picker.Item label="--" value="--" />
                 <Picker.Item label="Tiempo Completo" value="Tiempo Completo" />
                 <Picker.Item label="Medio tiempo" value="Medio tiempo" />
                 </Picker>
               ) : (
-                <Text style={styles.infoText}>Disponibilidad de horario: {selectedDisponibilidad}</Text>
+                <Text style={styles.infoText}>Disponibilidad de horario: {dato.disponibilidad}</Text>
               )}
             </View>
 
@@ -325,8 +380,12 @@ const ProfileScreen = () => {
             )}
           </View>
         </View>
+       
       </View>
+       
+       ))} 
     </ScrollView>
+    
   );
 };
 

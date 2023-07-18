@@ -117,7 +117,20 @@ const Signup = ({ navigation }) => {
             //crear un nuevo documento en la coleccion 'users'
             await setDoc(doc(firestore, 'users', user.user.uid),{
                 email: email,
-                password: password
+                password: password,
+                nombre: "",
+                genero: "",
+                edad: "",
+                ciudad: "",
+                colonia: "",
+                codigoPostal: "",
+                puestoTrabajo: "",
+                estudios: "",
+                experiencia: "",
+                ingles: "",
+                disponibilidad: "",
+                categoria: ""
+
             })
 
             //actualizar el userId con la ID del usuario creado

@@ -9,7 +9,7 @@ import {Dimensions} from 'react-native';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
-
+export let userId;
 const Login = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -27,13 +27,15 @@ const Login = ({ navigation }) => {
         navigation.goBack();
     };
    
+   
+
     const handleLogin = () => {
-        const auth = getAuth();
+       const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             // El inicio de sesión fue exitoso
             console.log('Inicio de sesión exitoso', userCredential.user);
-    
+            userId = userCredential.user.uid;
             // Redirigir al usuario a la siguiente ventana
           })
           .catch((error) => {
