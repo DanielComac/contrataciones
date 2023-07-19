@@ -8,13 +8,12 @@ import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 import FilePickerManager from 'react-native-file-picker';
 
+export let idEmpresa;
 
 // //FIREBASE imports
-// import { 
-//     createUserWithEmailAndPassword
-//  } from 'firebase/auth';
-
-// import { auth } from '../firebase-config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, firestore } from '../firebase-config';
+import { setDoc, doc } from 'firebase/firestore';
 
 
 
@@ -34,14 +33,28 @@ const SignupEmpresa = ({ navigation }) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
-
-
-   
+    const [userId, setUserId] = React.useState('')
 
     const handleCreateAccount = async () => {
         try {
           const user = await createUserWithEmailAndPassword(auth, email, password);
           console.log('Se creó la cuenta', user);
+
+          idEmpresa = user.user.uid;
+
+           //crear un nuevo documento en la coleccion 'formEmpresa'
+           await setDoc(doc(firestore, 'users', user.user.uid),{
+            email: email,
+            password: password,
+            privilegio: "empresa"
+
+        })
+
+        //actualizar el userId con la ID del usuario creado
+        setUserId(user.user.uid)  
+        console.log(idEmpresa)
+        
+
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
         }
@@ -325,7 +338,7 @@ const SignupEmpresa = ({ navigation }) => {
                     <Button
                         title="Registrarse"
                         filled
-                        onPress={showUsuarioModal}
+                        onPress={handleCreateAccount}
                             
                         
                         style={{

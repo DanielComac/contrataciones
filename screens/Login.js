@@ -8,8 +8,8 @@ import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-
 export let userId;
+
 const Login = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);

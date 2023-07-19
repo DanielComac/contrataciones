@@ -8,7 +8,7 @@ import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
 import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
 
-
+export let idUsuario;
 
 //FIREBASE imports
 import { 
@@ -113,11 +113,13 @@ const Signup = ({ navigation }) => {
           if (isPasswordValid(password)) {
             const user = await createUserWithEmailAndPassword(auth, email, password);
             console.log('Se creó la cuenta', user);
+            idUsuario = user.user.uid
 
             //crear un nuevo documento en la coleccion 'users'
             await setDoc(doc(firestore, 'users', user.user.uid),{
                 email: email,
                 password: password,
+                privilegio: "usuario",
                 nombre: "",
                 genero: "",
                 edad: "",
