@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { userId } from "./screens/Login";
 import { idUsuario } from "./screens/Signup";
 import { idEmpresa } from "./screens/SignupEmpresa";
+import { View, Text, ActivityIndicator } from "react-native";
 
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,7 +21,9 @@ const Tab = createBottomTabNavigator();
 function BottomTab() {
   const [privilegio, setPrivilegio] = useState("");
   const id = userId || idUsuario || idEmpresa;
+  const [loading, setLoading] = useState(true);
   
+  console.log("ID del usuario:", id);
 
   useEffect(() => {
     const obtenerPrivilegio = async () => {
@@ -29,20 +32,28 @@ function BottomTab() {
         if (docSnap.exists()) {
           // Establecer el estado con los datos del documento
           setPrivilegio(docSnap.data().privilegio);
+          setLoading(false); // Privilegio obtenido correctamente, ya no estamos cargando
         } else {
           // El documento no existe
           console.log("El documento no existe.");
+          setLoading(false); // Indicamos que ya no estamos cargando aunque no se haya obtenido el privilegio
         }
       } catch (error) {
         console.error("Error al obtener el documento:", error);
+        setLoading(false); // Indicamos que ya no estamos cargando aunque haya ocurrido un error
       }
     };
-    obtenerPrivilegio(); // Llamar a la función para obtener el privilegio
-    
-    
-    // No necesitas suscribirte a cambios ya que estás obteniendo solo un documento, no una colección
-  }, [id]); // Asegúrate de agregar 'id' como dependencia si es necesario
-  
+    obtenerPrivilegio();
+  }, [id]);
+
+    if (loading) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" color="#4caf50" />
+        </View>
+      );
+    }
+
   console.log(privilegio);
   
   return (
@@ -112,6 +123,7 @@ function BottomTab() {
 
 
     {privilegio === "empresa" ? (
+      <>
       <Tab.Screen
       name="HomeScreenEmpresa"
       component={HomeScreenEmpresa}
@@ -119,6 +131,7 @@ function BottomTab() {
         headerShown: false,
       }}
     />
+    </>
     ) : (
       console.log("No funciona")
     )}

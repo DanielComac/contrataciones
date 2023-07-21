@@ -53,7 +53,8 @@ const SignupEmpresa = ({ navigation }) => {
         //actualizar el userId con la ID del usuario creado
         setUserId(user.user.uid)  
         console.log(idEmpresa)
-        
+        // navigation.navigate("HomeScreenEmpresa");
+
 
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
