@@ -12,18 +12,6 @@ import { useTheme } from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedNombre, setSelectedNombre] = useState('');
-  const [selectedGenero, setSelectedGenero] = useState('');
-  const [selectedCiudad, setSelectedCiudad] = useState('');
-  const [selectedColonia, setSelectedColonia] = useState('');
-  const [selectedCP, setSelectedCP] = useState('');
-  const [selectedEdad, setSelectedEdad] = useState('');
-  const [selectedTrabajo, setSelectedTrabajo] = useState('');
-  const [selectedEducacion, setSelectedEducacion] = useState('');
-  const [selectedExperiencia, setSelectedExperiencia] = useState('');
-  const [selectedIngles, setSelectedIngles] = useState('');
-  const [selectedDisponibilidad, setSelectedDisponibilidad] = useState('');
   const [infoUsuario, setInfoUsuario] = useState([]);
 
   const [tempPhoneNumber, setTempPhoneNumber] = useState(''); // Estado temporal para almacenar phoneNumber durante la edición
