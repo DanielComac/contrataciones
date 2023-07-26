@@ -6,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
-import FilePickerManager from 'react-native-file-picker';
 
 export let idEmpresa;
 
@@ -44,10 +43,11 @@ const SignupEmpresa = ({ navigation }) => {
 
            //crear un nuevo documento en la coleccion 'formEmpresa'
            await setDoc(doc(firestore, 'users', user.user.uid),{
-            email: email,
-            password: password,
-            privilegio: "empresa"
-
+            emailEmpresa: email,
+            passwordEmpresa: password,
+            privilegio: "empresa",
+            nombreEmpresa: "",
+            numeroCelularEmpresa: "",
         })
 
         //actualizar el userId con la ID del usuario creado
@@ -59,21 +59,6 @@ const SignupEmpresa = ({ navigation }) => {
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
         }
-      };
-
-      //Funcionalidad para agregar más numeros de teléfono
-      const [numerosTelefono, setNumerosTelefono] = useState(['']); // Inicialmente, un campo de número de teléfono vacío
-
-      const agregarCampoNumeroTelefono = () => {
-        const nuevoNumeroTelefono = [...numerosTelefono, '']; // Agrega un campo de número de teléfono vacío a la lista
-        setNumerosTelefono(nuevoNumeroTelefono);
-      };
-
-      //Funiconalidad para eliminar input de numero de teléfono
-      const removePhoneNumberField = (index) => {
-        const nuevoNumeroTelefono = [...numerosTelefono];
-        nuevoNumeroTelefono.splice(index, 1);
-        setNumerosTelefono(nuevoNumeroTelefono);
       };
 
       // Dimensiones para fijar flecha de regreso
@@ -222,7 +207,7 @@ const SignupEmpresa = ({ navigation }) => {
 
 {/* ====================================================================================== */}
 
-                  {/* Input de ubicación */}
+                  {/* Input de ubicación
                   <View style={{ marginBottom: 12 }}>
                     <Text style={{
                         fontSize: 16,
@@ -248,12 +233,12 @@ const SignupEmpresa = ({ navigation }) => {
                             }}
                         />
                     </View>
-                </View>
+                </View> */}
 
 {/* ====================================================================================== */}
                   
                   {/* Input número de teléfono */}
-                  <View style={{ marginBottom: 12 }}>
+                  {/* <View style={{ marginBottom: 12 }}>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 400,
@@ -311,7 +296,7 @@ const SignupEmpresa = ({ navigation }) => {
                     <TouchableOpacity onPress={agregarCampoNumeroTelefono} style={{ marginTop: 8 }}>
                       <Text style={{ fontSize: 16, color: COLORS.primary }}>+ Agregar teléfono de contacto (si lo tiene)</Text>
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
 
 {/* ==================================================================================== */}
 

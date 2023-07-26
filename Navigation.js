@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa } from "./screens";
 import COLORS from "./temas/colors";
 import { firestore, auth } from "./firebase-config";
 import { doc, getDoc } from "firebase/firestore";
@@ -18,44 +18,37 @@ import React, { useEffect, useState } from "react";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function BottomTab() {
+export function BottomTab() {
   const [privilegio, setPrivilegio] = useState("");
-  const id = userId || idUsuario || idEmpresa;
   const [loading, setLoading] = useState(true);
-  
-  console.log("ID del usuario:", id);
+  const id = userId || idUsuario || idEmpresa;
 
   useEffect(() => {
     const obtenerPrivilegio = async () => {
       try {
         const docSnap = await getDoc(doc(firestore, "users", id));
         if (docSnap.exists()) {
-          // Establecer el estado con los datos del documento
           setPrivilegio(docSnap.data().privilegio);
-          setLoading(false); // Privilegio obtenido correctamente, ya no estamos cargando
         } else {
-          // El documento no existe
           console.log("El documento no existe.");
-          setLoading(false); // Indicamos que ya no estamos cargando aunque no se haya obtenido el privilegio
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error al obtener el documento:", error);
-        setLoading(false); // Indicamos que ya no estamos cargando aunque haya ocurrido un error
+        setLoading(false);
       }
     };
     obtenerPrivilegio();
   }, [id]);
 
-    if (loading) {
-      return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <ActivityIndicator size="large" color="#4caf50" />
-        </View>
-      );
-    }
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#4caf50" />
+      </View>
+    );
+  }
 
-  console.log(privilegio);
-  
   return (
     <Tab.Navigator
       initialRouteName="HomeScreen"
@@ -63,79 +56,104 @@ function BottomTab() {
         tabBarActiveTintColor: "#4caf50",
       }}
     >
-
       {privilegio === "usuario" ? (
         <>
-        <Tab.Screen
-        name="Perfil"
-        component={Perfil}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Perfil",
-          tabBarIcon: ({}) => (
-            <Ionicons name="person" size={24} color={COLORS.primary} />
-          ),
-        }}
-      />
-       
           <Tab.Screen
-          name="HomeScreen"
-          component={Home}
-          options={{
-            headerShown: false,
-            tabBarLabel: "Home",
-            tabBarIcon: ({}) => (
-              <Ionicons name="home" size={24} color={COLORS.primary} />
-            ),
-          }}
-        />
-        
+            name="Perfil"
+            component={Perfil}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Perfil",
+              tabBarIcon: ({}) => (
+                <Ionicons name="person" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
           <Tab.Screen
-          name="Notificaciones"
-          component={NotificationScreen}
-          options={{
-            headerShown: false,
-            tabBarLabel: "Notificaciones",
-            tabBarIcon: ({}) => (
-              <Ionicons name="notifications" size={24} color={COLORS.primary} />
-            ),
-          }}
-        />
-  
-      
-      </>
-      ) : (
-        console.log("No funciona")
-      )}
+            name="HomeScreen"
+            component={Home}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Home",
+              tabBarIcon: ({}) => (
+                <Ionicons name="home" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Notificaciones"
+            component={NotificationScreen}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Notificaciones",
+              tabBarIcon: ({}) => (
+                <Ionicons name="notifications" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          
+        </>
+      ) : null}
+          <Tab.Screen
+            name="Ajustes"
+            component={Ajustes}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Ajustes",
+              tabBarIcon: ({}) => (
+                <Entypo name="cog" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+      {privilegio === "empresa" ? (
+        <>
+          <Tab.Screen
+            name="PerfilEmpresa"
+            component={PerfilEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Perfil",
+              tabBarIcon: ({}) => (
+                <Ionicons name="person" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="HomeScreenEmpresa"
+            component={HomeScreenEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Home",
+              tabBarIcon: ({}) => (
+                <Ionicons name="home" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="NotificacionesEmpresa"
+            component={NotificacionesEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Notificaciones",
+              tabBarIcon: ({}) => (
+                <Ionicons name="notifications" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="AjustesEmpresa"
+            component={AjustesEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Ajustes",
+              tabBarIcon: ({}) => (
+                <Entypo name="cog" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+        </>
+      ) : null}
 
-
-      <Tab.Screen
-        name="Ajustes"
-        component={Ajustes}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Ajustes",
-          tabBarIcon: ({}) => (
-            <Entypo name="cog" size={24} color={COLORS.primary} />
-          ),
-        }}
-       />
-
-
-    {privilegio === "empresa" ? (
-      <>
-      <Tab.Screen
-      name="HomeScreenEmpresa"
-      component={HomeScreenEmpresa}
-      options={{
-        headerShown: false,
-      }}
-    />
-    </>
-    ) : (
-      console.log("No funciona")
-    )}
-        
     </Tab.Navigator>
   );
 }

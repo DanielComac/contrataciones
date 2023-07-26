@@ -3,12 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, 
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
 import { firestore } from '../firebase-config';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 
 import COLORS from '../temas/colors';
-import Button from '../componentes/Button';
 
 
 const HomeScreenEmpresa = () => {

@@ -107,11 +107,11 @@ const Welcome = ({ navigation }) => {
                             fontSize: 16,
                             color: COLORS.white,
                             marginVertical: 10,
-                        }}>Busca al empleado ideal para tu negocio</Text>
+                        }}>Encuentra a tu empleado ideal o tu empleo perfecto en un solo lugar</Text>
                         <Text style={{
                             fontSize: 16,
                             color: COLORS.white,
-                        }}>O regístrate para encontrar</Text>
+                        }}></Text>
                     </View>
                     <Button
                         title="Unirme Ahora"

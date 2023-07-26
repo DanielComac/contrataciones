@@ -1,46 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, ScrollView, Animated, Alert, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
-import Form from './Form'; // Importa la pantalla de formulario
-
 
 import COLORS from '../temas/colors';
-import Button from '../componentes/Button';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [saludo, setSaludo] = useState('');
-  const [mostrarFormulario, setMostrarFormulario] = useState(null);
-  const [animacion] = useState(new Animated.Value(0));
-  // const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  // const [animacion] = useState(new Animated.Value(0));
-
-
-  // useEffect(() => {
-  //hadler para preguntar si quiere salir de la app(Bugeado)
-  //   const backAction = () => {
-  //     Alert.alert("Espera!", "Estas seguro que quieres salir?", [
-  //       {
-  //         text: "No",
-  //         onPress: () => null,
-  //         style: "cancel"
-  //       },
-  //       { text: "SI", onPress: () => BackHandler.exitApp() }
-  //     ]);
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, []);
 
   useEffect(() => {
     // Obtiene la hora actual
@@ -54,184 +22,127 @@ const HomeScreen = () => {
     } else {
       setSaludo('Buenas noches');
     }
-
-    // Mostrar el formulario después de 5 segundos
-    // const timer = setTimeout(() => {
-    //   setMostrarFormulario(true);
-    // }, 3000);
-
-    // // Iniciar la animación
-    // Animated.timing(animacion, {
-    //   toValue: 1,
-    //   duration: 900,
-    //   useNativeDriver: true,
-    // }).start();
-
-    // return () => clearTimeout(timer);
   }, []);
 
-  // const translateY = animacion.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [500, 0],
-  // });
-
-  // Renderizar el formulario si mostrarFormulario es verdadero
-
-//   if (mostrarFormulario) {
-//     return (
-//       <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-//         {/* <Form /> */}
-//         {navigation.navigate('Form')}
-//       </Animated.View>
-//     );
-//   }
-  
-  
-  // if (mostrarFormulario) {
-  //   return (
-  //     <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-  //       <Form />
-  //     </Animated.View>
-  //   );
-  // }
-
-  const handleEmpresaPress = (empresa) => {
-    navigation.navigate('PerfilEmpresa', { empresa });
-  };
-
-  const empresaData = {
-    foto: require('../assets/empresa1.jpg'),
-    nombre: 'Empresa 1',
-    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    contacto: [
-      { etiqueta: 'Teléfono', valor: '123-456-7890', tipo: 'telefono' },
-      { etiqueta: 'Correo electrónico', valor: 'empresa1@ejemplo.com', tipo: 'email' },
-      { etiqueta: 'Sitio web', valor: 'https://www.empresa1.com', tipo: 'sitioWeb' },
-    ],
-  };
-
   return (
-      <ScrollView>
-        <LinearGradient
-          style={{ flex: 1 }}
-          colors={[COLORS.back, COLORS.back]}
-        >
-          <Text style={styles.titulo}>Inicio</Text>
+    <ScrollView>
+      <LinearGradient
+        style={{ flex: 1 }}
+        colors={[COLORS.back, COLORS.back]}
+      >
+        <Text style={styles.titulo}>Inicio</Text>
 
-          {/* Mostrar el mensaje de saludo */}
-          <Text style={styles.saludo}>Hola, {saludo}</Text>
+        {/* Mostrar el mensaje de saludo */}
+        <Text style={styles.saludo}>Hola, {saludo}</Text>
 
-          <View style={styles.searchContainer}>
-            <View style={styles.searchWrapper}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder='Buscar Empresas'
-              />
-            </View>
-
-            <TouchableOpacity style={styles.searchBtn}>
-              <Ionicons name="search-outline" size={24} color={COLORS.white} />
-            </TouchableOpacity>
+        <View style={styles.searchContainer}>
+          <View style={styles.searchWrapper}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder='Buscar Empresas'
+            />
           </View>
 
-          {/* Sección de "Empresas populares" */}
-          <Text style={styles.populares}>Empresas populares</Text>
+          <TouchableOpacity style={styles.searchBtn}>
+            <Ionicons name="search-outline" size={24} color={COLORS.white} />
+          </TouchableOpacity>
+        </View>
 
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContainer}
+        {/* Sección de "Empresas populares" */}
+        <Text style={styles.populares}>Empresas populares</Text>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+        >
+          {/* Tarjeta de presentación de la empresa 1 */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PerfilEmpresa', { empresa: empresaData })}
           >
-            {/* Tarjeta de presentación de la empresa 1 */}
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PerfilEmpresa', { empresa: empresaData })
-              }
-            >
-              <View style={styles.cartaEmpresa}>
-                <Image
-                  source={require('../assets/empresa1.jpg')}
-                  style={styles.imagenEmpresa}
-                />
-                <Text style={styles.nombreEmpresa}>Empresa 1</Text>
-                <Text style={styles.descripcionEmpresa}>
-                  Descripción de la Empresa 1
-                </Text>
-                <TouchableOpacity style={styles.corazonBtn}>
-                  <Ionicons name="heart-outline" size={24} color={COLORS.black} />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.cartaEmpresa}>
+              <Image
+                source={require('../assets/empresa1.jpg')}
+                style={styles.imagenEmpresa}
+              />
+              <Text style={styles.nombreEmpresa}>Empresa 1</Text>
+              <Text style={styles.descripcionEmpresa}>
+                Descripción de la Empresa 1
+              </Text>
+              <TouchableOpacity style={styles.corazonBtn}>
+                <Ionicons name="heart-outline" size={24} color={COLORS.black} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
 
-            {/* Tarjeta de presentación de la empresa 2 */}
-            <TouchableOpacity
-              onPress={() => handleEmpresaPress(empresaData)}
-            >
-              <View style={styles.cartaEmpresa}>
-                <Image
-                  source={require('../assets/empresa1.png')}
-                  style={styles.imagenEmpresa}
-                />
-                <Text style={styles.nombreEmpresa}>Empresa 2</Text>
-                <Text style={styles.descripcionEmpresa}>
-                  Descripción de la Empresa 2
-                </Text>
-                <TouchableOpacity style={styles.corazonBtn}>
-                  <Ionicons name="heart-outline" size={24} color={COLORS.black} />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
-          {/* Sección de "Empresas populares" */}
-          <Text style={styles.populares}>Empresas cerca de ti</Text>
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContainer}
+          {/* Tarjeta de presentación de la empresa 2 */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PerfilEmpresa', { empresa: empresaData })}
           >
-            {/* Tarjeta de presentación de la empresa 1 */}
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PerfilEmpresa', { empresa: empresaData })
-              }
-            >
-              <View style={styles.cartaEmpresa}>
-                <Image
-                  source={require('../assets/empresa1.jpg')}
-                  style={styles.imagenEmpresa}
-                />
-                <Text style={styles.nombreEmpresa}>Empresa 1</Text>
-                <Text style={styles.descripcionEmpresa}>
-                  Descripción de la Empresa 1
-                </Text>
-                <TouchableOpacity style={styles.corazonBtn}>
-                  <Ionicons name="heart-outline" size={24} color={COLORS.black} />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.cartaEmpresa}>
+              <Image
+                source={require('../assets/empresa1.png')}
+                style={styles.imagenEmpresa}
+              />
+              <Text style={styles.nombreEmpresa}>Empresa 2</Text>
+              <Text style={styles.descripcionEmpresa}>
+                Descripción de la Empresa 2
+              </Text>
+              <TouchableOpacity style={styles.corazonBtn}>
+                <Ionicons name="heart-outline" size={24} color={COLORS.black} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
 
-            {/* Tarjeta de presentación de la empresa 2 */}
-            <TouchableOpacity
-              onPress={() => handleEmpresaPress(empresaData)}
-            >
-              <View style={styles.cartaEmpresa}>
-                <Image
-                  source={require('../assets/empresa1.png')}
-                  style={styles.imagenEmpresa}
-                />
-                <Text style={styles.nombreEmpresa}>Empresa 2</Text>
-                <Text style={styles.descripcionEmpresa}>
-                  Descripción de la Empresa 2
-                </Text>
-                <TouchableOpacity style={styles.corazonBtn}>
-                  <Ionicons name="heart-outline" size={24} color={COLORS.black} />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
-        </LinearGradient>
-      </ScrollView>
+        {/* Sección de "Empresas populares" */}
+        <Text style={styles.populares}>Empresas cerca de ti</Text>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+        >
+          {/* Tarjeta de presentación de la empresa 1 */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PerfilEmpresa', { empresa: empresaData })}
+          >
+            <View style={styles.cartaEmpresa}>
+              <Image
+                source={require('../assets/empresa1.jpg')}
+                style={styles.imagenEmpresa}
+              />
+              <Text style={styles.nombreEmpresa}>Empresa 1</Text>
+              <Text style={styles.descripcionEmpresa}>
+                Descripción de la Empresa 1
+              </Text>
+              <TouchableOpacity style={styles.corazonBtn}>
+                <Ionicons name="heart-outline" size={24} color={COLORS.black} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+
+          {/* Tarjeta de presentación de la empresa 2 */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PerfilEmpresa', { empresa: empresaData })}
+          >
+            <View style={styles.cartaEmpresa}>
+              <Image
+                source={require('../assets/empresa1.png')}
+                style={styles.imagenEmpresa}
+              />
+              <Text style={styles.nombreEmpresa}>Empresa 2</Text>
+              <Text style={styles.descripcionEmpresa}>
+                Descripción de la Empresa 2
+              </Text>
+              <TouchableOpacity style={styles.corazonBtn}>
+                <Ionicons name="heart-outline" size={24} color={COLORS.black} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      </LinearGradient>
+    </ScrollView>
   );
 };
 
@@ -285,7 +196,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: "5%",
     marginLeft: "5%",
-    marginBottom: "5%"
+    marginBottom: "5%",
   },
   scrollContainer: {
     paddingHorizontal: '2.5%',
@@ -297,7 +208,6 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 250,
     padding: 16,
-    
   },
   imagenEmpresa: {
     width: 65,
@@ -324,7 +234,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.back,
   },
-
 });
 
 export default HomeScreen;
