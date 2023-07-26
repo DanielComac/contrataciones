@@ -44,7 +44,7 @@ const HomeScreenEmpresa = () => {
           ingles: doc.data().ingles,
           disponibilidad: doc.data().disponibilidad,
           categoria: doc.data().categoria,
-
+          privilegio: doc.data().privilegio,
         }))
       );
     });
