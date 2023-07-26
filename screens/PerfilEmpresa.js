@@ -14,8 +14,9 @@ const PerfilEmpresa = () => {
   const [selectedNombre, setSelectedNombre] = useState('');
   const [infoEmpresa, setInfoEmpresa] = useState([]);
 
-
   const [infoUsuario, setInfoUsuario] = useState([]);
+  const [tempPhoneNumber, setTempPhoneNumber] = useState(''); // Estado temporal para almacenar phoneNumber durante la edición
+  const [tempSelectedNombre, setTempSelectedNombre] = useState(''); // Estado temporal para almacenar selectedNombre durante la edición
 
   useEffect(() => {
     const collectionRef = collection(firestore, 'users');
@@ -50,6 +51,10 @@ const PerfilEmpresa = () => {
             numeroCelularEmpresa: doc.data().numeroCelularEmpresa,
           },
         ]);
+
+        // También almacenar los datos temporales para la edición
+        setTempSelectedNombre(doc.data().nombreEmpresa);
+        setTempPhoneNumber(doc.data().numeroCelularEmpresa);
       } else {
         // El documento no existe
         console.log('El documento no existe.');
@@ -59,21 +64,13 @@ const PerfilEmpresa = () => {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    // Mantener la información seleccionada al entrar en el modo de edición
-    if (infoUsuario.length > 0) {
-      setSelectedNombre(infoUsuario[0].nombreEmpresa);
-      setPhoneNumber(infoUsuario[0].numeroCelularEmpresa);
-    }
-  }, [infoUsuario]);
-
   const onSend = () => {
     try {
       let id = userId;
       const refDoc = doc(firestore, 'users', id);
       updateDoc(refDoc, {
-        nombreEmpresa: selectedNombre,
-        numeroCelularEmpresa: phoneNumber,
+        nombreEmpresa: tempSelectedNombre,
+        numeroCelularEmpresa: tempPhoneNumber,
       });
 
       setEditMode(false);
@@ -88,6 +85,9 @@ const PerfilEmpresa = () => {
 
   const handleSavePersonalInfo = () => {
     setEditMode(false);
+    // Limpiar los estados temporales después de guardar
+    setTempSelectedNombre('');
+    setTempPhoneNumber('');
   };
 
   return (
@@ -112,8 +112,8 @@ const PerfilEmpresa = () => {
                   <TextInput
                     placeholder="Escribe el nombre de la empresa"
                     style={styles.infoTextInput1}
-                    value={selectedNombre}
-                    onChangeText={setSelectedNombre}
+                    value={tempSelectedNombre}
+                    onChangeText={setTempSelectedNombre}
                   />  
                 ) : (
                   <Text style={styles.infoText}>Nombre: {dato.nombreEmpresa} </Text>
@@ -126,8 +126,8 @@ const PerfilEmpresa = () => {
                   <TextInput
                     placeholder="Escribe tu numero de telefono"
                     style={styles.infoTextInput1}
-                    value={phoneNumber}
-                    onChangeText={setPhoneNumber}
+                    value={tempPhoneNumber}
+                    onChangeText={setTempPhoneNumber}
                   />
                 ) : (
                   <Text style={styles.infoText}>Número de teléfono: {dato.numeroCelularEmpresa} </Text>

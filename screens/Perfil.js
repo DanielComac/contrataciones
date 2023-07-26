@@ -8,6 +8,7 @@ import { firestore } from "../firebase-config";
 import { setDoc, doc, addDoc, collection, onSnapshot, query, updateDoc } from "firebase/firestore";
 import { auth } from '../firebase-config';
 import { userId } from './Login.js'
+import { useTheme } from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
@@ -23,88 +24,119 @@ const ProfileScreen = () => {
   const [selectedExperiencia, setSelectedExperiencia] = useState('');
   const [selectedIngles, setSelectedIngles] = useState('');
   const [selectedDisponibilidad, setSelectedDisponibilidad] = useState('');
+  const [infoUsuario, setInfoUsuario] = useState([]);
 
+  const [tempPhoneNumber, setTempPhoneNumber] = useState(''); // Estado temporal para almacenar phoneNumber durante la edición
+  const [tempSelectedNombre, setTempSelectedNombre] = useState(''); // Estado temporal para almacenar selectedNombre durante la edición
+  const [tempSelectedGenero, setTempSelectedGenero] = useState('');
+  const [tempSelectedCiudad, setTempSelectedCiudad] = useState('');
+  const [tempSelectedColonia, setTempSelectedColonia] = useState('');
+  const [tempSelectedCodigoPostal, setTempSelectedCodigoPostal] = useState('');
+  const [tempSelectedEdad, setTempSelectedEdad] = useState('');
+  const [tempSelectedPuestoTrabajo, setTempSelectedPuestoTrabajo] = useState('');
+  const [tempSelectedEstudios, setTempSelectedEstudios] = useState('');
+  const [tempSelectedExperiencia, setTempSelectedExperiencia] = useState('');
+  const [tempSelectedIngles, setTempSelectedIngles] = useState('');
+  const [tempSelectedDisponibilidad, setTempSelectedDisponibilidad] = useState('');
+  const [tempSelectedCategoria, setTempSelectedCategoria] = useState('');
 
-  const [infoUsuario, setInfoUsuario] = useState([]); // Inicializar como array vacío
+  useEffect(() => {
+    const id = userId;
+    const collectionRef = collection(firestore, 'users');
+    const q = doc(collectionRef, id);
 
-useEffect(() => {
-  const id = userId;
-  const collectionRef = collection(firestore, 'users');
-  const q = doc(collectionRef, id);
-
-  const unsubscribe = onSnapshot(q, (doc) => {
-    if (doc.exists()) {
-      // Convertir los datos en un array y luego establecer el estado
-      setInfoUsuario([
-        {
-          id: doc.id,
-          nombre: doc.data().nombre,
-          numeroCelular: doc.data().numeroCelular,
-          genero: doc.data().genero,
-          edad: doc.data().edad,
-          ciudad: doc.data().ciudad,
-          colonia: doc.data().colonia,
-          codigoPostal: doc.data().codigoPostal,
-          puestoTrabajo: doc.data().puestoTrabajo,
-          estudios: doc.data().estudios,
-          experiencia: doc.data().experiencia,
-          ingles: doc.data().ingles,
-          disponibilidad: doc.data().disponibilidad,
-          categoria: doc.data().categoria,
-        },
-      ]);
-    } else {
-      // El documento no existe
-      console.log('El documento no existe.');
-    }
-  });
-
-  return unsubscribe;
-}, []);
-
-  console.log(infoUsuario)
-
-    const onSend = () => {
-      try{
-        let id = userId;
-        const refDoc = doc(firestore, 'users', id)
-        updateDoc(refDoc, {
-          nombre: selectedNombre,
-          numeroCelular: phoneNumber,
-          genero: selectedGenero,
-          edad: selectedEdad,
-          ciudad: selectedCiudad,
-          colonia: selectedColonia,
-          codigoPostal: selectedCP,
-          puestoTrabajo: selectedTrabajo,
-          estudios: selectedEducacion,
-          experiencia: selectedExperiencia,
-          ingles: selectedIngles,
-          disponibilidad: selectedDisponibilidad
-
-        })
-  
-        setEditMode(false);
-
-      } catch (error) {
-        console.log('Error al enviar la información', error)
-
+    const unsubscribe = onSnapshot(q, (doc) => {
+      if (doc.exists()) {
+        setInfoUsuario([
+          {
+            id: doc.id,
+            nombre: doc.data().nombre,
+            numeroCelular: doc.data().numeroCelular,
+            genero: doc.data().genero,
+            edad: doc.data().edad,
+            ciudad: doc.data().ciudad,
+            colonia: doc.data().colonia,
+            codigoPostal: doc.data().codigoPostal,
+            puestoTrabajo: doc.data().puestoTrabajo,
+            estudios: doc.data().estudios,
+            experiencia: doc.data().experiencia,
+            ingles: doc.data().ingles,
+            disponibilidad: doc.data().disponibilidad,
+            categoria: doc.data().categoria,
+          },
+        ]);
+        
+        setTempSelectedNombre(doc.data().nombre);
+        setTempPhoneNumber(doc.data().numeroCelular);
+        setTempSelectedGenero(doc.data().genero);
+        setTempSelectedEdad(doc.data().edad);
+        setTempSelectedCiudad(doc.data().ciudad);
+        setTempSelectedColonia(doc.data().colonia);
+        setTempSelectedCodigoPostal(doc.data().codigoPostal);
+        setTempSelectedPuestoTrabajo(doc.data().puestoTrabajo);
+        setTempSelectedEstudios(doc.data().estudios);
+        setTempSelectedExperiencia(doc.data().experiencia);
+        setTempSelectedIngles(doc.data().ingles);
+        setTempSelectedDisponibilidad(doc.data().disponibilidad);
+        setTempSelectedCategoria(doc.data().categoria);
+      } else {
+        console.log('El documento no existe.');
       }
-      
-    }
-    
-  
+    });
+
+    return unsubscribe;
+  }, []);
+
   const handleEditPersonalInfo = () => {
     setEditMode(true);
   };
 
   const handleSavePersonalInfo = () => {
-    setEditMode(false);
-    setSelectedGenero(selectedGenero)
-    // Agrega el código para guardar la información personal editada
+   
+
+    // Lógica para guardar la información en la base de datos
+    try {
+      let id = userId;
+      const refDoc = doc(firestore, 'users', id);
+      updateDoc(refDoc, {
+        nombre: tempSelectedNombre,
+        numeroCelular: tempPhoneNumber,
+        genero: tempSelectedGenero,
+        edad: tempSelectedEdad,
+        ciudad: tempSelectedCiudad,
+        colonia: tempSelectedColonia,
+        codigoPostal: tempSelectedCodigoPostal,
+        puestoTrabajo: tempSelectedPuestoTrabajo,
+        estudios: tempSelectedEstudios,
+        experiencia: tempSelectedExperiencia,
+        ingles: tempSelectedIngles,
+        disponibilidad: tempSelectedDisponibilidad,
+        categoria: tempSelectedCategoria,
+      });
+      setEditMode(false);
+    } catch (error) {
+      console.log('Error al enviar la información', error);
+    }
   };
 
-  // Ciclo para las opciones de seleccion de edad
+  const onSend = () => {
+    setEditMode(false);
+    // Limpiar los estados temporales después de guardar
+    setTempSelectedNombre('');
+    setTempPhoneNumber('');
+    setTempSelectedGenero('');
+    setTempSelectedEdad('');
+    setTempSelectedCiudad('');
+    setTempSelectedColonia('');
+    setTempSelectedCodigoPostal('');
+    setTempSelectedPuestoTrabajo('');
+    setTempSelectedEstudios('');
+    setTempSelectedExperiencia('');
+    setTempSelectedIngles('');
+    setTempSelectedDisponibilidad('');
+    setTempSelectedCategoria('');
+  };
+
   const renderOptions = () => {
     const options = [];
     for (let i = 18; i <= 100; i++) {
@@ -114,49 +146,50 @@ useEffect(() => {
   };
 
   return (
-    
     <ScrollView>
-      {infoUsuario.map((dato) => (  
+      {infoUsuario.map((dato) => (
         <View key={dato.id} style={{ flex: 1, backgroundColor: COLORS.back }}>
-        <Text style={styles.headerTitle}>Mi perfil</Text>
-        <View style={styles.container}>
-          <View style={styles.infoContainer}>
-            <View style={styles.profileContainer}>
-              <Image
-                source={require('../assets/persona1.jpg')}
-                style={styles.profilePicture}
-              />
-              <Text style={styles.name}>{dato.nombre}</Text>
-            </View>
-            <Text style={styles.infoTitle}>Información personal:</Text>
-            <View style={styles.infoDivider} />
-            <View style={styles.infoRow}>
-            <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
-              {editMode ? (
-                <TextInput
-                  placeholder= "Escribe tu nombre"
-                  style={styles.infoTextInput1}
-                  value={selectedNombre}
-                  onChangeText={setSelectedNombre}
+          <Text style={styles.headerTitle}>Mi perfil</Text>
+          <View style={styles.container}>
+            <View style={styles.infoContainer}>
+              <View style={styles.profileContainer}>
+                <Image
+                  source={require('../assets/persona1.jpg')}
+                  style={styles.profilePicture}
                 />
-              ) : (
-                <Text style={styles.infoText}>Nombre: {dato.nombre} </Text>
-              )}
-            </View>
-            <View style={styles.infoDivider} />
-            <View style={styles.infoRow}>
-              <Ionicons name="call" size={16} style={styles.infoIcon} />
-              {editMode ? (
-                <TextInput
-                  placeholder= "Escribe tu numero de telefono"
-                  style={styles.infoTextInput1}
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                />
-              ) : (
-                <Text style={styles.infoText}>Número de teléfono: {dato.numeroCelular} </Text>
-              )}
-            </View>
+                <Text style={styles.name}>{dato.nombre}</Text>
+              </View>
+              <Text style={styles.infoTitle}>Información personal:</Text>
+              <View style={styles.infoDivider} />
+              <View style={styles.infoRow}>
+                <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
+                {editMode ? (
+                  <TextInput
+                    placeholder="Escribe tu nombre"
+                    style={styles.infoTextInput1}
+                    value={tempSelectedNombre}
+                    onChangeText={setTempSelectedNombre}
+                  />
+                ) : (
+                  <Text style={styles.infoText}>Nombre: {dato.nombre} </Text>
+                )}
+              </View>
+              <View style={styles.infoDivider} />
+              <View style={styles.infoRow}>
+                <Ionicons name="call" size={16} style={styles.infoIcon} />
+                {editMode ? (
+                  <TextInput
+                    placeholder="Escribe tu numero de telefono"
+                    style={styles.infoTextInput1}
+                    value={tempPhoneNumber}
+                    onChangeText={setTempPhoneNumber}
+                  />
+                ) : (
+                  <Text style={styles.infoText}>
+                    Número de teléfono: {dato.numeroCelular}
+                  </Text>
+                )}
+              </View>
 
 {/* ---------------------------------------------------------------------------------------- */}
 
@@ -166,8 +199,9 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                   style={styles.infoTextInput}
-                  selectedValue={selectedGenero}
-                  onValueChange={itemValue => setSelectedGenero(itemValue)}
+                  selectedValue={tempSelectedGenero}
+                  onValueChange={itemValue => setTempSelectedGenero(itemValue)}
+                  onChangeText={setTempSelectedGenero}
                 >
 
                   <Picker.Item label="--" value="--" />
@@ -189,8 +223,9 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                 style={styles.infoTextInput}
-                selectedValue={selectedEdad}
-                onValueChange={(itemValue, itemIndex) => setSelectedEdad(itemValue)}
+                selectedValue={tempSelectedEdad}
+                onValueChange={(itemValue, itemIndex) => setTempSelectedEdad(itemValue)}
+                onChangeText={setTempSelectedEdad}
                 >
                 <Picker.Item label="--" value="--" />
                 {renderOptions()}
@@ -208,8 +243,9 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                 style={styles.infoTextInput}
-                selectedValue={selectedCiudad}
-                onValueChange={(itemValue, itemIndex) => setSelectedCiudad(itemValue)}
+                selectedValue={tempSelectedCiudad}
+                onValueChange={(itemValue, itemIndex) => setTempSelectedCiudad(itemValue)}
+                onChangeText={setTempSelectedCiudad}
                 >
                 <Picker.Item label="Victoria de Durango" value="Victoria de Durango"/>
                 </Picker>
@@ -227,8 +263,8 @@ useEffect(() => {
                 <TextInput
                   placeholder='Escribe tu colonia'
                   style={styles.infoTextInput1}
-                  value={selectedColonia}
-                  onChangeText={setSelectedColonia}
+                  value={tempSelectedColonia}
+                  onChangeText={setTempSelectedColonia}
                 />
               ) : (
                 <Text style={styles.infoText}>Colonia: {dato.colonia} </Text>
@@ -244,8 +280,8 @@ useEffect(() => {
                 <TextInput
                   placeholder='Escribe tu Código Postal'
                   style={styles.infoTextInput1}
-                  value={selectedCP}
-                  onChangeText={setSelectedCP}
+                  value={tempSelectedCodigoPostal}
+                  onChangeText={setTempSelectedCodigoPostal}
                 />
               ) : (
                 <Text style={styles.infoText}>Código Postal: {dato.codigoPostal}</Text>
@@ -261,8 +297,8 @@ useEffect(() => {
                 <TextInput
                   placeholder='Escribe tu trabajo deseado'
                   style={styles.infoTextInput1}
-                  value={selectedTrabajo}
-                  onChangeText={setSelectedTrabajo}
+                  value={tempSelectedPuestoTrabajo}
+                  onChangeText={setTempSelectedPuestoTrabajo}
                 />
               ) : (
                 <Text style={styles.infoText}>Puesto de trabajo deseado: {dato.puestoTrabajo}</Text>
@@ -277,9 +313,9 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                 style={styles.infoTextInput}
-                selectedValue={selectedEducacion}
-                onValueChange={(itemValue, itemIndex) => setSelectedEducacion(itemValue)}
-                
+                selectedValue={tempSelectedEstudios}
+                onValueChange={(itemValue, itemIndex) => setTempSelectedEstudios(itemValue)}
+                onChangeText={setTempSelectedEstudios}
                 >
                 <Picker.Item label="--" value="--" />
                 <Picker.Item label='Primaria o secundaria' value="Primaria o secundaria" />
@@ -302,9 +338,9 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                 style={styles.infoTextInput}
-                selectedValue={selectedExperiencia}
-                onValueChange={(itemValue, itemIndex) => setSelectedExperiencia(itemValue)}
-                
+                selectedValue={tempSelectedExperiencia}
+                onValueChange={(itemValue, itemIndex) => setTempSelectedExperiencia(itemValue)}
+                onChangeText={setTempSelectedExperiencia}
                 >
                 <Picker.Item label="--" value="--" />
                 <Picker.Item label='Sin experiencia' value="Sin experiencia" />
@@ -325,14 +361,12 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                 style={styles.infoTextInput}
-                selectedValue={selectedIngles}
-                onValueChange={(itemValue, itemIndex) => setSelectedIngles(itemValue)}
-                
+                selectedValue={tempSelectedIngles}
+                onValueChange={(itemValue, itemIndex) => setTempSelectedIngles(itemValue)}
+                onChangeText={setTempSelectedIngles}
                 >
-                {dato.ingles === "" ? 
-                <Picker.Item label={dato.ingles} value={dato.ingles} /> : 
-                <Picker.Item label="SELECCIONA TU NIVEL DE INGLES" value="" /> 
-                }
+                
+                <Picker.Item label="--" value="--" />
                 <Picker.Item label="No sé ingles" value="No sé ingles" />
                 <Picker.Item label="Hablo lo básico" value="Hablo lo básico" />
                 <Picker.Item label="Lo hablo fluido" value="Lo hablo fluido" />
@@ -353,9 +387,9 @@ useEffect(() => {
               {editMode ? (
                 <Picker
                 style={styles.infoTextInput}
-                selectedValue={selectedDisponibilidad}
-                onValueChange={(itemValue, itemIndex) => setSelectedDisponibilidad(itemValue)}
-                
+                selectedValue={tempSelectedDisponibilidad}
+                onValueChange={(itemValue, itemIndex) => setTempSelectedDisponibilidad(itemValue)}
+                onChangeText={setTempSelectedDisponibilidad}
                 >
                 <Picker.Item label="--" value="--" />
                 <Picker.Item label="Tiempo Completo" value="Tiempo Completo" />
@@ -370,20 +404,23 @@ useEffect(() => {
 
             <View style={styles.infoDivider} />
             {editMode ? (
-              <TouchableOpacity style={styles.saveButton} onPress={onSend}>
-                <Text style={styles.saveButtonText}>Guardar</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.editButton} onPress={handleEditPersonalInfo}>
-                <Text style={styles.editButtonText}>Editar información del perfil</Text>
-              </TouchableOpacity>
-            )}
+                <View style={styles.editButtonsContainer}>
+                  <TouchableOpacity style={styles.saveButton} onPress={handleSavePersonalInfo}>
+                    <Text style={styles.saveButtonText}>Guardar</Text>
+                  </TouchableOpacity>
+                  {/* <TouchableOpacity style={styles.cancelButton} onPress={handleCancelEdit}>
+                    <Text style={styles.cancelButtonText}>Cancelar</Text>
+                  </TouchableOpacity> */}
+                </View>
+              ) : (
+                <TouchableOpacity style={styles.editButton} onPress={handleEditPersonalInfo}>
+                  <Text style={styles.editButtonText}>Editar información del perfil</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </View>
-       
-      </View>
-       
-       ))} 
+      ))}
     </ScrollView>
     
   );
@@ -490,6 +527,17 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
   },
+  cancelButton: {
+    backgroundColor: COLORS.red,
+    borderRadius: 7,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: '5%',
+  },
+  cancelButtonText: {
+    color: COLORS.white,
+    fontSize: 18,
+  }
 });
 
 export default ProfileScreen;
