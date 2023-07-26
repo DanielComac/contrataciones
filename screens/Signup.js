@@ -131,7 +131,7 @@ const Signup = ({ navigation }) => {
                 experiencia: "",
                 ingles: "",
                 disponibilidad: "",
-                categoria: ""
+                campoTrabajo: ""
 
             })
 
