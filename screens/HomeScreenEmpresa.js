@@ -398,26 +398,32 @@ const HomeScreenEmpresa = () => {
         <Text style={styles.populares}>Candidatos</Text>
 
         <View style={styles.tarjetasContainer}>
-          {candidatosFiltrados.map((dato) => (
-            // <TouchableOpacity
-            //   key={dato.id}
-            //   style={styles.cartaEmpresa}
-            //   onPress={() => verPerfilCandidato(dato)} // Llama a la función verPerfilCandidato al hacer clic en la tarjeta
-            // >
-              <View key={dato.id} style={styles.cartaEmpresa}>
-                <Image
-                  source={require('../assets/persona1.jpg')}
-                  style={styles.imagenEmpresa}
-                  resizeMode="cover"
-                />
-                <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-                <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-                <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-              </View>
-            // </TouchableOpacity>
-
-          ))}
-        </View>
+        {candidatosFiltrados.map((dato) => {
+          // Verificar si el candidato tiene el privilegio "usuario"
+          if (dato.privilegio === "usuario") {
+            return (
+              <TouchableOpacity
+                key={dato.id}
+                style={styles.cartaEmpresa}
+                onPress={() => verPerfilCandidato(dato)}
+              >
+                <View>
+                  <Image
+                    source={require('../assets/persona1.jpg')}
+                    style={styles.imagenEmpresa}
+                    resizeMode="cover"
+                  />
+                  <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+                  <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+                  <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          } else {
+            return null; // Si el candidato no tiene el privilegio "usuario", no se renderiza la tarjeta
+          }
+        })}
+      </View>
       </LinearGradient>
     </ScrollView>
   );
