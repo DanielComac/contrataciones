@@ -18,9 +18,36 @@ import React, { useEffect, useState } from "react";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+export function BottomTab() {
+  const [privilegio, setPrivilegio] = useState("");
+  const [loading, setLoading] = useState(true);
+  const id = userId || idUsuario || idEmpresa;
+  useEffect(() => {
+    const obtenerPrivilegio = async () => {
+      try {
+        const docSnap = await getDoc(doc(firestore, "users", id));
+        if (docSnap.exists()) {
+          setPrivilegio(docSnap.data().privilegio);
+        } else {
+          console.log("El documento no existe.");
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error al obtener el documento:", error);
+        setLoading(false);
+      }
+    };
+    obtenerPrivilegio();
+  }, [id]);
 
-export function BottomTabUsuario() {
-  
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#4caf50" />
+      </View>
+    );
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="HomeScreen"
@@ -28,6 +55,8 @@ export function BottomTabUsuario() {
         tabBarActiveTintColor: "#4caf50",
       }}
     >
+      {privilegio === "usuario" ? (
+        <>
           <Tab.Screen
             name="Perfil"
             component={Perfil}
@@ -61,6 +90,9 @@ export function BottomTabUsuario() {
               ),
             }}
           />
+          
+        </>
+      ) : null}
           <Tab.Screen
             name="Ajustes"
             component={Ajustes}
@@ -72,70 +104,58 @@ export function BottomTabUsuario() {
               ),
             }}
           />
+      {privilegio === "empresa" ? (
+        <>
+          <Tab.Screen
+            name="PerfilEmpresa"
+            component={PerfilEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Perfil",
+              tabBarIcon: ({}) => (
+                <Ionicons name="person" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="HomeScreenEmpresa"
+            component={HomeScreenEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Home",
+              tabBarIcon: ({}) => (
+                <Ionicons name="home" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="NotificacionesEmpresa"
+            component={NotificacionesEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Notificaciones",
+              tabBarIcon: ({}) => (
+                <Ionicons name="notifications" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="AjustesEmpresa"
+            component={AjustesEmpresa}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Ajustes",
+              tabBarIcon: ({}) => (
+                <Entypo name="cog" size={24} color={COLORS.primary} />
+              ),
+            }}
+          />
+        </>
+      ) : null}
 
     </Tab.Navigator>
   );
 }
-
-export function BottonTabEmpresa() {
-  return (
-    <Tab.Navigator
-      initialRouteName="HomeScreenEmpresa"
-      screenOptions={{
-        tabBarActiveTintColor: "#4caf50",
-      }}
-    >
-      <Tab.Screen
-        name="PerfilEmpresa"
-        component={PerfilEmpresa}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Perfil",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="HomeScreenEmpresa"
-        component={HomeScreenEmpresa}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="NotificacionesEmpresa"
-        component={NotificacionesEmpresa}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Notificaciones",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="notifications" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="AjustesEmpresa"
-        component={AjustesEmpresa}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Ajustes",
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="cog" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
-
 
 export function InitialStack() {
   return (
@@ -181,58 +201,17 @@ export function InitialStack() {
   );
 }
 
-
 export const SignedInStack = () => {
-
-  const [privilegio, setPrivilegio] = useState("");
-  const [loading, setLoading] = useState(true);
-  const id = userId || idUsuario || idEmpresa;
-  useEffect(() => {
-    const obtenerPrivilegio = async () => {
-      try {
-        const docSnap = await getDoc(doc(firestore, "users", id));
-        if (docSnap.exists()) {
-          setPrivilegio(docSnap.data().privilegio);
-        } else {
-          console.log("El documento no existe.");
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error al obtener el documento:", error);
-        setLoading(false);
-      }
-    };
-    obtenerPrivilegio();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#4caf50" />
-      </View>
-    );
-  }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-
-        {privilegio === "usuario" ? (
-          <Stack.Screen
+        <Stack.Screen
           name="Home"
-          component={BottomTabUsuario}
+          component={BottomTab}
           options={{
             headerShown: false,
           }}
         />
-        ) : (
-          <Stack.Screen
-          name="Home"
-          component={BottonTabEmpresa}
-          options={{
-            headerShown: false,
-          }}
-        />
-        )}
         <Stack.Screen
           name="Form"
           component={Form}
@@ -259,5 +238,3 @@ export const SignedInStack = () => {
     </NavigationContainer>
   );
 };
-
-
