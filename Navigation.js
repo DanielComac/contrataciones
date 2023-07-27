@@ -17,11 +17,12 @@ import React, { useEffect, useState } from "react";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
 function BottomTab() {
+
   const [privilegio, setPrivilegio] = useState("");
   const id = userId || idUsuario || idEmpresa;
   
-
   useEffect(() => {
     const obtenerPrivilegio = async () => {
       try {

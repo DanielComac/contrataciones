@@ -37,6 +37,7 @@ const Login = ({ navigation }) => {
             console.log('Inicio de sesión exitoso', userCredential.user);
             userId = userCredential.user.uid;
             // Redirigir al usuario a la siguiente ventana
+            console.log(userId);
           })
           .catch((error) => {
             // Ocurrió un error durante el inicio de sesión
