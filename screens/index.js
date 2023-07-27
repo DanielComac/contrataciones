@@ -10,6 +10,9 @@ import PerfilEmpresaScreen from "./PerfilEmpresaScreen";
 import NotificationScreen from "./Notificaciones";
 import Ajustes from "./Ajustes";
 import HomeScreenEmpresa from "./HomeScreenEmpresa";
+import AjustesEmpresa from "./AjustesEmpresa";
+import PerfilEmpresa from "./PerfilEmpresa";
+import NotificacionesEmpresa from "./NotificacionesEmpresa";
 
 export {
     Login,
@@ -23,5 +26,8 @@ export {
     Perfil,
     PerfilEmpresaScreen,
     Ajustes,
-    HomeScreenEmpresa
+    HomeScreenEmpresa,
+    AjustesEmpresa,
+    PerfilEmpresa,
+    NotificacionesEmpresa
 }

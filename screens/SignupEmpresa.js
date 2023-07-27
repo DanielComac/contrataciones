@@ -6,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../componentes/Button';
 import {Dimensions} from 'react-native';
-import FilePickerManager from 'react-native-file-picker';
 
 export let idEmpresa;
 
@@ -44,35 +43,22 @@ const SignupEmpresa = ({ navigation }) => {
 
            //crear un nuevo documento en la coleccion 'formEmpresa'
            await setDoc(doc(firestore, 'users', user.user.uid),{
-            email: email,
-            password: password,
-            privilegio: "empresa"
-
+            emailEmpresa: email,
+            passwordEmpresa: password,
+            privilegio: "empresa",
+            nombreEmpresa: "",
+            numeroCelularEmpresa: "",
         })
 
         //actualizar el userId con la ID del usuario creado
         setUserId(user.user.uid)  
         console.log(idEmpresa)
-        
+        // navigation.navigate("HomeScreenEmpresa");
+
 
         } catch (error) {
           console.log('No se pudo crear la cuenta',error);
         }
-      };
-
-      //Funcionalidad para agregar más numeros de teléfono
-      const [numerosTelefono, setNumerosTelefono] = useState(['']); // Inicialmente, un campo de número de teléfono vacío
-
-      const agregarCampoNumeroTelefono = () => {
-        const nuevoNumeroTelefono = [...numerosTelefono, '']; // Agrega un campo de número de teléfono vacío a la lista
-        setNumerosTelefono(nuevoNumeroTelefono);
-      };
-
-      //Funiconalidad para eliminar input de numero de teléfono
-      const removePhoneNumberField = (index) => {
-        const nuevoNumeroTelefono = [...numerosTelefono];
-        nuevoNumeroTelefono.splice(index, 1);
-        setNumerosTelefono(nuevoNumeroTelefono);
       };
 
       // Dimensiones para fijar flecha de regreso
@@ -218,107 +204,7 @@ const SignupEmpresa = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-
-{/* ====================================================================================== */}
-
-                  {/* Input de ubicación */}
-                  <View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Ubicación (Calle, Número, Colonia, C.P)*</Text>
-
-                    <View style={{
-                        width: "100%",
-                        height: 48,
-                        borderColor: COLORS.black,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingLeft: 22
-                    }}>
-                        <TextInput
-                            placeholder='Ej. Victoria Nte. 213, Zona Centro, 34000'
-                            placeholderTextColor={COLORS.black}
-                            style={{
-                                width: "100%"
-                            }}
-                        />
-                    </View>
-                </View>
-
-{/* ====================================================================================== */}
-                  
-                  {/* Input número de teléfono */}
-                  <View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Número(s) de contacto de la empresa*</Text>
-
-                    {numerosTelefono.map((number, index) => (
-                      <View
-                        key={index}
-                        style={{
-                          width: "100%",
-                          height: 48,
-                          borderColor: COLORS.black,
-                          borderWidth: 1,
-                          borderRadius: 8,
-                          alignItems: "center",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          paddingLeft: 22,
-                          marginTop: index === 0 ? 0 : 8,
-                        }}
-                      >
-                        <TextInput
-                          placeholder="+52"
-                          placeholderTextColor={COLORS.black}
-                          keyboardType="numeric"
-                          style={{
-                            width: "12%",
-                            borderRightWidth: 1,
-                            borderLeftColor: COLORS.grey,
-                            height: "100%",
-                          }}
-                          editable={false}
-                        />
-                        <TextInput
-                          placeholder="Ingresa el número de contacto"
-                          placeholderTextColor={COLORS.black}
-                          keyboardType="numeric"
-                          style={{
-                            width: "80%",
-                          }}
-                          value={number}
-                          onChangeText={(text) => {
-                            const nuevoNumeroTelefono = [...numerosTelefono];
-                            nuevoNumeroTelefono[index] = text;
-                            setNumerosTelefono(nuevoNumeroTelefono);
-                          }}
-                        />
-                        <TouchableOpacity onPress={() => removePhoneNumberField(index)}>
-                          <Text style={{ fontSize: 16, color: COLORS.primary }}>Eliminar</Text>
-                        </TouchableOpacity>
-                      </View>
-                    ))}
-
-                    <TouchableOpacity onPress={agregarCampoNumeroTelefono} style={{ marginTop: 8 }}>
-                      <Text style={{ fontSize: 16, color: COLORS.primary }}>+ Agregar teléfono de contacto (si lo tiene)</Text>
-                    </TouchableOpacity>
-                  </View>
-
-{/* ==================================================================================== */}
-
-
-
-
-
-
+                    
                     {/* Términos y condiciones */}
 
                     <View style={{

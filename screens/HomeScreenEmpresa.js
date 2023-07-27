@@ -3,12 +3,11 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable, TextInput, 
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
 import { firestore } from '../firebase-config';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 
+
 import COLORS from '../temas/colors';
-import Button from '../componentes/Button';
 
 
 const HomeScreenEmpresa = () => {
@@ -45,8 +44,8 @@ const HomeScreenEmpresa = () => {
           experiencia: doc.data().experiencia,
           ingles: doc.data().ingles,
           disponibilidad: doc.data().disponibilidad,
-          categoria: doc.data().categoria,
-
+          campoTrabajo: doc.data().campoTrabajo,
+          privilegio: doc.data().privilegio,
         }))
       );
     });
@@ -96,6 +95,16 @@ const HomeScreenEmpresa = () => {
   const filtrarCandidatos = () => {
     let candidatosFiltrados = infoEmpresa;
 
+
+    if (valorBusqueda.trim() !== '') {
+      const busquedaMinuscula = valorBusqueda.toLowerCase();
+      candidatosFiltrados = candidatosFiltrados.filter((candidato) => {
+        const nombreMinuscula = candidato.nombre?.toLowerCase();
+        return nombreMinuscula && nombreMinuscula.includes(busquedaMinuscula);
+      });
+    }
+
+
     if (filtrosSeleccionados.length > 0) {
       candidatosFiltrados = candidatosFiltrados.filter((candidato) => {
         return filtrosSeleccionados.every((filtro) => {
@@ -104,20 +113,16 @@ const HomeScreenEmpresa = () => {
           } else if (filtro === 'Masculino' || filtro === 'Femenino') {
             return candidato.genero === filtro;
           } else if (filtro === 'Restaurantería') {
-            return candidato.categoria === filtro;
+            return candidato.campoTrabajo === filtro;
           } else if (filtro === 'Chef o cocinero' || filtro === 'Sous chef' || filtro === 'Maitre' || filtro === 'Camarero o mesero' || filtro === 'Bartender' || filtro === 'Barista' || filtro === 'Recepcionista' || filtro === 'Auxiliar de cocina' || filtro === 'Personal de limpieza') {
+            return candidato.puestoTrabajo === filtro;
+          } else if (filtro === 'Educación y enseñanza') {
+            return candidato.campoTrabajo === filtro;
+          } else if (filtro === 'Profesor(a) general' || filtro === 'Profesor(a) de preescolar' || filtro === 'Profesor(a) de primaria' || filtro === 'Profesor(a) de secundaria' || filtro === 'Profesor(a) de universidad' || filtro === 'Tutor o particular' || filtro === 'Instructor de idiomas' || filtro === 'Educación especial') {
             return candidato.puestoTrabajo === filtro;
           }
           return false;
         });
-      });
-    }
-
-    if (valorBusqueda.trim() !== '') {
-      const busquedaMinuscula = valorBusqueda.toLowerCase();
-      candidatosFiltrados = candidatosFiltrados.filter((candidato) => {
-        const nombreMinuscula = candidato.nombre.toLowerCase();
-        return nombreMinuscula.includes(busquedaMinuscula);
       });
     }
 
@@ -227,6 +232,8 @@ const HomeScreenEmpresa = () => {
                   Femenino
                 </Text>
               </TouchableOpacity>
+
+
 
               <Text style={styles.filtrosCategoria}>Puesto de trabajo</Text>
               <TouchableOpacity
@@ -393,6 +400,757 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                 </View>
               )}
+
+{/* -------------------------------------------------------------------------------------------*/}
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Educación y enseñanza') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Educación y enseñanza')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Educación y enseñanza') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Educación y enseñanza
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Educación y enseñanza') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Profesor(a) general') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Profesor(a) general')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Profesor(a) general') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Profesor(a) general
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Profesor(a) de preescolar') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Profesor(a) de preescolar')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Profesor(a) de preescolar') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Profesor(a) de preescolar
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Profesor(a) de primaria') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Profesor(a) de primaria')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Profesor(a) de primaria') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Profesor(a) de primaria
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Profesor(a) de secundaria') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Profesor(a) de secundaria')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Profesor(a) de secundaria') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Profesor(a) de secundaria
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Profesor(a) de universidad') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Profesor(a) de universidad')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Profesor(a) de universidad') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Profesor(a) de universidad
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Tutor o particular') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Tutor o particular')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Tutor o particular') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Tutor o particular
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Instructor de idiomas') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Instructor de idiomas')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Instructor de idiomas') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Instructor de idiomas
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Educación especial') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Educación especial')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Educación especial') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Educación especial
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+{/* -------------------------------------------------------------------------------------- */}
+
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Tecnología e informática') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Tecnología e informática')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Tecnología e informática') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Tecnología e informática
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Tecnología e informática') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Desarrollador de software') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Desarrollador de software')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Desarrollador de software') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Desarrollador de software
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Ingeniero de sistemas') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Ingeniero de sistemas')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Ingeniero de sistemas') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Ingeniero de sistemas
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Diseñador UX/UI') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Diseñador UX/UI')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Diseñador UX/UI') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Diseñador UX/UI
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Seguridad informática') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Seguridad informática')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Seguridad informática') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Seguridad informática
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Analista de datos') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Analista de datos')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Analista de datos') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Analista de datos
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Soporte técnico') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Soporte técnico')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Soporte técnico') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Soporte técnico
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+{/* -------------------------------------------------------------------------------------- */}
+
+              
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Salud y cuidado personal') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Salud y cuidado personal')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Salud y cuidado personal') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Salud y cuidado personal
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Salud y cuidado personal') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Enfermería') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Enfermería')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Enfermería') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Enfermería
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Médico general') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Médico general')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Médico general') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Médico general
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Terapeuta físico') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Terapeuta físico')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Terapeuta físico') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Terapeuta físico
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Asisitente de cuidado de ancianos') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Asisitente de cuidado de ancianos')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Asisitente de cuidado de ancianos') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Asisitente de cuidado de ancianos
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Nutricionista') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Nutricionista')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Nutricionista') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Nutricionista
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Masajista') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Masajista')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Masajista') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Masajista
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+{/* -------------------------------------------------------------------------------------- */}
+
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Recursos humanos y aministración') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Recursos humanos y aministración')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Recursos humanos y aministración') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Recursos humanos y aministración
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Recursos humanos y aministración') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Especialista en recursos humanos') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Especialista en recursos humanos')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Especialista en recursos humanos') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Especialista en recursos humanos
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Asistente administrativo') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Asistente administrativo')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Asistente administrativo') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Asistente administrativo
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Coordinador de eventos') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Coordinador de eventos')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Coordinador de eventos') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Coordinador de eventos
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Asistente ejecutivo') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Asistente ejecutivo')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Asistente ejecutivo') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Asistente ejecutivo
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Analista de reclutamiento') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Analista de reclutamiento')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Analista de reclutamiento') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Analista de reclutamiento
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+{/* -------------------------------------------------------------------------------------- */}
+
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Arte y diseño') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Arte y diseño')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Arte y diseño') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Arte y diseño
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Arte y diseño') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Diseñador gráfico') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Diseñador gráfico')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Diseñador gráfico') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Diseñador gráfico
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Ilustrador') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Ilustrador')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Ilustrador') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Ilustrador
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Fotógrafo') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Fotógrafo')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Fotógrafo') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Fotógrafo
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Animador') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Animador')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Animador') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Animador
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Escenógrafo') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Escenógrafo')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Escenógrafo') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Escenógrafo
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Director') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Director')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Director') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Director
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+{/* -------------------------------------------------------------------------------------- */}
+
+              <TouchableOpacity
+                style={[
+                  styles.filtroOption,
+                  filtrosSeleccionados.includes('Empleos generales') && styles.filtroOptionSelected,
+                ]}
+                onPress={() => handleFiltroSeleccionado('Empleos generales')}
+              >
+                <Text
+                  style={[
+                    styles.filtroText,
+                    filtrosSeleccionados.includes('Empleos generales') && styles.filtroTextSelected,
+                  ]}
+                >
+                  Empleos generales
+                </Text>
+              </TouchableOpacity>
+              {filtrosSeleccionados.includes('Empleos generales') && (
+                <View style={styles.subcategoriaContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Cajero/a') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Cajero/a')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Cajero/a') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Cajero/a
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Recepcionista') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Recepcionista')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Recepcionista') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Recepcionista
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Auxiliar administrativo') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Auxiliar administrativo')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Auxiliar administrativo') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Auxiliar administrativo
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Auxiliar de limpieza') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Auxiliar de limpieza')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Auxiliar de limpieza') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Auxiliar de limpieza
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Auxiliar de cocina') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Auxiliar de cocina')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Auxiliar de cocina') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Auxiliar de cocina
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Intendencia o mantenimiento') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Intendencia o mantenimiento')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Intendencia o mantenimiento') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Intendencia o mantenimiento
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filtroOption,
+                      filtrosSeleccionados.includes('Conserje o portería') && styles.filtroOptionSelected,
+                    ]}
+                    onPress={() => handleFiltroSeleccionado('Conserje o portería')}
+                  >
+                    <Text
+                      style={[
+                        styles.filtroText,
+                        filtrosSeleccionados.includes('Conserje o portería') && styles.filtroTextSelected,
+                      ]}
+                    >
+                      Conserje o portería
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+{/* -------------------------------------------------------------------------------------- */}
+
+
+
             </View>
           )}
         </View>
@@ -400,26 +1158,32 @@ const HomeScreenEmpresa = () => {
         <Text style={styles.populares}>Candidatos</Text>
 
         <View style={styles.tarjetasContainer}>
-          {candidatosFiltrados.map((dato) => (
-            // <TouchableOpacity
-            //   key={dato.id}
-            //   style={styles.cartaEmpresa}
-            //   onPress={() => verPerfilCandidato(dato)} // Llama a la función verPerfilCandidato al hacer clic en la tarjeta
-            // >
-              <View key={dato.id} style={styles.cartaEmpresa}>
-                <Image
-                  source={require('../assets/persona1.jpg')}
-                  style={styles.imagenEmpresa}
-                  resizeMode="cover"
-                />
-                <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-                <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-                <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-              </View>
-            // </TouchableOpacity>
-
-          ))}
-        </View>
+        {candidatosFiltrados.map((dato) => {
+          // Verificar si el candidato tiene el privilegio "usuario"
+          if (dato.privilegio === "usuario") {
+            return (
+              <TouchableOpacity
+                key={dato.id}
+                style={styles.cartaEmpresa}
+                onPress={() => verPerfilCandidato(dato)}
+              >
+                <View>
+                  <Image
+                    source={require('../assets/persona1.jpg')}
+                    style={styles.imagenEmpresa}
+                    resizeMode="cover"
+                  />
+                  <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+                  <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+                  <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          } else {
+            return null; // Si el candidato no tiene el privilegio "usuario", no se renderiza la tarjeta
+          }
+        })}
+      </View>
       </LinearGradient>
     </ScrollView>
   );
