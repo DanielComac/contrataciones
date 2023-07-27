@@ -8,6 +8,7 @@ import { setDoc, doc, addDoc, collection, onSnapshot, query, updateDoc } from "f
 import { auth } from '../firebase-config';
 import { userId } from './Login.js'
 
+
 const PerfilEmpresa = () => {
   const [editMode, setEditMode] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
