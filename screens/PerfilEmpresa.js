@@ -26,7 +26,7 @@ const PerfilEmpresa = () => {
   const [tempWhatsapp, setTempWhatsapp] = useState('');
   const [tempInstagram, setTempInstagram] = useState('');
 
-  const guardarUrlImagenEnBD = async (imageUrl) => {
+  const guardarUrlImagen = async (imageUrl) => {
     try {
       let id = userId;
       const refDoc = doc(firestore, 'users', id);
@@ -50,7 +50,7 @@ const PerfilEmpresa = () => {
   const imageResult = await ImagePicker.launchImageLibraryAsync();
   if (!imageResult.canceled) {
     setSelectedImage(imageResult.assets[0].uri);
-    guardarUrlImagenEnBD(imageResult.assets[0].uri); // Guardar la imagen en la base de datos
+    guardarUrlImagen(imageResult.assets[0].uri);
   }
 };
 
