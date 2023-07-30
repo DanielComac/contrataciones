@@ -132,6 +132,36 @@ const HomeScreenEmpresa = () => {
   
   const candidatosFiltrados = filtrarCandidatos();
 
+  const mostrarTarjeta = (dato) => {
+    // Verificar si el candidato ha llenado toda su información relevante
+    const infoCompleta =
+      dato.nombre && dato.puestoTrabajo && dato.genero && dato.campoTrabajo;
+    
+    if (!infoCompleta) {
+      // Si la información no está completa, no se muestra la tarjeta
+      return null;
+    }
+    // Si la información está completa, mostrar la tarjeta
+    return (
+      <TouchableOpacity
+        key={dato.id}
+        style={styles.cartaEmpresa}
+        onPress={() => verPerfilCandidato(dato)}
+      >
+        <View>
+          <Image
+            source={require('../assets/persona1.jpg')}
+            style={styles.imagenEmpresa}
+            resizeMode="cover"
+          />
+          <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+          <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+          <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScrollView>
       <LinearGradient style={{ flex: 1 }} colors={[COLORS.back, COLORS.back]}>
@@ -742,17 +772,17 @@ const HomeScreenEmpresa = () => {
                   <TouchableOpacity
                     style={[
                       styles.filtroOption,
-                      filtrosSeleccionados.includes('Asisitente de cuidado de ancianos') && styles.filtroOptionSelected,
+                      filtrosSeleccionados.includes('Asistente de cuidado de ancianos') && styles.filtroOptionSelected,
                     ]}
-                    onPress={() => handleFiltroSeleccionado('Asisitente de cuidado de ancianos')}
+                    onPress={() => handleFiltroSeleccionado('Asistente de cuidado de ancianos')}
                   >
                     <Text
                       style={[
                         styles.filtroText,
-                        filtrosSeleccionados.includes('Asisitente de cuidado de ancianos') && styles.filtroTextSelected,
+                        filtrosSeleccionados.includes('Asistente de cuidado de ancianos') && styles.filtroTextSelected,
                       ]}
                     >
-                      Asisitente de cuidado de ancianos
+                      Asistente de cuidado de ancianos
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -1158,32 +1188,10 @@ const HomeScreenEmpresa = () => {
         <Text style={styles.populares}>Candidatos</Text>
 
         <View style={styles.tarjetasContainer}>
-        {candidatosFiltrados.map((dato) => {
-          // Verificar si el candidato tiene el privilegio "usuario"
-          if (dato.privilegio === "usuario") {
-            return (
-              <TouchableOpacity
-                key={dato.id}
-                style={styles.cartaEmpresa}
-                onPress={() => verPerfilCandidato(dato)}
-              >
-                <View>
-                  <Image
-                    source={require('../assets/persona1.jpg')}
-                    style={styles.imagenEmpresa}
-                    resizeMode="cover"
-                  />
-                  <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-                  <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-                  <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          } else {
-            return null; // Si el candidato no tiene el privilegio "usuario", no se renderiza la tarjeta
-          }
-        })}
-      </View>
+          {candidatosFiltrados.map((dato) => {
+            return mostrarTarjeta(dato);
+          })}
+        </View>
       </LinearGradient>
     </ScrollView>
   );

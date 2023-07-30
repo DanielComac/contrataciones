@@ -25,7 +25,7 @@ const camposTrabajoOpciones = [
   },
   {
     campo: 'Salud y cuidado personal',
-    puestosTrabajo: ['Enfermería', 'Médico general', 'Terapeuta físico', 'Asisitente de cuidado de ancianos', 'Nutricionista', 'Masajista'],
+    puestosTrabajo: ['Enfermería', 'Médico general', 'Terapeuta físico', 'Asistente de cuidado de ancianos', 'Nutricionista', 'Masajista'],
   },
   {
     campo: 'Recursos humanos y aministración',

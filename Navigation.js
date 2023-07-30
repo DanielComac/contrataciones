@@ -19,6 +19,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
+
 export function BottomTabUsuario() {
   
   return (
