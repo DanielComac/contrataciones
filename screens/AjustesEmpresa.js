@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../temas/colors';
 import { getAuth, updatePassword, updateEmail } from 'firebase/auth';
+import CandidatosGuardados from './CandidatosGuardados';
 
 const AjustesEmpresa = ({ navigation }) => {
   const auth = getAuth();
@@ -12,6 +13,10 @@ const AjustesEmpresa = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [email, setEmail] = useState('');
+
+  const handleCandidatosGuardados = () => {
+    navigation.navigate('CandidatosGuardados'); // Navega a la pantalla de candidatos guardados
+  };
 
   const handleCerrarSesion = async () => {
     try {
@@ -72,6 +77,12 @@ const AjustesEmpresa = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.back }}>
       <Text style={styles.titulo}>Ajustes</Text>
+      <View style={styles.optionContainer}>
+        <TouchableOpacity style={styles.option} onPress={handleCandidatosGuardados}>
+            <Ionicons name="bookmarks-outline" size={24} color={COLORS.black} style={styles.optionIcon} />
+            <Text style={styles.optionText}>Candidatos guardados</Text>
+          </TouchableOpacity>
+        </View>
       <View style={styles.optionContainer}>
         <TouchableOpacity
           style={styles.option}
