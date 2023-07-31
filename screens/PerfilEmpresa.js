@@ -1,63 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 import COLORS from '../temas/colors';
 import { firestore } from "../firebase-config";
-import { setDoc, doc, addDoc, collection, onSnapshot, query, updateDoc } from "firebase/firestore";
-import { auth } from '../firebase-config';
-import { userId } from './Login.js'
+import { setDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { userId } from './Login.js';
+import * as ImagePicker from 'expo-image-picker';
+import Button from '../componentes/Button';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 
 const PerfilEmpresa = () => {
   const [editMode, setEditMode] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedNombre, setSelectedNombre] = useState('');
-  const [infoEmpresa, setInfoEmpresa] = useState([]);
+  const [infoUsuario, setInfoUsuario] = useState({});
+  const [tempSelectedNombre, setTempSelectedNombre] = useState('');
+  const [tempPhoneNumber, setTempPhoneNumber] = useState('');
+  const [tempSitioWeb, setTempSitioWeb] = useState('');
+  const [tempCorreo, setTempCorreo] = useState('');
+  const [tempDescripcionEmpresa, setTempDescripcionEmpresa] = useState('');
+  const [tempCampoDesarrollo, setTempCampoDesarrollo] = useState('');
+  const [profileImage, setProfileImage] = useState(require('../assets/persona1.jpg'));
+  const [tempFacebook, setTempFacebook] = useState('');
+  const [tempWhatsapp, setTempWhatsapp] = useState('');
+  const [tempInstagram, setTempInstagram] = useState('');
 
-  const [infoUsuario, setInfoUsuario] = useState([]);
-  const [tempPhoneNumber, setTempPhoneNumber] = useState(''); // Estado temporal para almacenar phoneNumber durante la edición
-  const [tempSelectedNombre, setTempSelectedNombre] = useState(''); // Estado temporal para almacenar selectedNombre durante la edición
+  const guardarUrlImagen = async (imageUrl) => {
+    try {
+      let id = userId;
+      const refDoc = doc(firestore, 'users', id);
+      await updateDoc(refDoc, { imagenPerfil: imageUrl });
+    } catch (error) {
+      console.log('Error al guardar la imagen en la base de datos', error);
+    }
+  };
+  
 
-  useEffect(() => {
-    const collectionRef = collection(firestore, 'users');
-    const q = query(collectionRef);
+  // Función para input de subir imagenes
+  const [selectedImage, setSelectedImage] = useState(null);
 
-    const unsuscribe = onSnapshot(q, (querySnapshop) => {
-      setInfoEmpresa(
-        querySnapshop.docs.map((doc) => ({
-          id: doc.id,
-          nombreEmpresa: doc.data().nombreEmpresa,
-          numeroCelularEmpresa: doc.data().numeroCelularEmpresa,
-        }))
-      );
-    });
+  const handleImageUpload = async () => {
+  const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (permissionResult.granted === false) {
+    alert('Se requieren permisos para acceder a la galería.');
+    return;
+  }
 
-    return unsuscribe;
-  }, []);
-
+  const imageResult = await ImagePicker.launchImageLibraryAsync();
+  if (!imageResult.canceled) {
+    setSelectedImage(imageResult.assets[0].uri);
+    guardarUrlImagen(imageResult.assets[0].uri);
+  }
+};
 
   useEffect(() => {
     const id = userId;
-    const collectionRef = collection(firestore, 'users');
-    const q = doc(collectionRef, id);
+    const docRef = doc(firestore, 'users', id);
 
-    const unsubscribe = onSnapshot(q, (doc) => {
-      if (doc.exists()) {
-        // Convertir los datos en un array y luego establecer el estado
-        setInfoUsuario([
-          {
-            id: doc.id,
-            nombreEmpresa: doc.data().nombreEmpresa,
-            numeroCelularEmpresa: doc.data().numeroCelularEmpresa,
-          },
-        ]);
-
-        // También almacenar los datos temporales para la edición
-        setTempSelectedNombre(doc.data().nombreEmpresa);
-        setTempPhoneNumber(doc.data().numeroCelularEmpresa);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setInfoUsuario(docSnap.data());
+        setTempSelectedNombre(docSnap.data().nombreEmpresa);
+        setTempPhoneNumber(docSnap.data().numeroCelularEmpresa);
+        setTempSitioWeb(docSnap.data().sitioWeb || '');
+        setTempCorreo(docSnap.data().correo || '');
+        setTempDescripcionEmpresa(docSnap.data().descripcionEmpresa || '');
+        setTempCampoDesarrollo(docSnap.data().campoDesarrollo || '');
+        setProfileImage({ uri: docSnap.data().imagenPerfil });
       } else {
-        // El documento no existe
         console.log('El documento no existe.');
       }
     });
@@ -72,6 +83,13 @@ const PerfilEmpresa = () => {
       updateDoc(refDoc, {
         nombreEmpresa: tempSelectedNombre,
         numeroCelularEmpresa: tempPhoneNumber,
+        sitioWeb: tempSitioWeb,
+        correo: tempCorreo,
+        descripcionEmpresa: tempDescripcionEmpresa,
+        campoDesarrollo: tempCampoDesarrollo,
+        facebook: tempFacebook,
+        whatsapp: tempWhatsapp,
+        instagram: tempInstagram,
       });
 
       setEditMode(false);
@@ -86,26 +104,26 @@ const PerfilEmpresa = () => {
 
   const handleSavePersonalInfo = () => {
     setEditMode(false);
-    // Limpiar los estados temporales después de guardar
-    setTempSelectedNombre('');
-    setTempPhoneNumber('');
   };
 
   return (
     <ScrollView>
-      {infoUsuario.map((dato) => (
-        <View key={dato.id} style={{ flex: 1, backgroundColor: COLORS.back }}>
-          <Text style={styles.headerTitle}>Mi perfil</Text>
-          <View style={styles.container}>
-            <View style={styles.infoContainer}>
-              <View style={styles.profileContainer}>
-                <Image
-                  source={require('../assets/persona1.jpg')}
-                  style={styles.profilePicture}
-                />
-                <Text style={styles.name}>{dato.nombreEmpresa}</Text>
+      <View style={{ flex: 1, backgroundColor: COLORS.back }}>
+        <Text style={styles.headerTitle}>Mi perfil</Text>
+        <View style={styles.container}>
+          <View style={styles.infoContainer}>
+            <View style={styles.profileContainer}>
+              <View style={styles.profileImageContainer}>
+                <TouchableOpacity onPress={handleImageUpload}>
+                  <Image source={{ uri: selectedImage || profileImage.uri }} style={styles.profilePicture} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.editIconContainer} onPress={handleImageUpload}>
+                  <FontAwesome name="pencil" size={24} color={COLORS.primary} />
+                </TouchableOpacity>
               </View>
-              <Text style={styles.infoTitle}>Información personal:</Text>
+              <Text style={styles.name}>{infoUsuario.nombreEmpresa}</Text>
+            </View>
+            <Text style={styles.infoTitle}>Información personal:</Text>
               <View style={styles.infoDivider} />
               <View style={styles.infoRow}>
                 <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
@@ -115,40 +133,137 @@ const PerfilEmpresa = () => {
                     style={styles.infoTextInput1}
                     value={tempSelectedNombre}
                     onChangeText={setTempSelectedNombre}
-                  />  
-                ) : (
-                  <Text style={styles.infoText}>Nombre: {dato.nombreEmpresa} </Text>
-                )}
-              </View>
-              <View style={styles.infoDivider} />
-              <View style={styles.infoRow}>
-                <Ionicons name="call" size={16} style={styles.infoIcon} />
-                {editMode ? (
-                  <TextInput
-                    placeholder="Escribe tu numero de telefono"
-                    style={styles.infoTextInput1}
-                    value={tempPhoneNumber}
-                    onChangeText={setTempPhoneNumber}
                   />
                 ) : (
-                  <Text style={styles.infoText}>Número de teléfono: {dato.numeroCelularEmpresa} </Text>
+                  <Text style={styles.infoText}>Nombre: {infoUsuario.nombreEmpresa} </Text>
                 )}
               </View>
-
-              <View style={styles.infoDivider} />
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="call" size={16} style={styles.infoIcon} />
               {editMode ? (
-                <TouchableOpacity style={styles.saveButton} onPress={onSend}>
-                  <Text style={styles.saveButtonText}>Guardar</Text>
-                </TouchableOpacity>
+                <TextInput
+                  placeholder="Escribe el numero de contacto"
+                  style={styles.infoTextInput1}
+                  value={tempPhoneNumber}
+                  onChangeText={setTempPhoneNumber}
+                />
               ) : (
-                <TouchableOpacity style={styles.editButton} onPress={handleEditPersonalInfo}>
-                  <Text style={styles.editButtonText}>Editar información del perfil</Text>
-                </TouchableOpacity>
+                <Text style={styles.infoText}>Número de teléfono: {infoUsuario.numeroCelularEmpresa} </Text>
               )}
             </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="globe" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Sitio web"
+                  style={styles.infoTextInput1}
+                  value={tempSitioWeb}
+                  onChangeText={setTempSitioWeb}
+                />
+              ) : (
+                <Text style={styles.infoText}>Sitio web: {infoUsuario.sitioWeb || 'N/A'} </Text>
+              )}
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="mail" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Correo electrónico"
+                  style={styles.infoTextInput1}
+                  value={tempCorreo}
+                  onChangeText={setTempCorreo}
+                />
+              ) : (
+                <Text style={styles.infoText}>Correo electrónico: {infoUsuario.correo || 'N/A'} </Text>
+              )}
+            </View>
+            
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="hammer-outline" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Campo en el que se desarrolla"
+                  style={styles.infoTextInput1}
+                  value={tempCampoDesarrollo}
+                  onChangeText={setTempCampoDesarrollo}
+                />
+              ) : (
+                <Text style={styles.infoText}>Campo en el que se desarrolla: {infoUsuario.campoDesarrollo || 'N/A'} </Text>
+              )}
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="document-text-outline" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Descripción de la empresa"
+                  style={styles.infoTextInput1}
+                  value={tempDescripcionEmpresa}
+                  onChangeText={setTempDescripcionEmpresa}
+                />
+              ) : (
+                <Text style={styles.infoText}>Descripción de la empresa: {infoUsuario.descripcionEmpresa || 'N/A'} </Text>
+              )}
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="logo-facebook" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Enlace de Facebook"
+                  style={styles.infoTextInput1}
+                  value={tempFacebook}
+                  onChangeText={setTempFacebook}
+                />
+              ) : (
+                <Text style={styles.infoText}>Facebook: {infoUsuario.facebook || 'N/A'} </Text>
+              )}
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="logo-whatsapp" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Enlace de WhatsApp"
+                  style={styles.infoTextInput1}
+                  value={tempWhatsapp}
+                  onChangeText={setTempWhatsapp}
+                />
+              ) : (
+                <Text style={styles.infoText}>WhatsApp: {infoUsuario.whatsapp || 'N/A'} </Text>
+              )}
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoRow}>
+              <Ionicons name="logo-instagram" size={16} style={styles.infoIcon} />
+              {editMode ? (
+                <TextInput
+                  placeholder="Enlace de Instagram"
+                  style={styles.infoTextInput1}
+                  value={tempInstagram}
+                  onChangeText={setTempInstagram}
+                />
+              ) : (
+                <Text style={styles.infoText}>Instagram: {infoUsuario.instagram || 'N/A'} </Text>
+              )}
+            </View>
+            <View style={styles.infoDivider} />
+            {editMode ? (
+              <TouchableOpacity style={styles.saveButton} onPress={onSend}>
+                <Text style={styles.saveButtonText}>Guardar</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.editButton} onPress={handleEditPersonalInfo}>
+                <Text style={styles.editButtonText}>Editar información del perfil</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
-      ))}
+      </View>
     </ScrollView>
   );
 };
@@ -185,12 +300,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  profilePicture: {
+  profileImageContainer: {
     width: 130,
     height: 130,
     borderRadius: 30,
     position: 'absolute',
     top: -80,
+  },
+  profilePicture: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 30
+  },
+  editIconContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: COLORS.white,
+    borderRadius: 50,
+    padding: 8,
+    elevation: 0,
   },
   name: {
     fontSize: 24,

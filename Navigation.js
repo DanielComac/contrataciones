@@ -19,13 +19,14 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
+
 export function BottomTabUsuario() {
   
   return (
     <Tab.Navigator
       initialRouteName="HomeScreen"
       screenOptions={{
-        tabBarActiveTintColor: "#4caf50",
+        tabBarActiveTintColor: "#007260",
       }}
     >
           <Tab.Screen
@@ -34,8 +35,8 @@ export function BottomTabUsuario() {
             options={{
               headerShown: false,
               tabBarLabel: "Perfil",
-              tabBarIcon: ({}) => (
-                <Ionicons name="person" size={24} color={COLORS.primary} />
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="person" size={size} color={color} />
               ),
             }}
           />
@@ -45,8 +46,8 @@ export function BottomTabUsuario() {
             options={{
               headerShown: false,
               tabBarLabel: "Home",
-              tabBarIcon: ({}) => (
-                <Ionicons name="home" size={24} color={COLORS.primary} />
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="home" size={size} color={color} />
               ),
             }}
           />
@@ -56,8 +57,8 @@ export function BottomTabUsuario() {
             options={{
               headerShown: false,
               tabBarLabel: "Notificaciones",
-              tabBarIcon: ({}) => (
-                <Ionicons name="notifications" size={24} color={COLORS.primary} />
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="notifications" size={size} color={color} />
               ),
             }}
           />
@@ -67,8 +68,8 @@ export function BottomTabUsuario() {
             options={{
               headerShown: false,
               tabBarLabel: "Ajustes",
-              tabBarIcon: ({}) => (
-                <Entypo name="cog" size={24} color={COLORS.primary} />
+              tabBarIcon: ({ color, size }) => (
+                <Entypo name="cog" size={size} color={color} />
               ),
             }}
           />
@@ -82,7 +83,7 @@ export function BottonTabEmpresa() {
     <Tab.Navigator
       initialRouteName="HomeScreenEmpresa"
       screenOptions={{
-        tabBarActiveTintColor: "#4caf50",
+        tabBarActiveTintColor: "#007260",
       }}
     >
       <Tab.Screen

@@ -120,6 +120,14 @@ const HomeScreenEmpresa = () => {
             return candidato.campoTrabajo === filtro;
           } else if (filtro === 'Profesor(a) general' || filtro === 'Profesor(a) de preescolar' || filtro === 'Profesor(a) de primaria' || filtro === 'Profesor(a) de secundaria' || filtro === 'Profesor(a) de universidad' || filtro === 'Tutor o particular' || filtro === 'Instructor de idiomas' || filtro === 'Educación especial') {
             return candidato.puestoTrabajo === filtro;
+          } else if (filtro === 'Tecnología e informatica') {
+            return candidato.campoTrabajo === filtro;
+          } else if (filtro === 'Desarrollador de software' || filtro === 'Ingeniero de sistemas' || filtro === 'Diseñador UX/UI' || filtro === 'Seguridad informática' || filtro === 'Analista de datos' || filtro === 'Soporte técnico') {
+            return candidato.puestoTrabajo === filtro;
+          } else if (filtro === 'Salud y cuidado personal') {
+            return candidato.campoTrabajo === filtro;
+          } else if (filtro === 'Enfermería' || filtro === 'Médico general' || filtro === 'Terapeuta físico' || filtro === 'Asistente de cuidado de ancianos' || filtro === 'Nutricionista' || filtro === 'Masajista' || filtro === 'Masajista') {
+            return candidato.puestoTrabajo === filtro;
           }
           return false;
         });
@@ -131,6 +139,36 @@ const HomeScreenEmpresa = () => {
 
   
   const candidatosFiltrados = filtrarCandidatos();
+
+  const mostrarTarjeta = (dato) => {
+    // Verificar si el candidato ha llenado toda su información relevante
+    const infoCompleta =
+      dato.nombre && dato.puestoTrabajo && dato.campoTrabajo;
+    
+    if (!infoCompleta) {
+      // Si la información no está completa, no se muestra la tarjeta
+      return null;
+    }
+    // Si la información está completa, mostrar la tarjeta
+    return (
+      <TouchableOpacity
+        key={dato.id}
+        style={styles.cartaEmpresa}
+        onPress={() => verPerfilCandidato(dato)}
+      >
+        <View>
+          <Image
+            source={require('../assets/persona1.jpg')}
+            style={styles.imagenEmpresa}
+            resizeMode="cover"
+          />
+          <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+          <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+          <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <ScrollView>
@@ -256,7 +294,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Chef o cocinero') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Chef o cocinero')}
@@ -272,7 +310,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Sous chef') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Sous chef')}
@@ -288,7 +326,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Maitre') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Maitre')}
@@ -304,7 +342,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Camarero o mesero') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Camarero o mesero')}
@@ -320,7 +358,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Bartender') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Bartender')}
@@ -336,7 +374,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Barista') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Barista')}
@@ -352,7 +390,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Recepcionista') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Recepcionista')}
@@ -368,7 +406,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Auxiliar de cocina') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Auxiliar de cocina')}
@@ -384,7 +422,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Personal de limpieza') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Personal de limpieza')}
@@ -422,7 +460,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Profesor(a) general') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Profesor(a) general')}
@@ -438,7 +476,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Profesor(a) de preescolar') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Profesor(a) de preescolar')}
@@ -454,7 +492,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Profesor(a) de primaria') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Profesor(a) de primaria')}
@@ -470,7 +508,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Profesor(a) de secundaria') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Profesor(a) de secundaria')}
@@ -486,7 +524,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Profesor(a) de universidad') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Profesor(a) de universidad')}
@@ -502,7 +540,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Tutor o particular') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Tutor o particular')}
@@ -518,7 +556,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Instructor de idiomas') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Instructor de idiomas')}
@@ -534,7 +572,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Educación especial') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Educación especial')}
@@ -573,7 +611,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Desarrollador de software') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Desarrollador de software')}
@@ -589,7 +627,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Ingeniero de sistemas') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Ingeniero de sistemas')}
@@ -605,7 +643,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Diseñador UX/UI') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Diseñador UX/UI')}
@@ -621,7 +659,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Seguridad informática') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Seguridad informática')}
@@ -637,7 +675,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Analista de datos') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Analista de datos')}
@@ -653,7 +691,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Soporte técnico') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Soporte técnico')}
@@ -693,7 +731,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Enfermería') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Enfermería')}
@@ -709,7 +747,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Médico general') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Médico general')}
@@ -725,7 +763,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Terapeuta físico') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Terapeuta físico')}
@@ -741,23 +779,23 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
-                      filtrosSeleccionados.includes('Asisitente de cuidado de ancianos') && styles.filtroOptionSelected,
+                      styles.filtroOption2,
+                      filtrosSeleccionados.includes('Asistente de cuidado de ancianos') && styles.filtroOptionSelected,
                     ]}
-                    onPress={() => handleFiltroSeleccionado('Asisitente de cuidado de ancianos')}
+                    onPress={() => handleFiltroSeleccionado('Asistente de cuidado de ancianos')}
                   >
                     <Text
                       style={[
                         styles.filtroText,
-                        filtrosSeleccionados.includes('Asisitente de cuidado de ancianos') && styles.filtroTextSelected,
+                        filtrosSeleccionados.includes('Asistente de cuidado de ancianos') && styles.filtroTextSelected,
                       ]}
                     >
-                      Asisitente de cuidado de ancianos
+                      Asistente de cuidado de ancianos
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Nutricionista') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Nutricionista')}
@@ -773,7 +811,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Masajista') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Masajista')}
@@ -812,7 +850,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Especialista en recursos humanos') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Especialista en recursos humanos')}
@@ -828,7 +866,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Asistente administrativo') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Asistente administrativo')}
@@ -844,7 +882,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Coordinador de eventos') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Coordinador de eventos')}
@@ -860,7 +898,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Asistente ejecutivo') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Asistente ejecutivo')}
@@ -876,7 +914,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Analista de reclutamiento') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Analista de reclutamiento')}
@@ -915,7 +953,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Diseñador gráfico') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Diseñador gráfico')}
@@ -931,7 +969,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Ilustrador') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Ilustrador')}
@@ -947,7 +985,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Fotógrafo') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Fotógrafo')}
@@ -963,7 +1001,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Animador') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Animador')}
@@ -979,7 +1017,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Escenógrafo') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Escenógrafo')}
@@ -995,7 +1033,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Director') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Director')}
@@ -1034,7 +1072,7 @@ const HomeScreenEmpresa = () => {
                 <View style={styles.subcategoriaContainer}>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Cajero/a') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Cajero/a')}
@@ -1050,7 +1088,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Recepcionista') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Recepcionista')}
@@ -1066,7 +1104,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Auxiliar administrativo') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Auxiliar administrativo')}
@@ -1082,7 +1120,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Auxiliar de limpieza') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Auxiliar de limpieza')}
@@ -1098,7 +1136,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Auxiliar de cocina') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Auxiliar de cocina')}
@@ -1114,7 +1152,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Intendencia o mantenimiento') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Intendencia o mantenimiento')}
@@ -1130,7 +1168,7 @@ const HomeScreenEmpresa = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
-                      styles.filtroOption,
+                      styles.filtroOption2,
                       filtrosSeleccionados.includes('Conserje o portería') && styles.filtroOptionSelected,
                     ]}
                     onPress={() => handleFiltroSeleccionado('Conserje o portería')}
@@ -1158,32 +1196,10 @@ const HomeScreenEmpresa = () => {
         <Text style={styles.populares}>Candidatos</Text>
 
         <View style={styles.tarjetasContainer}>
-        {candidatosFiltrados.map((dato) => {
-          // Verificar si el candidato tiene el privilegio "usuario"
-          if (dato.privilegio === "usuario") {
-            return (
-              <TouchableOpacity
-                key={dato.id}
-                style={styles.cartaEmpresa}
-                onPress={() => verPerfilCandidato(dato)}
-              >
-                <View>
-                  <Image
-                    source={require('../assets/persona1.jpg')}
-                    style={styles.imagenEmpresa}
-                    resizeMode="cover"
-                  />
-                  <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-                  <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-                  <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          } else {
-            return null; // Si el candidato no tiene el privilegio "usuario", no se renderiza la tarjeta
-          }
-        })}
-      </View>
+          {candidatosFiltrados.map((dato) => {
+            return mostrarTarjeta(dato);
+          })}
+        </View>
       </LinearGradient>
     </ScrollView>
   );
@@ -1312,6 +1328,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     borderRadius: 8,
     paddingHorizontal: 12,
+  },
+  filtroOption2: {
+    paddingVertical: 8,
+    marginBottom: 8,
+    borderRadius: 8,
+    paddingHorizontal: 30,
   },
   filtroOptionSelected: {
     backgroundColor: COLORS.primary,

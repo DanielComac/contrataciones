@@ -32,6 +32,7 @@ const SignupEmpresa = ({ navigation }) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
+    const [nombreEmpresa, setNombreEmpresa] = React.useState('');
     const [userId, setUserId] = React.useState('')
 
     const handleCreateAccount = async () => {
@@ -46,7 +47,7 @@ const SignupEmpresa = ({ navigation }) => {
             emailEmpresa: email,
             passwordEmpresa: password,
             privilegio: "empresa",
-            nombreEmpresa: "",
+            nombreEmpresa: nombreEmpresa,
             numeroCelularEmpresa: "",
         })
 
@@ -69,6 +70,8 @@ const SignupEmpresa = ({ navigation }) => {
     const goBack = () => {
         navigation.goBack();
     };
+
+
       
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -118,6 +121,7 @@ const SignupEmpresa = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            onChangeText={(text) => setNombreEmpresa(text)}
                         />
                     </View>
                 </View>
