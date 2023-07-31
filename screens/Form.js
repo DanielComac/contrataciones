@@ -45,7 +45,6 @@ const Form = () => {
 
     // Función para input de subir imagenes
     const [selectedImage, setSelectedImage] = useState(null);
-
     const handleImageUpload = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (permissionResult.granted === false) {

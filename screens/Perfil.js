@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker';
+// import { upload } from '../uploadImages.js';
+import { storage } from "../firebase-config";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import Button from '../componentes/Button';
 import COLORS from '../temas/colors';
-import { Picker } from '@react-native-picker/picker'
+import { Picker } from '@react-native-picker/picker';
 import { firestore } from "../firebase-config";
 import { setDoc, doc, addDoc, collection, onSnapshot, query, updateDoc } from "firebase/firestore";
 import { auth } from '../firebase-config';
-import { userId } from './Login.js'
+import { userId } from './Login.js';
 import { useTheme } from '@react-navigation/native';
+
 
 const camposTrabajoOpciones = [
   {
@@ -59,6 +65,10 @@ const ProfileScreen = () => {
   const [tempSelectedDisponibilidad, setTempSelectedDisponibilidad] = useState('');
   const [tempSelectedCampoTrabajo, setTempSelectedCampoTrabajo] = useState('');
 
+  const [url, setUrl] = useState('');
+  const [url2, setUrl2] = useState('');
+  const [urlObtenida, setUrlObtenida] = useState('');
+
   useEffect(() => {
     const id = userId;
     const collectionRef = collection(firestore, 'users');
@@ -98,6 +108,31 @@ const ProfileScreen = () => {
         setTempSelectedIngles(doc.data().ingles);
         setTempSelectedDisponibilidad(doc.data().disponibilidad);
         setTempSelectedCampoTrabajo(doc.data().campoTrabajo);
+      } else {
+        console.log('El documento no existe.');
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+
+  useEffect(() => {
+    const id = userId;
+    const collectionRef = collection(firestore, 'URLImages');
+    const q = doc(collectionRef, id);
+
+    const unsubscribe = onSnapshot(q, (doc) => {
+      if (doc.exists()) {
+        // setUrlObtenida([
+        //   {
+  
+        //   },
+        // ]);
+
+        setUrlObtenida(doc.data().UrlImage1);
+        console.log(urlObtenida);
+       
       } else {
         console.log('El documento no existe.');
       }
@@ -170,6 +205,77 @@ const ProfileScreen = () => {
     setPuestosTrabajoOptions(selectedOptions ? selectedOptions.puestosTrabajo : []);
   };
 
+   // Función para input de subir imagen 1
+   const [selectedImage, setSelectedImage] = useState(null);
+   const handleImageUpload = async () => {
+       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+       if (permissionResult.granted === false) {
+       alert('Se requieren permisos para acceder a la galería.');
+       return;
+       }
+
+       const imageResult = await ImagePicker.launchImageLibraryAsync();
+       if (!imageResult.canceled) {
+        const imageUri = imageResult.assets[0].uri;
+        setSelectedImage(imageUri);
+
+       const storageRef = ref(storage, 'images_1/hola1');
+       const imageBlob = await fetch(imageUri).then((response) => response.blob());
+
+        try {
+          const snapshot = await uploadBytes(storageRef, imageBlob);
+          console.log('Imagen subida correctamente:', snapshot);
+          const urlImage1 = await getDownloadURL(storageRef);
+          setUrl(urlImage1);
+
+          console.log(url);
+         
+        } catch (error) {
+          console.error('Error al subir la imagen:', error);
+    }
+       }
+   };
+
+
+   // Función para input de subir imagen 2
+   const [selectedImage2, setSelectedImage2] = useState(null);
+   const handleImage2Upload = async () => {
+       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+       if (permissionResult.granted === false) {
+       alert('Se requieren permisos para acceder a la galería.');
+       return;
+       }
+
+       const imageResult = await ImagePicker.launchImageLibraryAsync();
+       if (!imageResult.canceled) {
+        const imageUri = imageResult.assets[0].uri;
+        setSelectedImage2(imageUri);
+
+       const storageRef = ref(storage, 'images_2/hola1');
+       const imageBlob = await fetch(imageUri).then((response) => response.blob());
+
+        try {
+          const snapshot = await uploadBytes(storageRef, imageBlob);
+          console.log('Imagen subida correctamente:', snapshot);
+          const urlImage2 = await getDownloadURL(storageRef)
+          setUrl2(urlImage2);
+
+          console.log(url2);
+      
+        } catch (error) {
+          console.error('Error al subir la imagen:', error);
+    }
+       }
+   };
+
+   const sendUrl = async () => {
+    await setDoc(doc(firestore, 'URLImages', userId),{
+      UrlImage1: url,
+      UrlImage2: url2
+  })
+   }
+
+
   return (
     <ScrollView>
       {infoUsuario.map((dato) => (
@@ -179,7 +285,7 @@ const ProfileScreen = () => {
             <View style={styles.infoContainer}>
               <View style={styles.profileContainer}>
                 <Image
-                  source={require('../assets/persona1.jpg')}
+                  source={{uri: urlObtenida}}
                   style={styles.profilePicture}
                 />
                 <Text style={styles.name}>{dato.nombre}</Text>
@@ -239,6 +345,7 @@ const ProfileScreen = () => {
               <View style={styles.infoRow}>
                 <Ionicons name="calendar" size={16} style={styles.infoIcon} />
                 {editMode ? (
+
                   <Picker
                     style={styles.infoTextInput}
                     selectedValue={tempSelectedEdad}
@@ -414,10 +521,100 @@ const ProfileScreen = () => {
                   <Text style={styles.infoText}>Disponibilidad de horario: {dato.disponibilidad}</Text>
                 )}
               </View>
+
+              <View style={styles.infoDivider} />
+              <View style={styles.infoRow}>
+                
+                {editMode ? (
+                   <View style={{ marginBottom: 12 }}>
+                   <Text style={{
+                       fontSize: 16,
+                       fontWeight: 400,
+                       marginVertical: 8,
+                   }}>Fotografía #1 Aspecto 4:3(De pecho para arriba)*</Text>
+                   <Text style={{
+                       fontSize: 16,
+                       fontWeight: 400,
+                       marginVertical: 4,
+                       fontWeight: 'bold',
+                       marginBottom: "6%"
+                   }}>Esta es la fotografía que se mostrará en tu tarjeta de perfil y la que verán las empresas</Text>
+
+                   <View style={{marginBottom: 12}}>
+                       <Button title="Seleccionar imagen" onPress={handleImageUpload} />
+                       {selectedImage && <Image source={{ uri: selectedImage }} 
+                       style={{
+                           width: 200, 
+                           height: 200,
+                           marginTop: 12,
+                           alignItems: 'center'
+                       }} />}
+                   </View>
+               </View>
+                ) : (
+                  <View style={{marginBottom: 12}}>
+                       {selectedImage && <Image source={{ uri: selectedImage }} 
+                       style={{
+                           width: 200, 
+                           height: 200,
+                           marginTop: 12,
+                           alignItems: 'center'
+                       }} />}
+                   </View>
+                )}
+              </View>
+
+
+              <View style={styles.infoDivider} />
+              <View style={styles.infoRow}>
+                
+                {editMode ? (
+                  <View style={{ marginBottom: 12 }}>
+                  <Text style={{
+                      fontSize: 16,
+                      fontWeight: 400,
+                      marginVertical: 8,
+                  }}>Fotografía #2 Aspecto 4:3(De cuerpo completo)*</Text>
+                  <Text style={{
+                      fontSize: 16,
+                      fontWeight: 400,
+                      marginVertical: 4,
+                      fontWeight: 'bold',
+                      marginBottom: "6%"
+                  }}>Esta fotografía se mostrará en tu perfil al dar clic en tu tarjeta de perfil</Text>
+
+                  <View style={{marginBottom: 12}}>
+                      <Button title="Seleccionar imagen" onPress={handleImage2Upload} />
+                      {selectedImage2 && <Image source={{ uri: selectedImage2 }} 
+                      style={{
+                          width: 200,
+                          aspectRatio: 9/16,
+                          marginTop: 12,
+                          alignItems: 'center'
+                      }} />}
+                  </View>
+              </View>
+                ) : (
+                  <View style={{marginBottom: 12}}>
+                        {selectedImage2 && <Image source={{ uri: selectedImage2 }} 
+                        style={{
+                            width: 200,
+                            aspectRatio: 9/16,
+                            marginTop: 12,
+                            alignItems: 'center'
+                        }} />}
+                    </View>
+                )}
+              </View>
+
+
               <View style={styles.infoDivider} />
               {editMode ? (
                 <View style={styles.editButtonsContainer}>
-                  <TouchableOpacity style={styles.saveButton} onPress={handleSavePersonalInfo}>
+                  <TouchableOpacity style={styles.saveButton} onPress={() => {
+                    handleSavePersonalInfo(); 
+                    sendUrl();
+                  }}>
                     <Text style={styles.saveButtonText}>Guardar</Text>
                   </TouchableOpacity>
                 </View>
