@@ -123,6 +123,21 @@ const PerfilEmpresa = () => {
               </View>
               <Text style={styles.name}>{infoUsuario.nombreEmpresa}</Text>
             </View>
+            <Text style={styles.infoTitle}>Información personal:</Text>
+              <View style={styles.infoDivider} />
+              <View style={styles.infoRow}>
+                <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
+                {editMode ? (
+                  <TextInput
+                    placeholder="Escribe el nombre de la empresa"
+                    style={styles.infoTextInput1}
+                    value={tempSelectedNombre}
+                    onChangeText={setTempSelectedNombre}
+                  />
+                ) : (
+                  <Text style={styles.infoText}>Nombre: {infoUsuario.nombreEmpresa} </Text>
+                )}
+              </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoRow}>
               <Ionicons name="call" size={16} style={styles.infoIcon} />
