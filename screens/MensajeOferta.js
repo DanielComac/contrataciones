@@ -20,7 +20,7 @@ const MensajeOferta = ({ route, navigation }) => {
       <View style={styles.container}>
         <Text style={styles.titulo}>Mensaje para el candidato:</Text>
         <Text style={styles.label}>A continuación redacta el mensaje que será enviado al candidato.</Text>
-        <Text style={styles.label}>Nos tomamos la molestia de redactar este mensaje de ejemplo pero puedes editarlo completamnete de acuerdo a tus necesidades</Text>
+        <Text style={styles.label}>Nos tomamos la molestia de redactar este mensaje de ejemplo pero puedes editarlo completamente de acuerdo a tus necesidades</Text>
         <ScrollView style={styles.mensajeContainer}>
           <TextInput
             ref={mensajeRef}

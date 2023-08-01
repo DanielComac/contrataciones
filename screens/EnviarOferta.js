@@ -6,15 +6,17 @@ import COLORS from '../temas/colors';
 import { useNavigation } from '@react-navigation/native';
 
 
-const EnviarOferta = () => {
+const EnviarOferta = ({route}) => {
 
     const navigation = useNavigation();
+
+    const { nombreCandidato } = route.params;
 
 
   const [puestoEmpleo, setPuestoEmpleo] = useState('');
   const [requisitos, setRequisitos] = useState('');
-  const [horaEntrada, setHoraEntrada] = useState(new Date()); 
-  const [horaSalida, setHoraSalida] = useState(new Date());
+  const [horaEntrada, setHoraEntrada] = useState(''); 
+  const [horaSalida, setHoraSalida] = useState('');
   const [salario, setSalario] = useState('');
   const [descripcionEmpleo, setDescripcionEmpleo] = useState('');
   const [ubicacion, setUbicacion] = useState({
@@ -28,7 +30,7 @@ const EnviarOferta = () => {
 
 
   const handleEnviarOferta = () => {
-    const mensaje = `Estimado [Nombre del Candidato],
+    const mensaje = `Estimado ${nombreCandidato},
   
   Espero que este mensaje te encuentre bien. Me complace informarte que, después de revisar tu perfil en nuestra aplicación de contrataciones de personal, hemos identificado que cumples con los requisitos necesarios para una oportunidad laboral en nuestra empresa.
   
@@ -44,9 +46,9 @@ const EnviarOferta = () => {
 
   Horario de trabajo: ${horaEntrada} a ${horaSalida}
 
-  Ubicación: ${ubicacion.latitude}, ${ubicacion.longitude}
+  Descripción del empleo: ${descripcionEmpleo}
 
-  Descripción: ${descripcionEmpleo}
+  Ubicación: ${ubicacion.latitude}, ${ubicacion.longitude}
 
   
   Si estás interesado en esta oportunidad, nos encantaría conocer más sobre ti y tu interés en nuestra empresa. Por favor, confírmanos tu disponibilidad para una entrevista, y nos pondremos en contacto contigo para programarla.
@@ -135,7 +137,7 @@ const EnviarOferta = () => {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.titulo}>Redacta la información del empleo</Text>
-        <Text style={styles.labelAdvertencia}>Por favor asegurate de que todo esté correctamente redactado y que todos los campos sean correctos</Text>
+        <Text style={styles.labelAdvertencia}>Por favor asegurate de que todo esté bien redactado y que todos los campos sean correctos</Text>
         <Text style={styles.label}>Puesto de empleo:</Text>
         <TextInput
           style={styles.input}

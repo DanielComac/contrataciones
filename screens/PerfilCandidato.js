@@ -7,7 +7,7 @@ const PerfilCandidato = ({ route, navigation }) => {
   const candidato = route.params.candidato;
 
   const handleEnviarOfertaEmpleo = () => {
-    navigation.navigate('EnviarOferta'); 
+    navigation.navigate('EnviarOferta', { nombreCandidato: candidato.nombre });
   };
 
   return (

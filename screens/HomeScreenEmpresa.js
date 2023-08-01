@@ -141,15 +141,12 @@ const HomeScreenEmpresa = () => {
   const candidatosFiltrados = filtrarCandidatos();
 
   const mostrarTarjeta = (dato) => {
-    // Verificar si el candidato ha llenado toda su información relevante
     const infoCompleta =
       dato.nombre && dato.puestoTrabajo && dato.campoTrabajo;
     
     if (!infoCompleta) {
-      // Si la información no está completa, no se muestra la tarjeta
       return null;
     }
-    // Si la información está completa, mostrar la tarjeta
     return (
       <TouchableOpacity
         key={dato.id}
