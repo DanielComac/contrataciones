@@ -37,11 +37,17 @@ const EnviarOferta = () => {
   A continuación, te brindo más detalles sobre la oferta de empleo:
   
   Nombre del puesto: ${puestoEmpleo}
+
   Requisitos: ${requisitos}
+
   Expectativas salariales: ${salario}
+
   Horario de trabajo: ${horaEntrada} a ${horaSalida}
+
   Ubicación: ${ubicacion.latitude}, ${ubicacion.longitude}
+
   Descripción: ${descripcionEmpleo}
+
   
   Si estás interesado en esta oportunidad, nos encantaría conocer más sobre ti y tu interés en nuestra empresa. Por favor, confírmanos tu disponibilidad para una entrevista, y nos pondremos en contacto contigo para programarla.
   
@@ -52,7 +58,6 @@ const EnviarOferta = () => {
   Atentamente,
   
   [Nombre de la Empresa]
-  [Información de Contacto]
   `;
   
   setMensajeEditable(mensaje);
