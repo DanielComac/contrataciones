@@ -13,6 +13,11 @@ import HomeScreenEmpresa from "./HomeScreenEmpresa";
 import AjustesEmpresa from "./AjustesEmpresa";
 import PerfilEmpresa from "./PerfilEmpresa";
 import NotificacionesEmpresa from "./NotificacionesEmpresa";
+import PerfilCandidato from "./PerfilCandidato";
+import CandidatosGuardados from "./CandidatosGuardados";
+import EnviarOferta from "./EnviarOferta";
+import MensajeOferta from "./MensajeOferta";
+
 
 export {
     Login,
@@ -29,5 +34,9 @@ export {
     HomeScreenEmpresa,
     AjustesEmpresa,
     PerfilEmpresa,
-    NotificacionesEmpresa
+    NotificacionesEmpresa,
+    PerfilCandidato,
+    CandidatosGuardados,
+    EnviarOferta,
+    MensajeOferta
 }
