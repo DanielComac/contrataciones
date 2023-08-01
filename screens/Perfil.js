@@ -270,8 +270,8 @@ const ProfileScreen = () => {
 
    const sendUrl = async () => {
     await setDoc(doc(firestore, 'URLImages', userId),{
-      UrlImage1: url,
-      UrlImage2: url2
+      UrlImage1: url || urlObtenida,
+      UrlImage2: url2 
   })
    }
 
@@ -284,10 +284,17 @@ const ProfileScreen = () => {
           <View style={styles.container}>
             <View style={styles.infoContainer}>
               <View style={styles.profileContainer}>
-                <Image
+                {urlObtenida === "" ? (
+                  <Image
+                  source={require('../assets/persona1.jpg')}
+                  style={styles.profilePicture}
+                />
+                ) : (
+                  <Image
                   source={{uri: urlObtenida}}
                   style={styles.profilePicture}
                 />
+                )}
                 <Text style={styles.name}>{dato.nombre}</Text>
               </View>
               <Text style={styles.infoTitle}>Información personal:</Text>
@@ -542,7 +549,7 @@ const ProfileScreen = () => {
 
                    <View style={{marginBottom: 12}}>
                        <Button title="Seleccionar imagen" onPress={handleImageUpload} />
-                       {selectedImage && <Image source={{ uri: selectedImage }} 
+                       {<Image source={{ uri: urlObtenida } || require('../assets/persona1.jpg')} 
                        style={{
                            width: 200, 
                            height: 200,
@@ -553,7 +560,7 @@ const ProfileScreen = () => {
                </View>
                 ) : (
                   <View style={{marginBottom: 12}}>
-                       {selectedImage && <Image source={{ uri: selectedImage }} 
+                       {<Image source={{ uri: urlObtenida } || require('../assets/persona1.jpg')} 
                        style={{
                            width: 200, 
                            height: 200,
@@ -585,7 +592,7 @@ const ProfileScreen = () => {
 
                   <View style={{marginBottom: 12}}>
                       <Button title="Seleccionar imagen" onPress={handleImage2Upload} />
-                      {selectedImage2 && <Image source={{ uri: selectedImage2 }} 
+                      {selectedImage2 && <Image source={{ uri: selectedImage2 } || require('../assets/persona1.jpg')} 
                       style={{
                           width: 200,
                           aspectRatio: 9/16,
@@ -596,7 +603,7 @@ const ProfileScreen = () => {
               </View>
                 ) : (
                   <View style={{marginBottom: 12}}>
-                        {selectedImage2 && <Image source={{ uri: selectedImage2 }} 
+                        {selectedImage2 && <Image source={{ uri: selectedImage2 } || require('../assets/persona1.jpg')} 
                         style={{
                             width: 200,
                             aspectRatio: 9/16,

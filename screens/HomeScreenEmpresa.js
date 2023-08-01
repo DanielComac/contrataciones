@@ -18,6 +18,7 @@ const HomeScreenEmpresa = () => {
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [filtrosSeleccionados, setFiltrosSeleccionados] = useState([]);
   const [infoEmpresa, setInfoEmpresa] = useState([]);
+  const [urlImage, setUrlImage] = useState([]);
   const [valorBusqueda, setValorBusqueda] = useState('');
 
   const verPerfilCandidato = (candidato) => {
@@ -52,6 +53,28 @@ const HomeScreenEmpresa = () => {
 
     return unsuscribe;
   }, []);
+
+
+  useEffect(() => {
+    const collectionRef = collection(firestore, 'URLImages');
+    const q = query(collectionRef);
+
+    const unsuscribe = onSnapshot(q, (querySnapshop) => {
+      setUrlImage(
+        querySnapshop.docs.map((doc) => ({
+          idUrl: doc.id,
+          image1: doc.data().UrlImage1,
+          image2: doc.data().UrlImage2
+        }))
+      );
+    });
+
+    console.log(urlImage);
+
+    return unsuscribe;
+  }, []);
+
+
 
   useEffect(() => {
     // Obtiene la hora actual
@@ -152,16 +175,31 @@ const HomeScreenEmpresa = () => {
     // Si la información está completa, mostrar la tarjeta
     return (
       <TouchableOpacity
-        key={dato.id}
-        style={styles.cartaEmpresa}
-        onPress={() => verPerfilCandidato(dato)}
-      >
-        <View>
-          <Image
-            source={require('../assets/persona1.jpg')}
-            style={styles.imagenEmpresa}
-            resizeMode="cover"
-          />
+  key={dato.id}
+  style={styles.cartaEmpresa}
+  onPress={() => verPerfilCandidato(dato)}
+>
+  <View>
+    {urlImage.map((value) => {
+      return dato.id === value.idUrl ? (
+        <Image
+        key={value.idUrl}
+        source={{ uri: value.image2 }}
+        style={styles.imagenEmpresa}
+        resizeMode="cover"
+      />
+      ) : (
+        
+        <Image
+        key={value.idUrl}
+        source={require('../assets/persona1.jpg')}
+        style={styles.imagenEmpresa}
+        resizeMode="cover"
+      />
+        
+      );
+    })}
+         
           <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
           <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
           <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>

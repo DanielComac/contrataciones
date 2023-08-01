@@ -188,24 +188,28 @@ export const SignedInStack = () => {
   const [privilegio, setPrivilegio] = useState("");
   const [loading, setLoading] = useState(true);
   const id = userId || idUsuario || idEmpresa;
-  useEffect(() => {
-    const obtenerPrivilegio = async () => {
-      try {
-        const docSnap = await getDoc(doc(firestore, "users", id));
-        if (docSnap.exists()) {
-          setPrivilegio(docSnap.data().privilegio);
-        } else {
-          console.log("El documento no existe.");
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error al obtener el documento:", error);
-        setLoading(false);
-      }
-    };
-    obtenerPrivilegio();
-  }, [id]);
 
+  
+    useEffect(() => {
+      const obtenerPrivilegio = async () => {
+        try {
+          const docSnap = await getDoc(doc(firestore, "users", id));
+          if (docSnap.exists()) {
+            setPrivilegio(docSnap.data().privilegio);
+          } else {
+            console.log("El documento no existe.");
+          }
+          setLoading(false);
+        } catch (error) {
+          console.error("Error al obtener el documento:", error);
+          setLoading(false);
+        }
+        
+      };
+      obtenerPrivilegio();
+    }, [id]);
+ 
+  
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
