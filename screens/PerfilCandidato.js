@@ -3,8 +3,12 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'rea
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../temas/colors';
 
-const PerfilCandidato = ({ route }) => {
+const PerfilCandidato = ({ route, navigation }) => {
   const candidato = route.params.candidato;
+
+  const handleEnviarOfertaEmpleo = () => {
+    navigation.navigate('EnviarOferta'); 
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -39,7 +43,7 @@ const PerfilCandidato = ({ route }) => {
         <TouchableOpacity style={styles.botonGuardar}>
           <Ionicons name="bookmark-outline" size={24} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.botonEnviar}>
+        <TouchableOpacity style={styles.botonEnviar}  onPress={handleEnviarOfertaEmpleo}>
           <Text style={styles.textoBotonEnviar}>Enviar oferta de empleo</Text>
         </TouchableOpacity>
         </View>

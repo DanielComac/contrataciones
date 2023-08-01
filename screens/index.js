@@ -15,6 +15,9 @@ import PerfilEmpresa from "./PerfilEmpresa";
 import NotificacionesEmpresa from "./NotificacionesEmpresa";
 import PerfilCandidato from "./PerfilCandidato";
 import CandidatosGuardados from "./CandidatosGuardados";
+import EnviarOferta from "./EnviarOferta";
+import MensajeOferta from "./MensajeOferta";
+
 
 export {
     Login,
@@ -34,4 +37,6 @@ export {
     NotificacionesEmpresa,
     PerfilCandidato,
     CandidatosGuardados,
+    EnviarOferta,
+    MensajeOferta
 }

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa, PerfilCandidato, CandidatosGuardados } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa, PerfilCandidato, CandidatosGuardados, EnviarOferta, MensajeOferta } from "./screens";
 import COLORS from "./temas/colors";
 import { firestore, auth } from "./firebase-config";
 import { doc, getDoc } from "firebase/firestore";
@@ -270,6 +270,22 @@ export const SignedInStack = () => {
           component={CandidatosGuardados}
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="EnviarOferta"
+          component={EnviarOferta}
+          options={{
+            headerShown: true,
+            title: "Enviar descripción del empleo"
+          }}
+        />
+        <Stack.Screen
+          name="MensajeOferta"
+          component={MensajeOferta}
+          options={{
+            headerShown: true,
+            title: "Redacta el mensaje para el candidato"
           }}
         />
       </Stack.Navigator>
