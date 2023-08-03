@@ -2,27 +2,38 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, FlatList, TouchableOpacity, ScrollView, LinearGradient } from 'react-native';
 import COLORS from '../temas/colors';
 import { useNavigation } from '@react-navigation/native';
+import { updateDoc, doc } from 'firebase/firestore';
+import { firestore } from "../firebase-config";
+
 
 const NotificationScreen = () => {
   const [notifications, setNotifications] = useState([]);
   const [numNotifications, setNumNotifications] = useState(0);
 
-  const handleEmpresaPress = (empresa, id) => {
+  const handleEmpresaPress = async (empresa, id) => {
     // Disminuir el conteo de notificaciones nuevas
     setNumNotifications(numNotifications - 1);
 
     // Quitar el punto de la notificación correspondiente
-    const updatedNotifications = notifications.map(item => {
+    const updatedNotifications = notifications.map((item) => {
       if (item.id === id) {
         return {
           ...item,
-          tieneNotificacion: false
+          tieneNotificacion: false,
         };
       }
       return item;
     });
     setNotifications(updatedNotifications);
-
+  
+    // Actualizar el estado de la notificación a "leído" en la base de datos
+    try {
+      const notificacionRef = doc(firestore, 'users', nombreCandidato, 'notificaciones', id);
+      await updateDoc(notificacionRef, { tieneNotificacion: false });
+    } catch (error) {
+      console.error('Error al actualizar el estado de la notificación:', error);
+    }
+  
     navigation.navigate('PerfilEmpresa', { empresa });
   };
 

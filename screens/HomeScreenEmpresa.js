@@ -17,7 +17,7 @@ const HomeScreenEmpresa = () => {
   const [saludo, setSaludo] = useState('');
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [filtrosSeleccionados, setFiltrosSeleccionados] = useState([]);
-  const [infoEmpresa, setInfoEmpresa] = useState([]);
+  const [infoUsuario, setInfoUsuario] = useState([]);
   const [urlImage, setUrlImage] = useState([]);
   const [valorBusqueda, setValorBusqueda] = useState('');
 
@@ -31,7 +31,7 @@ const HomeScreenEmpresa = () => {
     const q = query(collectionRef);
 
     const unsuscribe = onSnapshot(q, (querySnapshop) => {
-      setInfoEmpresa(
+      setInfoUsuario(
         querySnapshop.docs.map((doc) => ({
           id: doc.id,
           nombre: doc.data().nombre,
@@ -116,7 +116,7 @@ const HomeScreenEmpresa = () => {
   };
 
   const filtrarCandidatos = () => {
-    let candidatosFiltrados = infoEmpresa;
+    let candidatosFiltrados = infoUsuario;
 
 
     if (valorBusqueda.trim() !== '') {
