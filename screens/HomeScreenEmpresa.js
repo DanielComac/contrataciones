@@ -164,46 +164,35 @@ const HomeScreenEmpresa = () => {
   const candidatosFiltrados = filtrarCandidatos();
 
   const mostrarTarjeta = (dato) => {
-    const infoCompleta =
-      dato.nombre && dato.puestoTrabajo && dato.campoTrabajo;
-    
-    if (!infoCompleta) {
-      return null;
-    }
-    return (
-      <TouchableOpacity
-  key={dato.id}
-  style={styles.cartaEmpresa}
-  onPress={() => verPerfilCandidato(dato)}
->
-  <View>
-    {urlImage.map((value) => {
-      return dato.id === value.idUrl ? (
+  const infoCompleta = dato.nombre && dato.puestoTrabajo && dato.campoTrabajo;
+
+  if (!infoCompleta) {
+    return null;
+  }
+
+  const imageUrl = urlImage.find((value) => dato.id === value.idUrl)?.image2 || '';
+
+  return (
+    <TouchableOpacity
+      key={dato.id}
+      style={styles.cartaEmpresa}
+      onPress={() => verPerfilCandidato(dato)}
+    >
+      <View>
         <Image
-        key={value.idUrl}
-        source={{ uri: value.image2 }}
-        style={styles.imagenEmpresa}
-        resizeMode="cover"
-      />
-      ) : (
-        
-        <Image
-        key={value.idUrl}
-        source={require('../assets/persona1.jpg')}
-        style={styles.imagenEmpresa}
-        resizeMode="cover"
-      />
-        
-      );
-    })}
-         
-          <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-          <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-          <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+          source={{ uri: imageUrl }}
+          style={styles.imagenEmpresa}
+          resizeMode="cover"
+        />
+
+        <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+        <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+        <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 
   return (
     <ScrollView>
