@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Platform, DatePickerIOS } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import MapView, { Marker } from 'react-native-maps';
 import COLORS from '../temas/colors';
 import { useNavigation } from '@react-navigation/native';
+import { userId } from './Login.js';
+import { firestore } from "../firebase-config";
+import { setDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { addDoc, collection } from 'firebase/firestore';
+
 
 
 const EnviarOferta = ({route}) => {
@@ -11,12 +16,14 @@ const EnviarOferta = ({route}) => {
     const navigation = useNavigation();
 
     const { nombreCandidato } = route.params;
+    const [infoUsuario, setInfoUsuario] = useState({});
+    const [NombreEmpresa, setNombreEmpresa] = useState('');
 
 
   const [puestoEmpleo, setPuestoEmpleo] = useState('');
   const [requisitos, setRequisitos] = useState('');
-  const [horaEntrada, setHoraEntrada] = useState(''); 
-  const [horaSalida, setHoraSalida] = useState('');
+  const [horaEntrada, setHoraEntrada] = useState('11:00'); 
+  const [horaSalida, setHoraSalida] = useState('12:00');
   const [salario, setSalario] = useState('');
   const [descripcionEmpleo, setDescripcionEmpleo] = useState('');
   const [ubicacion, setUbicacion] = useState({
@@ -26,10 +33,25 @@ const EnviarOferta = ({route}) => {
     longitudeDelta: 0.0221,
   });
 
+  useEffect(() => {
+    const id = userId;
+    const docRef = doc(firestore, 'users', id);
+
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setNombreEmpresa(docSnap.data().nombreEmpresa);
+      } else {
+        console.log('El documento no existe.');
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   const [mensajeEditable, setMensajeEditable] = useState('');
 
 
-  const handleEnviarOferta = () => {
+  const handleEnviarOferta = async () => {
     const mensaje = `Estimado ${nombreCandidato},
   
   Espero que este mensaje te encuentre bien. Me complace informarte que, después de revisar tu perfil en nuestra aplicación de contrataciones de personal, hemos identificado que cumples con los requisitos necesarios para una oportunidad laboral en nuestra empresa.
@@ -48,9 +70,6 @@ const EnviarOferta = ({route}) => {
 
   Descripción del empleo: ${descripcionEmpleo}
 
-  Ubicación: ${ubicacion.latitude}, ${ubicacion.longitude}
-
-  
   Si estás interesado en esta oportunidad, nos encantaría conocer más sobre ti y tu interés en nuestra empresa. Por favor, confírmanos tu disponibilidad para una entrevista, y nos pondremos en contacto contigo para programarla.
   
   Si tienes alguna pregunta adicional o necesitas más información, no dudes en contactarnos. Estamos emocionados de explorar esta oportunidad contigo y esperamos conocer tu potencial como parte de nuestro equipo.
@@ -59,11 +78,27 @@ const EnviarOferta = ({route}) => {
   
   Atentamente,
   
-  [Nombre de la Empresa]
-  `;
+${NombreEmpresa} 
+
+`;
   
-  setMensajeEditable(mensaje);
-  navigation.navigate('MensajeOferta', { mensaje });
+setMensajeEditable(mensaje);
+navigation.navigate('MensajeOferta', { mensaje, ubicacion });
+try {
+    const ofertaEmpleo = {
+      empresa: NombreEmpresa,
+      mensaje: mensaje,
+      tieneNotificacion: true,
+    };
+
+    // Agregar la oferta de empleo a la colección de notificaciones del usuario destinatario
+    await addDoc(collection(firestore, 'users', nombreCandidato, 'notificaciones'), ofertaEmpleo);
+
+    // Navegar a la pantalla de notificaciones del usuario
+    navigation.navigate('NotificationScreen');
+  } catch (error) {
+    console.error('Error al enviar la oferta de empleo:', error);
+  }
 };
 
   const handleMapPress = (event) => {
@@ -81,19 +116,16 @@ const EnviarOferta = ({route}) => {
         <>
           <Text style={styles.pickerLabel}>Hora de entrada:</Text>
           <DatePickerIOS
-            date={horaEntrada}
-            onDateChange={setHoraEntrada}
-            mode="time"
-            minuteInterval={15}
-          />
+  date={horaEntrada}
+  onDateChange={setHoraEntrada}
+  mode="time"
+/>
 
-          <Text style={styles.pickerLabel}>Hora de salida:</Text>
-          <DatePickerIOS
-            date={horaSalida}
-            onDateChange={setHoraSalida}
-            mode="time"
-            minuteInterval={15}
-          />
+<DatePickerIOS
+  date={horaSalida}
+  onDateChange={setHoraSalida}
+  mode="time"
+/>
         </>
       );
     } else {
@@ -211,7 +243,7 @@ const styles = StyleSheet.create({
 
   },
   labelUbicacion: {
-    fontSize: 2,
+    fontSize: 14,
     marginBottom: 10,
   },
   labelAdvertencia: {

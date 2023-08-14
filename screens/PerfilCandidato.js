@@ -15,7 +15,7 @@ const PerfilCandidato = ({ route, navigation }) => {
       <View style={styles.header}>
         {/* Foto de perfil */}
         <Image
-          source={require('../assets/persona1.jpg')} // Cambia la ruta de la imagen por la del candidato
+          source={require('../assets/persona1.jpg')}
           style={styles.fotoPerfil}
           resizeMode="cover"
         />

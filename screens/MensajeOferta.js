@@ -1,10 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import COLORS from '../temas/colors';
+import MapView, { Marker } from 'react-native-maps';
+
 
 const MensajeOferta = ({ route, navigation }) => {
-  const { mensaje } = route.params;
-  const mensajeRef = useRef(null);
+  const { mensaje, ubicacion } = route.params;
+    const mensajeRef = useRef(null);
 
   const handleMensajeChange = (text) => {
     navigation.setParams({ mensaje: text });
@@ -29,6 +31,18 @@ const MensajeOferta = ({ route, navigation }) => {
             onChangeText={handleMensajeChange}
             multiline
           />
+          <Text style={styles.labelUbicacion}>Ubicación aproximada del empleo:</Text>
+          <MapView
+            style={styles.map}
+            region={{
+              latitude: ubicacion.latitude,
+              longitude: ubicacion.longitude,
+              latitudeDelta: ubicacion.latitudeDelta,
+              longitudeDelta: ubicacion.longitudeDelta,
+            }}
+          >
+            <Marker coordinate={{ latitude: ubicacion.latitude, longitude: ubicacion.longitude }} />
+          </MapView>
         </ScrollView>
         <TouchableOpacity style={styles.botonEnviar} onPress={() => console.log('Mensaje enviado:', mensaje)}>
           <Text style={styles.textoBotonEnviar}>Enviar oferta de empleo</Text>
@@ -55,6 +69,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     top: -10
   },
+  labelUbicacion: {
+    fontSize: 16,
+    marginBottom: 0,
+    top: -30,
+    alignSelf: 'center',
+    fontWeight: 'bold'
+  },
   mensajeContainer: {
     borderWidth: 1,
     borderColor: COLORS.secondary,
@@ -78,6 +99,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  map: {
+    width: '100%',
+    height: 70,
+    top: -25
   },
 });
 

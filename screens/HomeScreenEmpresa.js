@@ -17,7 +17,7 @@ const HomeScreenEmpresa = () => {
   const [saludo, setSaludo] = useState('');
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [filtrosSeleccionados, setFiltrosSeleccionados] = useState([]);
-  const [infoEmpresa, setInfoEmpresa] = useState([]);
+  const [infoUsuario, setInfoUsuario] = useState([]);
   const [urlImage, setUrlImage] = useState([]);
   const [valorBusqueda, setValorBusqueda] = useState('');
 
@@ -31,7 +31,7 @@ const HomeScreenEmpresa = () => {
     const q = query(collectionRef);
 
     const unsuscribe = onSnapshot(q, (querySnapshop) => {
-      setInfoEmpresa(
+      setInfoUsuario(
         querySnapshop.docs.map((doc) => ({
           id: doc.id,
           nombre: doc.data().nombre,
@@ -116,7 +116,7 @@ const HomeScreenEmpresa = () => {
   };
 
   const filtrarCandidatos = () => {
-    let candidatosFiltrados = infoEmpresa;
+    let candidatosFiltrados = infoUsuario;
 
 
     if (valorBusqueda.trim() !== '') {
@@ -164,46 +164,35 @@ const HomeScreenEmpresa = () => {
   const candidatosFiltrados = filtrarCandidatos();
 
   const mostrarTarjeta = (dato) => {
-    const infoCompleta =
-      dato.nombre && dato.puestoTrabajo && dato.campoTrabajo;
-    
-    if (!infoCompleta) {
-      return null;
-    }
-    return (
-      <TouchableOpacity
-  key={dato.id}
-  style={styles.cartaEmpresa}
-  onPress={() => verPerfilCandidato(dato)}
->
-  <View>
-    {urlImage.map((value) => {
-      return dato.id === value.idUrl ? (
+  const infoCompleta = dato.nombre && dato.puestoTrabajo && dato.campoTrabajo;
+
+  if (!infoCompleta) {
+    return null;
+  }
+
+  const imageUrl = urlImage.find((value) => dato.id === value.idUrl)?.image2 || '';
+
+  return (
+    <TouchableOpacity
+      key={dato.id}
+      style={styles.cartaEmpresa}
+      onPress={() => verPerfilCandidato(dato)}
+    >
+      <View>
         <Image
-        key={value.idUrl}
-        source={{ uri: value.image2 }}
-        style={styles.imagenEmpresa}
-        resizeMode="cover"
-      />
-      ) : (
-        
-        <Image
-        key={value.idUrl}
-        source={require('../assets/persona1.jpg')}
-        style={styles.imagenEmpresa}
-        resizeMode="cover"
-      />
-        
-      );
-    })}
-         
-          <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
-          <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
-          <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+          source={{ uri: imageUrl }}
+          style={styles.imagenEmpresa}
+          resizeMode="cover"
+        />
+
+        <Text style={styles.nombreEmpresa}>{dato.nombre}</Text>
+        <Text style={styles.descripcionTituloPuesto}>Puesto a aplicar:</Text>
+        <Text style={styles.descripcionPuesto}>{dato.puestoTrabajo}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 
   return (
     <ScrollView>
