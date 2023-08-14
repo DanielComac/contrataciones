@@ -17,6 +17,11 @@ import PerfilCandidato from "./PerfilCandidato";
 import CandidatosGuardados from "./CandidatosGuardados";
 import EnviarOferta from "./EnviarOferta";
 import MensajeOferta from "./MensajeOferta";
+import HomeScreenAdmin from "./HomeScreenAdmin";
+import ValidacionEmpresa from "./ValidacionEmpresa";
+import AjustesAdmin from "./AjustesAdmin";
+import EmpresasAceptadas from "./EmpresasAceptadas";
+import CandidatosRegistrados from "./CandidatosRegistrados";
 
 
 export {
@@ -38,5 +43,10 @@ export {
     PerfilCandidato,
     CandidatosGuardados,
     EnviarOferta,
-    MensajeOferta
+    MensajeOferta,
+    HomeScreenAdmin,
+    ValidacionEmpresa,
+    AjustesAdmin,
+    EmpresasAceptadas,
+    CandidatosRegistrados
 }

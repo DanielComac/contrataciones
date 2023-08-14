@@ -36,6 +36,7 @@ const Login = ({ navigation }) => {
             // El inicio de sesión fue exitoso
             console.log('Inicio de sesión exitoso', userCredential.user);
             userId = userCredential.user.uid;
+
             // Redirigir al usuario a la siguiente ventana
             console.log(userId);
           })

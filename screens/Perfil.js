@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, TextInpu
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 // import { upload } from '../uploadImages.js';
 import { storage } from "../firebase-config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
@@ -67,7 +68,7 @@ const ProfileScreen = () => {
 
   const [url, setUrl] = useState('');
   const [url2, setUrl2] = useState('');
-  const [urlObtenida, setUrlObtenida] = useState('');
+  const [urlObtenida, setUrlObtenida] = useState([]);
 
   useEffect(() => {
     const id = userId;
@@ -124,13 +125,15 @@ const ProfileScreen = () => {
 
     const unsubscribe = onSnapshot(q, (doc) => {
       if (doc.exists()) {
-        // setUrlObtenida([
-        //   {
+        setUrlObtenida([
+          {
+            idUrl: doc.id,
+            urlImage1: doc.data().UrlImage1,
+            urlImage2: doc.data().UrlImage2 
   
-        //   },
-        // ]);
+          },
+        ]);
 
-        setUrlObtenida(doc.data().UrlImage1);
         console.log(urlObtenida);
        
       } else {
@@ -268,11 +271,34 @@ const ProfileScreen = () => {
        }
    };
 
+
+   const [selectedFile, setSelectedFile] = useState(null);
+   const handleFileUpload = async () => {
+    try {
+      const result = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.allFiles], // Puedes especificar aquí el tipo de archivo que deseas seleccionar (por ejemplo, 'image/*' para imágenes)
+      });
+      setSelectedFile(result);
+      console.log('Documento seleccionado:', result);
+      // Aquí puedes procesar el archivo seleccionado (por ejemplo, subirlo a un servidor o mostrarlo en tu aplicación)
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // Manejar el caso en que el usuario ha cancelado la selección del archivo
+        console.log('Se ha cancelado la selección');
+      } else {
+        // Manejar otros errores
+        console.error('Error al seleccionar el archivo:', err);
+      }
+    }
+  
+   }
+
+
    const sendUrl = async () => {
     await setDoc(doc(firestore, 'URLImages', userId),{
       UrlImage1: url || urlObtenida,
-      UrlImage2: url2 
-  })
+      UrlImage2: url2 || urlObtenida
+      })
    }
 
 
@@ -284,17 +310,14 @@ const ProfileScreen = () => {
           <View style={styles.container}>
             <View style={styles.infoContainer}>
               <View style={styles.profileContainer}>
-                {urlObtenida === "" ? (
-                  <Image
-                  source={require('../assets/persona1.jpg')}
-                  style={styles.profilePicture}
-                />
-                ) : (
-                  <Image
-                  source={{uri: urlObtenida}}
-                  style={styles.profilePicture}
-                />
-                )}
+              {urlObtenida.map((value) => (
+                <Image
+                key={value.idUrl}
+                source={{ uri: value.urlImage1 }} 
+                style={styles.profilePicture}
+              />
+            ))}
+
                 <Text style={styles.name}>{dato.nombre}</Text>
               </View>
               <Text style={styles.infoTitle}>Información personal:</Text>
@@ -529,9 +552,9 @@ const ProfileScreen = () => {
                 )}
               </View>
 
+{/*--------------------------------------------------------------------------------------------- */}
               <View style={styles.infoDivider} />
               <View style={styles.infoRow}>
-                
                 {editMode ? (
                    <View style={{ marginBottom: 12 }}>
                    <Text style={{
@@ -549,32 +572,39 @@ const ProfileScreen = () => {
 
                    <View style={{marginBottom: 12}}>
                        <Button title="Seleccionar imagen" onPress={handleImageUpload} />
-                       {<Image source={{ uri: urlObtenida } || require('../assets/persona1.jpg')} 
-                       style={{
-                           width: 200, 
-                           height: 200,
-                           marginTop: 12,
-                           alignItems: 'center'
-                       }} />}
+                       {urlObtenida.map((value ) => (
+                        <Image source={{ uri: value.urlImage1 }}
+                        key={value.idUrl} 
+                        style={{
+                            width: 200, 
+                            height: 200,
+                            marginTop: 12,
+                            alignItems: 'center'
+                        }} />
+
+                          ))}
                    </View>
                </View>
                 ) : (
                   <View style={{marginBottom: 12}}>
-                       {<Image source={{ uri: urlObtenida } || require('../assets/persona1.jpg')} 
-                       style={{
-                           width: 200, 
-                           height: 200,
-                           marginTop: 12,
-                           alignItems: 'center'
-                       }} />}
+                      {urlObtenida.map((value ) => (
+                        <Image source={{ uri: value.urlImage1 }}
+                        key={value.idUrl} 
+                        style={{
+                            width: 200, 
+                            height: 200,
+                            marginTop: 12,
+                            alignItems: 'center'
+                        }} />
+
+                          ))}
                    </View>
                 )}
               </View>
 
-
+{/*--------------------------------------------------------------------------------------------- */}
               <View style={styles.infoDivider} />
               <View style={styles.infoRow}>
-                
                 {editMode ? (
                   <View style={{ marginBottom: 12 }}>
                   <Text style={{
@@ -592,24 +622,64 @@ const ProfileScreen = () => {
 
                   <View style={{marginBottom: 12}}>
                       <Button title="Seleccionar imagen" onPress={handleImage2Upload} />
-                      {selectedImage2 && <Image source={{ uri: selectedImage2 } || require('../assets/persona1.jpg')} 
-                      style={{
-                          width: 200,
-                          aspectRatio: 9/16,
-                          marginTop: 12,
-                          alignItems: 'center'
-                      }} />}
+                      {urlObtenida.map((value ) => (
+                         <Image source={{ uri: value.urlImage2 }}
+                         key={value.idUrl} 
+                         style={{
+                             width: 200,
+                             aspectRatio: 9/16,
+                             marginTop: 12,
+                             alignItems: 'center'
+                         }} />
+
+                          ))}
+
+                      
                   </View>
               </View>
                 ) : (
                   <View style={{marginBottom: 12}}>
-                        {selectedImage2 && <Image source={{ uri: selectedImage2 } || require('../assets/persona1.jpg')} 
-                        style={{
-                            width: 200,
-                            aspectRatio: 9/16,
-                            marginTop: 12,
-                            alignItems: 'center'
-                        }} />}
+                       {urlObtenida.map((value) => (
+                         <Image source={{ uri: value.urlImage2 }} 
+                         key={value.idUrl}
+                         style={{
+                             width: 200,
+                             aspectRatio: 9/16,
+                             marginTop: 12,
+                             alignItems: 'center'
+                         }} />
+
+                          ))}
+                    </View>
+                )}
+              </View>
+
+{/*--------------------------------------------------------------------------------------------- */}
+              <View style={styles.infoDivider} />
+              <View style={styles.infoRow}>
+                {editMode ? (
+                  <View style={{ marginBottom: 12 }}>
+                  <Text style={{
+                      fontSize: 16,
+                      fontWeight: 400,
+                      marginVertical: 8,
+                  }}>Curriculum</Text>
+                  <Text style={{
+                      fontSize: 16,
+                      fontWeight: 400,
+                      marginVertical: 4,
+                      fontWeight: 'bold',
+                      marginBottom: "6%"
+                  }}>Tu curriculum será visualizado por las empresas interesadas en ti</Text>
+
+                  <View style={{marginBottom: 12}}>
+                      <Button title="Seleccionar Archivo" onPress={handleFileUpload} />
+                      <Text>{selectedFile}</Text>
+                  </View>
+              </View>
+                ) : (
+                  <View style={{marginBottom: 12}}>
+                        
                     </View>
                 )}
               </View>

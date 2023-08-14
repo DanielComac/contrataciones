@@ -1,15 +1,16 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa, PerfilCandidato, CandidatosGuardados, EnviarOferta, MensajeOferta } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, HomeScreenAdmin, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa, PerfilCandidato, CandidatosGuardados, EnviarOferta, MensajeOferta, ValidacionEmpresa, AjustesAdmin, EmpresasAceptadas, CandidatosRegistrados } from "./screens";
 import COLORS from "./temas/colors";
-import { firestore, auth } from "./firebase-config";
+import { firestore, auth, app } from "./firebase-config";
+import firebase from 'firebase/app';
 import { doc, getDoc } from "firebase/firestore";
 import { userId } from "./screens/Login";
 import { idUsuario } from "./screens/Signup";
 import { idEmpresa } from "./screens/SignupEmpresa";
 import { View, Text, ActivityIndicator } from "react-native";
-
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -139,6 +140,70 @@ export function BottonTabEmpresa() {
 }
 
 
+export function BottonTabAdmin() {
+  return (
+    <Tab.Navigator
+      initialRouteName="HomeScreenAdmin"
+      screenOptions={{
+        tabBarActiveTintColor: "#007260",
+      }}
+    >
+
+      <Tab.Screen
+        name="CandidatosRegistrados"
+        component={CandidatosRegistrados}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Candidatos",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="cog" size={size} color={color} />
+          ),
+        }}
+      />
+
+        <Tab.Screen
+        name="EmpresasAceptadas"
+        component={EmpresasAceptadas}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Empresas",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="cog" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="HomeScreenAdmin"
+        component={HomeScreenAdmin}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="AjustesAdmin"
+        component={AjustesAdmin}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Ajustes",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="cog" size={size} color={color} />
+          ),
+        }}
+      />
+
+    </Tab.Navigator>
+  );
+}
+
+
+
+
 export function InitialStack() {
   return (
     <NavigationContainer>
@@ -183,18 +248,16 @@ export function InitialStack() {
   );
 }
 
-
 export const SignedInStack = () => {
 
   const [privilegio, setPrivilegio] = useState("");
   const [loading, setLoading] = useState(true);
-  const id = userId || idUsuario || idEmpresa;
+   const id = userId || idUsuario || idEmpresa;
 
-  
     useEffect(() => {
       const obtenerPrivilegio = async () => {
         try {
-          const docSnap = await getDoc(doc(firestore, "users", id));
+          const docSnap = await getDoc(doc(firestore, "users", id ));
           if (docSnap.exists()) {
             setPrivilegio(docSnap.data().privilegio);
           } else {
@@ -230,7 +293,7 @@ export const SignedInStack = () => {
             headerShown: false,
           }}
         />
-        ) : (
+        ) : privilegio === "empresa" ? (
           <Stack.Screen
           name="Home"
           component={BottonTabEmpresa}
@@ -238,7 +301,27 @@ export const SignedInStack = () => {
             headerShown: false,
           }}
         />
+        ) : privilegio === "admin" ? (
+
+          <Stack.Screen
+          name="Home"
+          component={BottonTabAdmin}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        ) : (
+          <Stack.Screen
+          name="Home"
+          component={BottomTabUsuario}
+          options={{
+            headerShown: false,
+          }}
+        />
         )}
+
+
         <Stack.Screen
           name="Form"
           component={Form}
@@ -261,6 +344,34 @@ export const SignedInStack = () => {
             title: "Información",
           }}
         />
+
+        <Stack.Screen
+          name="ValidacionEmpresa"
+          component={ValidacionEmpresa}
+          options={{
+            headerShown: true,
+            title: "Comprobacion de la informacion de la empresa",
+          }}
+        />
+
+        <Stack.Screen
+          name="EmpresasAceptadas"
+          component={EmpresasAceptadas}
+          options={{
+            headerShown: true,
+            title: "Empresas aceptadas en la app",
+          }}
+        />
+
+        <Stack.Screen
+          name="CandidatosRegistrados"
+          component={CandidatosRegistrados}
+          options={{
+            headerShown: true,
+            title: "Candidatos registrados en la app",
+          }}
+        />
+
         <Stack.Screen
           name="PerfilCandidato"
           component={PerfilCandidato}

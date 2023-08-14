@@ -123,7 +123,7 @@ const PerfilEmpresa = () => {
               </View>
               <Text style={styles.name}>{infoUsuario.nombreEmpresa}</Text>
             </View>
-            <Text style={styles.infoTitle}>Información personal:</Text>
+            <Text style={styles.infoTitle}>Información de la empresa:</Text>
               <View style={styles.infoDivider} />
               <View style={styles.infoRow}>
                 <Ionicons name="person-circle" size={16} style={styles.infoIcon} />
