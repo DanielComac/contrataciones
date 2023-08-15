@@ -28,7 +28,7 @@ const updatePriv = () => {
           <View style={styles.header}>
             {/* Foto de perfil */}
             <Image
-              source={require('../assets/persona1.jpg')} // Cambia la ruta de la imagen por la del candidato
+              source={require('../assets/empresa2.png')}
               style={styles.fotoPerfil}
               resizeMode="cover"
             />
@@ -38,13 +38,14 @@ const updatePriv = () => {
           <View style={styles.division} />
           <View style={styles.infoPersonalContainer}>
             <ItemConIcono icono="call-outline" texto={`Número de teléfono: ${empresa.numeroCelular}`} />
-            <ItemConIcono icono="location-outline" texto={`Ciudad: ${empresa.correo}`} />
-            <ItemConIcono icono="home-outline" texto={`Colonia: ${empresa.sitioWeb}`} />
-          </View>
-          {/* Contenedor de información de trabajo */}
-          <View style={styles.infoTrabajoContainer}>
+            <ItemConIcono icono="mail-outline" texto={`Correo electrónico: ${empresa.correo}`} />
             <ItemConIcono icono="business-outline" texto={`Campo de trabajo: ${empresa.campo}`} />
-            <ItemConIcono icono="briefcase-outline" texto={`Puesto a aplicar: ${empresa.descripcion}`} />
+
+          </View>
+          <View style={styles.infoTrabajoContainer}>
+            <TouchableOpacity style={styles.enlacePDF} onPress={() => {}}>
+            <Text style={styles.enlacePDFTexto}>Ver Documento PDF para comprobar validez de la empresa</Text>
+          </TouchableOpacity>
           </View>
           <View style={styles.botonesContainer}>
             <TouchableOpacity style={styles.botonEnviar} onPress={updatePriv} >
@@ -125,11 +126,6 @@ const ItemConIcono = ({ icono, texto }) => {
     textoItem: {
       fontSize: 16,
     },
-    botonesContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 20,
-    },
     botonEnviar: {
       backgroundColor: COLORS.primary,
       borderRadius: 10,
@@ -137,7 +133,7 @@ const ItemConIcono = ({ icono, texto }) => {
       paddingHorizontal: 30,
       alignItems: 'center',
       flexDirection: 'row',
-      width: '80%',
+      width: '100%',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
@@ -148,14 +144,6 @@ const ItemConIcono = ({ icono, texto }) => {
       color: '#fff',
       fontSize: 15,
       fontWeight: 'bold',
-    },
-    botonGuardar: {
-      backgroundColor: COLORS.primary,
-      width: 55,
-      height: 55,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
     },
   });
 

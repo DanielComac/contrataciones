@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, TextInpu
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
-import DocumentPicker from 'react-native-document-picker';
 // import { upload } from '../uploadImages.js';
 import { storage } from "../firebase-config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";

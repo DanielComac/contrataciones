@@ -33,6 +33,7 @@ const SignupEmpresa = ({ navigation }) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [nombreEmpresa, setNombreEmpresa] = React.useState('');
+    const [campoDesarrollo, setCampoDesarrollo] = React.useState('');
     const [userId, setUserId] = React.useState('')
 
     const handleCreateAccount = async () => {
@@ -49,6 +50,7 @@ const SignupEmpresa = ({ navigation }) => {
             privilegio: "empresa",
             nombreEmpresa: nombreEmpresa,
             numeroCelularEmpresa: "",
+            campoDesarrollo: campoDesarrollo,
         })
 
         //actualizar el userId con la ID del usuario creado
@@ -208,6 +210,37 @@ const SignupEmpresa = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+
+                    
+                    <View style={{ marginBottom: 12 }}>
+                    <Text style={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        marginVertical: 8
+                    }}>Tipo de empresa o campo en el que se desarrolla*</Text>
+
+                    <View style={{
+                        width: "100%",
+                        height: 48,
+                        borderColor: COLORS.black,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        paddingLeft: 22
+                    }}>
+                        <TextInput
+                            placeholder='Ejemplo: Restaurante'
+                            placeholderTextColor={COLORS.black}
+                            style={{
+                                width: "100%"
+                            }}
+                            onChangeText={(text) => setCampoDesarrollo(text)}
+                        />
+                    </View>
+                </View>
+
+{/* ====================================================================================== */}
                     
                     {/* Términos y condiciones */}
 

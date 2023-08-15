@@ -156,7 +156,7 @@ export function BottonTabAdmin() {
           headerShown: false,
           tabBarLabel: "Candidatos",
           tabBarIcon: ({ color, size }) => (
-            <Entypo name="cog" size={size} color={color} />
+            <Ionicons name="people-outline" size={size} color={color} />
           ),
         }}
       />
@@ -168,7 +168,7 @@ export function BottonTabAdmin() {
           headerShown: false,
           tabBarLabel: "Empresas",
           tabBarIcon: ({ color, size }) => (
-            <Entypo name="cog" size={size} color={color} />
+            <Ionicons name="business-outline" size={size} color={color} />
           ),
         }}
       />
