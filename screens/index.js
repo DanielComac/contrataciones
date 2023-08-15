@@ -22,6 +22,7 @@ import ValidacionEmpresa from "./ValidacionEmpresa";
 import AjustesAdmin from "./AjustesAdmin";
 import EmpresasAceptadas from "./EmpresasAceptadas";
 import CandidatosRegistrados from "./CandidatosRegistrados";
+import EmpresasEspera from "./EmpresasEspera";
 
 
 export {
@@ -48,5 +49,6 @@ export {
     ValidacionEmpresa,
     AjustesAdmin,
     EmpresasAceptadas,
-    CandidatosRegistrados
+    CandidatosRegistrados,
+    EmpresasEspera
 }
