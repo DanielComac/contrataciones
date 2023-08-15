@@ -92,7 +92,7 @@ try {
     };
 
     // Agregar la oferta de empleo a la colección de notificaciones del usuario destinatario
-    await addDoc(collection(firestore, 'users', nombreCandidato, 'notificaciones'), ofertaEmpleo);
+    await addDoc(collection(firestore, 'notificacion', nombreCandidato, 'notificaciones'), ofertaEmpleo);
 
     // Navegar a la pantalla de notificaciones del usuario
     navigation.navigate('NotificationScreen');

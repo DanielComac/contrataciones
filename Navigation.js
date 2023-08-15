@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, HomeScreenAdmin, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa, PerfilCandidato, CandidatosGuardados, EnviarOferta, MensajeOferta, ValidacionEmpresa, AjustesAdmin, EmpresasAceptadas, CandidatosRegistrados } from "./screens";
+import { Login, Signup, Welcome, Welcome2, SignupEmpresa, Form, NotificationScreen, Home, Perfil, PerfilEmpresaScreen, Ajustes, HomeScreenEmpresa, HomeScreenAdmin, AjustesEmpresa, PerfilEmpresa, NotificacionesEmpresa, PerfilCandidato, CandidatosGuardados, EnviarOferta, MensajeOferta, ValidacionEmpresa, AjustesAdmin, EmpresasAceptadas, CandidatosRegistrados, EmpresasEspera } from "./screens";
 import COLORS from "./temas/colors";
 import { firestore, auth, app } from "./firebase-config";
 import firebase from 'firebase/app';
@@ -311,10 +311,18 @@ export const SignedInStack = () => {
           }}
         />
 
+        ) : privilegio === "" ? (
+          <Stack.Screen
+          name="Espera"
+          component={EmpresasEspera}
+          options={{
+            headerShown: false,
+          }}
+        />
         ) : (
           <Stack.Screen
-          name="Home"
-          component={BottomTabUsuario}
+          name="Ajustes"
+          component={Ajustes}
           options={{
             headerShown: false,
           }}
