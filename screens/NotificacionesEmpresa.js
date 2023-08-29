@@ -45,7 +45,7 @@ const NotificacionesEmpresa = () => {
         {
           id: 1,
           empresa: 'Empresa 1',
-          imagen: require('../assets/empresa1.png'),
+          imagen: require('../assets/empresa3.png'),
           mensaje: 'La empresa "nombre" quiere contactarte',
           tieneNotificacion: true,
         },

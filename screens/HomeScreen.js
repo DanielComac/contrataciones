@@ -81,7 +81,7 @@ const HomeScreen = () => {
           >
             <View style={styles.cartaEmpresa}>
               <Image
-                source={require('../assets/empresa1.png')}
+                source={require('../assets/empresa3.png')}
                 style={styles.imagenEmpresa}
               />
               <Text style={styles.nombreEmpresa}>Empresa 2</Text>
@@ -128,7 +128,7 @@ const HomeScreen = () => {
           >
             <View style={styles.cartaEmpresa}>
               <Image
-                source={require('../assets/empresa1.png')}
+                source={require('../assets/empresa3.png')}
                 style={styles.imagenEmpresa}
               />
               <Text style={styles.nombreEmpresa}>Empresa 2</Text>

@@ -38,7 +38,7 @@ const NotificationScreen = () => {
   };
 
   const empresaData = {
-    foto: require('../assets/empresa1.jpg'),
+    foto: require('../assets/empresa3.png'),
     nombre: 'Empresa 1',
     descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     contacto: [
@@ -56,7 +56,7 @@ const NotificationScreen = () => {
         {
           id: 1,
           empresa: 'Empresa 1',
-          imagen: require('../assets/empresa1.png'),
+          imagen: require('../assets/empresa3.png'),
           mensaje: 'La empresa "nombre" quiere contactarte',
           tieneNotificacion: true,
         },

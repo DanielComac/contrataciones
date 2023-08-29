@@ -60,17 +60,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20, // Agregar margen inferior para separar el texto del botón
+        marginBottom: 20, 
       },
       container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20, // Agregar un espaciado alrededor del contenido
+        padding: 20,
       },
       cerrarSesionContainer: {
-        marginTop: 20, // Agregar margen superior al contenedor del botón
-        width: '100%', // Asegurarse de que el botón ocupe el ancho completo
+        marginTop: 20, 
+        width: '100%', 
         alignItems: 'center',
       },
       botonLogout: {
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         paddingHorizontal: 22,
         paddingVertical: 10,
-        width: '100%', // Hacer que el botón ocupe el ancho completo del contenedor
+        width: '100%', 
         alignItems: 'center',
       },
       textoBotonLogout: {
